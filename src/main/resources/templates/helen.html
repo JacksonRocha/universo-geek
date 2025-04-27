@@ -1,10 +1,41 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mensagem para Helen</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+    <meta name="description" content="Mensagem de amor dedicada para Helen 💖">
+    <meta name="author" content="Jackson Rocha">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 25px;
+            background-color: royalblue;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: navy;
+        }
+    </style>
 </head>
-<body style="text-align: center; margin-top: 50px;">
-<h1 style="color: deeppink;" th:text="${mensagemHelen}">Helen, eu te amo! 💖</h1>
+<body>
+<h1 style="color: white;">Helen, eu te amo! 💖</h1>
+<p>Você é a razão do meu sorriso e minha inspiração todos os dias. ❤️</p>
+<a href="/">Voltar para o Universo Geek</a>
 </body>
 </html>

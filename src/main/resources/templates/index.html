@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Universo Geek</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+    <meta name="description" content="O Universo Geek traz o melhor da cultura pop, tecnologia, ciência e diversão!">
+    <meta name="keywords" content="geek, tecnologia, cultura pop, jogos, séries, animes">
+    <meta name="author" content="Jackson Rocha">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 25px;
+            background-color: deeppink;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: darkmagenta;
+        }
+    </style>
 </head>
 <body>
-<h1 th:text="${mensagem}">Bem-vindo ao Universo Geek!</h1>
+<h1>Bem-vindo ao Universo Geek! 🚀🌎</h1>
+<p>Prepare-se para mergulhar no incrível universo da tecnologia, cultura pop, jogos e muito mais!</p>
+<a href="/helen">Mensagem para Helen 💖</a>
 </body>
 </html>
