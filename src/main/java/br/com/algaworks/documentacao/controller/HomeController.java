@@ -19,4 +19,34 @@ public class HomeController {
         return "helen";
     }
 
+    @GetMapping("/work")
+    public String work() {
+        return "work";
+    }
+
+    @GetMapping("/hobby")
+    public String hobby() {
+        return "hobby";
+    }
+
+    @GetMapping("/develop")
+    public String develop() {
+        return "develop";
+    }
+
+    @GetMapping("/house")
+    public String house() {
+        return "house";
+    }
+
+    @GetMapping("/finances")
+    public String finances() {
+        return "finances";
+    }
+
+    @GetMapping("/git")
+    public String gitPage() {
+        return "git";
+    }
+
 }
