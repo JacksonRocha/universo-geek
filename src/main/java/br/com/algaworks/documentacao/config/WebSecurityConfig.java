@@ -29,15 +29,15 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/css/**", "/js/**", "/images/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/login", "/favicon.ico", "/css/**", "/js/**", "/images/**", "/static/**").permitAll()
+                        .anyRequest().authenticated() // Exige login para todo o restante
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/", true)
+                        .loginPage("/login") // Página de login customizada
+                        .defaultSuccessUrl("/", true) // Após login, redireciona para Home (/)
                         .permitAll()
                 )
                 .logout(logout -> logout
