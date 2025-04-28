@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Novo Usuário</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .register-box {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px #00d2ff;
+            width: 350px;
+        }
+
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            background: #111;
+            color: #00d2ff;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 2px solid #00d2ff;
+            border-radius: 8px;
+            color: #00d2ff;
+            font-weight: bold;
+            margin-top: 15px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #00d2ff;
+            color: black;
+            box-shadow: 0 0 20px #00d2ff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-box">
+    <h2>Registrar Usuário</h2>
+    <form action="#" method="post">
+        <input type="text" name="username" placeholder="Usuário" required>
+        <input type="password" name="password" placeholder="Senha" required>
+
+        <label>Permissões:</label><br>
+        <select name="permission">
+            <option value="WORK">Acesso ao WORK</option>
+            <option value="HOBBY">Acesso ao HOBBY</option>
+            <option value="DEVELOP">Acesso ao DEVELOP</option>
+            <option value="FINANCES">Acesso ao FINANCES</option>
+        </select>
+
+        <button type="submit">Registrar</button>
+    </form>
+</div>
+
+</body>
+</html>
+

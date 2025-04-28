@@ -159,6 +159,23 @@
         }
     </style>
 </head>
+
+<div style="text-align: right; margin: 20px;">
+    <form th:action="@{/logout}" method="post">
+        <button style="
+            background-color: #ff4d4d;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 0 10px #ff4d4d;">
+            Logout
+        </button>
+    </form>
+</div>
+
 <body>
 
 <div class="container">

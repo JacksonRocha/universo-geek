@@ -39,11 +39,6 @@ public class UniversoGeekController {
         return "develop";
     }
 
-    @GetMapping("/house")
-    public String house() {
-        return "house";
-    }
-
     @GetMapping("/finances")
     public String finances() {
         return "finances";

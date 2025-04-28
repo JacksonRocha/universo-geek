@@ -4,55 +4,98 @@
     <meta charset="UTF-8">
     <title>Login - Universo Geek</title>
     <style>
+        /* Fundo animado de estrelas */
         body {
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            color: white;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: radial-gradient(ellipse at center, #0f0c29, #302b63, #24243e);
+            overflow: hidden;
             font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            color: white;
+            position: relative;
         }
 
+        body::before, body::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background: transparent url('https://raw.githubusercontent.com/jonyw4/stars-animation-background/main/stars.png') repeat;
+            animation: moveStars 120s linear infinite;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes moveStars {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        /* Caixa de login */
         .login-box {
-            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.7);
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #00d2ff;
-            width: 300px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px #00d2ff;
+            width: 320px;
+            text-align: center;
+        }
+
+        .login-box h2 {
+            margin-bottom: 30px;
+            font-size: 26px;
+            color: #00d2ff;
         }
 
         input[type="text"], input[type="password"] {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             margin: 10px 0;
-            background: #fff;
             border: none;
-            border-radius: 5px;
-            color: #000;
+            border-radius: 8px;
+            background: #111;
+            color: #00d2ff;
+            box-shadow: 0 0 10px #00d2ff inset;
+            font-size: 14px;
         }
 
         button {
             width: 100%;
-            padding: 10px;
-            background: #00d2ff;
-            border: none;
-            border-radius: 5px;
-            color: #000;
+            padding: 12px;
+            background: transparent;
+            border: 2px solid #00d2ff;
+            border-radius: 8px;
+            color: #00d2ff;
             font-weight: bold;
+            margin-top: 15px;
             cursor: pointer;
-            margin-top: 10px;
+            transition: 0.3s;
+            font-size: 15px;
         }
 
         button:hover {
-            background: #ffffff;
+            background: #00d2ff;
+            color: black;
+            box-shadow: 0 0 20px #00d2ff, 0 0 40px #00d2ff;
         }
 
         .error {
             color: #ff4d4d;
-            margin-top: 10px;
+            margin-top: 15px;
             font-weight: bold;
+            font-size: 14px;
         }
     </style>
 </head>
