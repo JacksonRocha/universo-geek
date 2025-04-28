@@ -20,6 +20,7 @@
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 0 10px #00d2ff;
+            width: 300px;
         }
 
         input[type="text"], input[type="password"] {
@@ -47,12 +48,24 @@
         button:hover {
             background: #ffffff;
         }
+
+        .error {
+            color: #ff4d4d;
+            margin-top: 10px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
 <div class="login-box">
     <h2>Login Universo Geek</h2>
+
+    <!-- Mostrando mensagem de erro se login falhar -->
+    <div th:if="${param.error}" class="error">
+        Usuário ou senha inválidos!
+    </div>
+
     <form th:action="@{/login}" method="post">
         <input type="text" name="username" placeholder="Usuário" required>
         <input type="password" name="password" placeholder="Senha" required>

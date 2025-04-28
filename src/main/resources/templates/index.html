@@ -2,142 +2,183 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Universo Geek</title>
-    <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
     <style>
         body {
             margin: 0;
+            padding: 0;
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
             font-family: 'Arial', sans-serif;
-            color: #ffffff;
-            overflow-x: hidden;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .container {
             position: relative;
-            width: 100%;
-            height: 100vh;
-            padding: 50px 20px;
-            box-sizing: border-box;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
+            width: 720px; /* aumentei 20% */
+            height: 720px; /* aumentei 20% */
         }
 
-        .logo {
-            width: 200px;
-            height: 200px;
-            background: #ffffff;
+        .circle-logo {
+            width: 216px; /* aumentei 20% */
+            height: 216px;
+            background: black;
             border-radius: 50%;
+            box-shadow: 0 0 25px #00d2ff, 0 0 60px #00d2ff;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 20px #00d2ff;
-            margin-bottom: 40px;
-        }
-
-        .logo img {
-            width: 80%;
-            height: auto;
-        }
-
-        .line {
-            position: relative;
-            width: 3px;
-            background: #00d2ff;
-            height: 60%;
-            margin-top: 20px;
-        }
-
-        .circle {
             position: absolute;
-            left: -15px;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #00d2ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-            box-shadow: 0 0 10px #00d2ff;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            animation: pulse 2s infinite;
         }
 
-        .item {
-            position: relative;
-            margin: 50px 0;
-            display: flex;
-            align-items: center;
+        .circle-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .item a {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 15px 25px;
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 25px #00d2ff, 0 0 60px #00d2ff;
+            }
+            50% {
+                box-shadow: 0 0 35px #00d2ff, 0 0 80px #00d2ff;
+            }
+            100% {
+                box-shadow: 0 0 25px #00d2ff, 0 0 60px #00d2ff;
+            }
+        }
+
+        .link-button {
+            position: absolute;
+            padding: 12px 24px; /* aumentei 20% */
+            background: black;
+            color: #00d2ff;
+            border: 2px solid #00d2ff;
             border-radius: 10px;
-            margin-left: 50px;
-            font-size: 18px;
-            letter-spacing: 1px;
-            color: #ffffff;
             text-decoration: none;
-            box-shadow: 0 0 10px #00d2ff;
-            transition: background-color 0.3s, transform 0.3s;
+            font-weight: bold;
+            box-shadow: 0 0 12px #00d2ff;
+            transition: 0.3s;
+            z-index: 3;
+            font-size: 18px;
         }
 
-        .item a:hover {
-            background-color: #00d2ff;
-            color: #000;
-            transform: scale(1.05);
+        .link-button:hover {
+            background: #00d2ff;
+            color: black;
+            box-shadow: 0 0 20px #00d2ff, 0 0 30px #00d2ff;
+            transform: scale(1.1);
         }
 
+        /* Botões nos 4 pontos */
+        .work {
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .hobby {
+            top: 50%;
+            right: 40px;
+            transform: translateY(-50%);
+        }
+
+        .develop {
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .finances {
+            top: 50%;
+            left: 40px;
+            transform: translateY(-50%);
+        }
+
+        /* Linhas conectando (até encostar nos botões) */
+        .line {
+            position: absolute;
+            width: 2px;
+            background: #00d2ff;
+            z-index: 1;
+            transform-origin: top;
+        }
+
+        .line-work {
+            top: 50%;
+            left: 50%;
+            height: 130px;
+            transform: translateX(-50%) rotate(0deg);
+        }
+
+        .line-hobby {
+            top: 50%;
+            left: 50%;
+            height: 130px;
+            transform: translateX(-50%) rotate(90deg);
+        }
+
+        .line-develop {
+            top: 50%;
+            left: 50%;
+            height: 130px;
+            transform: translateX(-50%) rotate(180deg);
+        }
+
+        .line-finances {
+            top: 50%;
+            left: 50%;
+            height: 130px;
+            transform: translateX(-50%) rotate(270deg);
+        }
+
+        /* Responsivo */
         @media (max-width: 768px) {
-            .item {
-                flex-direction: column;
-                align-items: flex-start;
+            .container {
+                width: 400px;
+                height: 400px;
             }
 
-            .item a {
-                margin-left: 0;
-                margin-top: 10px;
+            .circle-logo {
+                width: 130px;
+                height: 130px;
             }
 
-            .line {
-                height: 80%;
+            .link-button {
+                padding: 8px 14px;
+                font-size: 14px;
             }
         }
     </style>
 </head>
 <body>
+
 <div class="container">
-    <div class="logo">
-        <img src="/logo.png" alt="Logo Universo Geek">
+    <!-- Centro -->
+    <div class="circle-logo">
+        <img src="/images/logo-universo-geek.png" alt="Universo Geek">
     </div>
 
-    <div class="line">
-        <div class="item" style="top: 0%;">
-            <div class="circle">1</div>
-            <a href="/work">WORK</a>
-        </div>
-        <div class="item" style="top: 20%;">
-            <div class="circle">2</div>
-            <a href="/hobby">HOBBY</a>
-        </div>
-        <div class="item" style="top: 40%;">
-            <div class="circle">3</div>
-            <a href="/develop">DEVELOP</a>
-        </div>
-        <div class="item" style="top: 60%;">
-            <div class="circle">4</div>
-            <a href="/house">HOUSE</a>
-        </div>
-        <div class="item" style="top: 80%;">
-            <div class="circle">5</div>
-            <a href="/finances">FINANCES</a>
-        </div>
-    </div>
+    <!-- Linhas conectadas -->
+    <div class="line line-work"></div>
+    <div class="line line-hobby"></div>
+    <div class="line line-develop"></div>
+    <div class="line line-finances"></div>
+
+    <!-- Botões -->
+    <a href="/work" class="link-button work">WORK</a>
+    <a href="/hobby" class="link-button hobby">HOBBY</a>
+    <a href="/develop" class="link-button develop">DEVELOP</a>
+    <a href="/finances" class="link-button finances">FINANCES</a>
 </div>
+
 </body>
 </html>

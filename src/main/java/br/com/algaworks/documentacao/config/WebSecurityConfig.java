@@ -16,8 +16,8 @@ public class WebSecurityConfig {
     @Bean
     public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails user = User.builder()
-                .username("jackson")
-                .password(passwordEncoder.encode("universogeek"))
+                .username("123")
+                .password(passwordEncoder.encode("123"))
                 .roles("USER")
                 .build();
         return new InMemoryUserDetailsManager(user);
@@ -33,11 +33,12 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/favicon.ico", "/css/**", "/js/**", "/images/**", "/static/**").permitAll()
-                        .anyRequest().authenticated() // Exige login para todo o restante
+                        .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login") // Página de login customizada
-                        .defaultSuccessUrl("/", true) // Após login, redireciona para Home (/)
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/", true)
+                        .failureUrl("/login?error")
                         .permitAll()
                 )
                 .logout(logout -> logout
