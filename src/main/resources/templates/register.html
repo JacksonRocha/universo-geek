@@ -1,26 +1,62 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Registrar Novo Usuário</title>
+    <title>Registrar Usuário - Universo Geek</title>
     <style>
+        /* Fundo animado de estrelas */
         body {
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            color: white;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: radial-gradient(ellipse at center, #0f0c29, #302b63, #24243e);
+            overflow: hidden;
             font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            color: white;
+            position: relative;
         }
 
+        body::before, body::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background: transparent url('https://raw.githubusercontent.com/jonyw4/stars-animation-background/main/stars.png') repeat;
+            animation: moveStars 120s linear infinite;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes moveStars {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        /* Caixa de cadastro */
         .register-box {
+            z-index: 1;
             background: rgba(0, 0, 0, 0.7);
             padding: 40px;
             border-radius: 15px;
             box-shadow: 0 0 20px #00d2ff;
             width: 350px;
+            text-align: center;
+        }
+
+        .register-box h2 {
+            margin-bottom: 30px;
+            font-size: 26px;
+            color: #00d2ff;
         }
 
         input[type="text"], input[type="password"], select {
@@ -31,26 +67,43 @@
             border-radius: 8px;
             background: #111;
             color: #00d2ff;
+            box-shadow: 0 0 10px #00d2ff inset;
             font-size: 14px;
         }
 
-        button {
-            width: 100%;
+        label {
+            display: block;
+            margin: 10px 0 5px 0;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        button, a.back-button {
+            flex: 1;
             padding: 12px;
             background: transparent;
             border: 2px solid #00d2ff;
             border-radius: 8px;
             color: #00d2ff;
             font-weight: bold;
-            margin-top: 15px;
             cursor: pointer;
+            transition: 0.3s;
             font-size: 15px;
+            text-decoration: none;
+            text-align: center;
         }
 
-        button:hover {
+        button:hover, a.back-button:hover {
             background: #00d2ff;
             color: black;
-            box-shadow: 0 0 20px #00d2ff;
+            box-shadow: 0 0 20px #00d2ff, 0 0 40px #00d2ff;
         }
     </style>
 </head>
@@ -58,22 +111,25 @@
 
 <div class="register-box">
     <h2>Registrar Usuário</h2>
-    <form action="#" method="post">
+
+    <form th:action="@{/register}" method="post">
         <input type="text" name="username" placeholder="Usuário" required>
         <input type="password" name="password" placeholder="Senha" required>
 
-        <label>Permissões:</label><br>
-        <select name="permission">
+        <label for="permission">Permissões:</label>
+        <select name="permission" id="permission" required>
             <option value="WORK">Acesso ao WORK</option>
             <option value="HOBBY">Acesso ao HOBBY</option>
             <option value="DEVELOP">Acesso ao DEVELOP</option>
             <option value="FINANCES">Acesso ao FINANCES</option>
         </select>
 
-        <button type="submit">Registrar</button>
+        <div class="button-group">
+            <button type="submit">Registrar</button>
+            <a th:href="@{/login}" class="back-button">Voltar</a>
+        </div>
     </form>
 </div>
 
 </body>
 </html>
-

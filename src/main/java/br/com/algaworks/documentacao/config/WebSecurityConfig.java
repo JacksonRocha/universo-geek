@@ -1,28 +1,33 @@
 package br.com.algaworks.documentacao.config;
 
+import br.com.algaworks.documentacao.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-@EnableMethodSecurity(prePostEnabled = true)
 @Configuration
 public class WebSecurityConfig {
 
+    private final CustomUserDetailsService customUserDetailsService;
+
     @Bean
-    public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails user = User.builder()
-                .username("123")
-                .password(passwordEncoder.encode("123"))
-                .roles("USER")
+    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, CustomUserDetailsService userDetailsService)
+            throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder)
+                .and()
                 .build();
-        return new InMemoryUserDetailsManager(user);
+    }
+
+
+    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Bean
@@ -34,11 +39,13 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/favicon.ico", "/css/**", "/js/**", "/images/**", "/static/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN") // Só ADMIN pode acessar
+                        .requestMatchers("/login", "/register", "/favicon.ico", "/css/**", "/js/**", "/images/**", "/static/**").permitAll()
+                        .requestMatchers("/work").hasRole("WORK")
+                        .requestMatchers("/hobby").hasRole("HOBBY")
+                        .requestMatchers("/develop").hasRole("DEVELOP")
+                        .requestMatchers("/finances").hasRole("FINANCES")
                         .anyRequest().authenticated()
                 )
-
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/", true)
@@ -48,8 +55,13 @@ public class WebSecurityConfig {
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
-                );
+                )
+                .exceptionHandling(exception -> exception
+                        .accessDeniedPage("/access-denied")
+                )
+                .userDetailsService(customUserDetailsService);
 
         return http.build();
     }
+
 }

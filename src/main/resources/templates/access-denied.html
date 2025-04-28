@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Acesso Negado</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #00d2ff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .box {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #00d2ff;
+        }
+
+        a {
+            margin-top: 20px;
+            display: inline-block;
+            color: #00d2ff;
+            text-decoration: underline;
+        }
+
+        a:hover {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <h1>😔 Acesso Negado</h1>
+    <p>Você não tem permissão para acessar esta página.</p>
+    <a th:href="@{/}">Voltar para o início</a>
+</div>
+</body>
+</html>
