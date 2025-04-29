@@ -44,6 +44,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/hobby").hasRole("HOBBY")
                         .requestMatchers("/develop").hasRole("DEVELOP")
                         .requestMatchers("/finances").hasRole("FINANCES")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

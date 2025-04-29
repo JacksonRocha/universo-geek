@@ -19,19 +19,28 @@
             position: relative;
         }
 
-        body::before, body::after {
+        body::before {
             content: "";
             position: absolute;
             top: 0;
             left: 0;
             width: 200%;
             height: 200%;
-            background: transparent url('https://raw.githubusercontent.com/jonyw4/stars-animation-background/main/stars.png') repeat;
+            background: url('/images/stars-bg.jpg') repeat;
             animation: moveStars 120s linear infinite;
             opacity: 0.15;
             pointer-events: none;
             z-index: 0;
         }
+
+        body {
+            background-image: url('/images/stars-bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
 
         @keyframes moveStars {
             0% {
@@ -85,10 +94,10 @@
             justify-content: center;
         }
 
-        button, a.back-button {
+        button, a.back-button, a.button-neon {
             flex: 1;
             padding: 12px;
-            background: transparent;
+            background: black;
             border: 2px solid #00d2ff;
             border-radius: 8px;
             color: #00d2ff;
@@ -98,16 +107,31 @@
             font-size: 15px;
             text-decoration: none;
             text-align: center;
+            box-shadow: 0 0 12px #00d2ff;
         }
 
-        button:hover, a.back-button:hover {
+        button:hover, a.back-button:hover, a.button-neon:hover {
             background: #00d2ff;
             color: black;
             box-shadow: 0 0 20px #00d2ff, 0 0 40px #00d2ff;
+            transform: scale(1.1);
+        }
+
+        /* Botão no canto superior direito */
+        .top-right {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 2;
         }
     </style>
 </head>
 <body>
+
+<!-- Botão Voltar -->
+<div class="top-right">
+    <a href="/" class="button-neon">Voltar para Início</a>
+</div>
 
 <div class="register-box">
     <h2>Registrar Usuário</h2>

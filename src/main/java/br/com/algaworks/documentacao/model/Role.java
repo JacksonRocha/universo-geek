@@ -2,6 +2,9 @@ package br.com.algaworks.documentacao.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "role")
 public class Role {
@@ -10,8 +13,18 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToMany(mappedBy = "roles")
+    private Set<Usuario> usuarios = new HashSet<>();
+
     @Column(unique = true, nullable = false)
     private String nome;
+
+    public Role(String nome) {
+        this.nome = nome;
+    }
+
+    public Role() {
+    }
 
     // Getters e Setters
     public Long getId() {
@@ -30,5 +43,12 @@ public class Role {
         this.nome = nome;
     }
 
+    public Set<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(Set<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
 
 }

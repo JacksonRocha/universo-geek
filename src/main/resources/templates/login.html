@@ -19,19 +19,28 @@
             position: relative;
         }
 
-        body::before, body::after {
+        body::before {
             content: "";
             position: absolute;
             top: 0;
             left: 0;
             width: 200%;
             height: 200%;
-            background: transparent url('https://raw.githubusercontent.com/jonyw4/stars-animation-background/main/stars.png') repeat;
+            background: url('/images/stars-bg.jpg') repeat;
             animation: moveStars 120s linear infinite;
             opacity: 0.15;
             pointer-events: none;
             z-index: 0;
         }
+
+        body {
+            background-image: url('/images/stars-bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
 
         @keyframes moveStars {
             0% {

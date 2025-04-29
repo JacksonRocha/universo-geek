@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciar Usuários</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: radial-gradient(ellipse at center, #0f0c29, #302b63, #24243e);
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background: url('/images/stars-bg.jpg') repeat;
+            animation: moveStars 120s linear infinite;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body {
+            background-image: url('/images/stars-bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+
+        @keyframes moveStars {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .top-right {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .neon-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: black;
+            color: #00d2ff;
+            border: 2px solid #00d2ff;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 0 12px #00d2ff;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .neon-link:hover {
+            background-color: #00d2ff;
+            color: black;
+            box-shadow: 0 0 20px #00d2ff, 0 0 30px #00d2ff;
+            transform: scale(1.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin: 40px 0 20px;
+            color: #00d2ff;
+            text-shadow: 0 0 10px #00d2ff, 0 0 20px #00d2ff;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px #00d2ff;
+            width: 1100px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background-color: transparent;
+            color: #00d2ff;
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        td {
+            padding: 10px;
+            color: white;
+        }
+
+        td span {
+            display: block;
+            margin: 2px 0;
+        }
+
+        .action-form {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .action-form select,
+        .action-form button {
+            margin: 0; /* remove margem vertical */
+        }
+
+        button, select {
+            width: 150px;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 8px;
+            font-weight: bold;
+            border: 2px solid #00d2ff;
+            background: black;
+            color: #00d2ff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #00d2ff;
+            color: black;
+        }
+
+        .button-remove {
+            border-color: #ff4d4d;
+            color: #ff4d4d;
+        }
+
+        .button-remove:hover {
+            background-color: #ff4d4d;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Botão Voltar -->
+<div class="top-right">
+    <a href="/" class="neon-link">Voltar para Início</a>
+</div>
+
+<div class="container">
+    <h1>Gerenciar Usuários</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Roles</th>
+            <th>Adicionar Permissão</th>
+            <th>Remover Permissão</th>
+            <th>Excluir Usuário</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="usuario : ${usuarios}">
+            <td th:text="${usuario.username}">Username</td>
+
+            <td>
+                <span th:each="role : ${usuario.roles}" th:text="${role.nome} + ' '">Role</span>
+            </td>
+
+            <td>
+                <form th:action="@{'/admin/users/' + ${usuario.id} + '/add-role'}" method="post" class="action-form">
+                    <select name="roleName">
+                        <option value="WORK">WORK</option>
+                        <option value="HOBBY">HOBBY</option>
+                        <option value="DEVELOP">DEVELOP</option>
+                        <option value="FINANCES">FINANCES</option>
+                        <option value="ADMIN">ADMIN</option>
+                    </select>
+                    <button type="submit">Adicionar</button>
+                </form>
+            </td>
+
+            <td>
+                <form th:action="@{'/admin/users/' + ${usuario.id} + '/remove-role'}" method="post" class="action-form">
+                    <select name="roleName">
+                        <option th:each="role : ${usuario.roles}" th:value="${role.nome}"
+                                th:text="${role.nome}"></option>
+                    </select>
+                    <button type="submit" class="button-remove">Remover</button>
+                </form>
+            </td>
+
+            <td>
+                <form th:action="@{'/admin/users/' + ${usuario.id} + '/delete'}" method="post" class="action-form"
+                      onsubmit="return confirm('Tem certeza que deseja excluir este usuário?');">
+                    <button type="submit" class="button-remove">Excluir</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
