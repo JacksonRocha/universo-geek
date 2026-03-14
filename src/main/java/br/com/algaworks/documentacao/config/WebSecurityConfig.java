@@ -39,7 +39,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register", "/favicon.ico", "/css/**", "/js/**", "/images/**", "/static/**").permitAll()
+                        .requestMatchers("/", "/home", "/login", "/register", "/favicon.ico", "/static/css/**", "/static/js/**", "/images/**", "/static/**").permitAll()
                         .requestMatchers("/work").hasRole("WORK")
                         .requestMatchers("/hobby").hasRole("HOBBY")
                         .requestMatchers("/develop").hasRole("DEVELOP")
@@ -49,7 +49,7 @@ public class WebSecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/", true)
+                        .defaultSuccessUrl("/home", true)
                         .failureUrl("/login?error")
                         .permitAll()
                 )

@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class UniversoGeekController {
 
-    @GetMapping("/")
+    @GetMapping("/home")
     public String home(Model model) {
-        model.addAttribute("mensagem", "Bem-vindo ao Universo Geek! 🚀🌎");
-        return "index";
+        model.addAttribute("mensagem", "Bem-vindo ao Universo Geek!");
+        return "home"; // templates/home.html (Thymeleaf)
     }
+
 
     @GetMapping("/helen")
     public String helen(Model model) {
