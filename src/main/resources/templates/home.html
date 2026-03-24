@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Universo Geek - Portal Oficial</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;700;900&display=swap"
+          rel="stylesheet">
     <style>
         :root {
             --bg-primary: #0f172a;
@@ -71,6 +72,7 @@
             color: #fff;
             text-transform: uppercase;
         }
+
         .logo-text span {
             color: var(--accent-cool);
         }
@@ -145,7 +147,7 @@
             border: none;
             box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
         }
-        
+
         .btn-dashboard:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
@@ -173,7 +175,9 @@
             opacity: 0;
             transition: opacity 1s ease-in-out;
             background-size: cover;
-            background-position: center;
+            background-position: top center;
+            background-repeat: no-repeat;
+            background-color: var(--bg-primary);
         }
 
         .hero-slide.active {
@@ -182,8 +186,11 @@
 
         .hero-overlay {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to top, rgba(15, 23, 42, 1) 0%, rgba(15,23,42,0.4) 50%, rgba(15,23,42,0.1) 100%);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(15, 23, 42, 1) 0%, rgba(15, 23, 42, 0.4) 50%, rgba(15, 23, 42, 0.1) 100%);
         }
 
         .hero-content {
@@ -199,7 +206,10 @@
         }
 
         @keyframes slideUp {
-            to { transform: translateY(0); opacity: 1; }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .hero-badge {
@@ -223,7 +233,7 @@
             line-height: 1.1;
             margin-bottom: 15px;
             max-width: 800px;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
         }
 
         .hero-desc {
@@ -231,7 +241,7 @@
             color: #cbd5e1;
             max-width: 600px;
             margin-bottom: 25px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
         }
 
         .hero-indicators {
@@ -247,7 +257,7 @@
         .indicator {
             width: 40px;
             height: 4px;
-            background: rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.3);
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -269,7 +279,7 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 40px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding-bottom: 15px;
         }
 
@@ -308,7 +318,7 @@
             overflow: hidden;
             transition: all 0.3s ease;
             cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             flex-direction: column;
             text-decoration: none;
@@ -316,11 +326,13 @@
 
         .news-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
             border-color: rgba(14, 165, 233, 0.3);
         }
 
-        .geek-grid .news-card:hover { border-color: rgba(236, 72, 153, 0.3); }
+        .geek-grid .news-card:hover {
+            border-color: rgba(236, 72, 153, 0.3);
+        }
 
         .image-wrapper {
             position: relative;
@@ -356,7 +368,9 @@
             z-index: 2;
         }
 
-        .geek-tag { background: var(--accent-hot); }
+        .geek-tag {
+            background: var(--accent-hot);
+        }
 
         .card-content {
             padding: 24px;
@@ -374,8 +388,13 @@
             transition: color 0.3s;
         }
 
-        .news-card:hover .card-title { color: var(--accent-cool); }
-        .geek-grid .news-card:hover .card-title { color: var(--accent-hot); }
+        .news-card:hover .card-title {
+            color: var(--accent-cool);
+        }
+
+        .geek-grid .news-card:hover .card-title {
+            color: var(--accent-hot);
+        }
 
         .card-meta {
             margin-top: auto;
@@ -396,14 +415,21 @@
             border-radius: 12px;
         }
 
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
 
         /* Footer */
         footer {
             background: #0a0f18;
             padding: 40px 30px;
             text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             margin-top: 50px;
         }
 
@@ -420,7 +446,7 @@
             justify-content: center;
             width: 50px;
             height: 50px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 50%;
             transition: all 0.3s;
         }
@@ -438,255 +464,251 @@
             filter: brightness(0) invert(1);
         }
 
-        @media(max-width: 768px) {
-            .hero-title { font-size: 2.2rem; }
-            .nav-actions { display: none; }
-            .search-container { display: none; }
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .nav-actions {
+                display: none;
+            }
+
+            .search-container {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Navigation -->
-    <header>
-        <div class="nav-container">
-            <a href="/" class="logo-area">
-                <!-- Using a text logo with span to bypass the missing static image rendering nicely -->
-                <div class="logo-text">Universo<span>Geek</span></div>
-            </a>
+<!-- Header Navigation -->
+<header>
+    <div class="nav-container">
+        <a href="/" class="logo-area">
+            <!-- Using a text logo with span to bypass the missing static image rendering nicely -->
+            <div class="logo-text">Universo<span>Geek</span></div>
+        </a>
 
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="Pesquisar notícias, filmes...">
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Pesquisar notícias, filmes...">
+        </div>
+
+        <div class="nav-actions">
+            <!-- Logged Out actions -->
+            <div sec:authorize="!isAuthenticated()">
+                <a href="/login" class="btn btn-outline">Entrar</a>
+                <a href="/login" class="btn btn-primary">Registrar</a>
             </div>
-
-            <div class="nav-actions">
-                <!-- Logged Out actions -->
-                <div sec:authorize="!isAuthenticated()">
-                    <a href="/login" class="btn btn-outline">Entrar</a>
-                    <a href="/login" class="btn btn-primary">Registrar</a>
-                </div>
-                <!-- Logged In actions -->
-                <div sec:authorize="isAuthenticated()">
-                    <span style="margin-right: 15px; font-weight: 600;" sec:authentication="name">Usuário</span>
-                    <a href="/finances" class="btn btn-dashboard">Dashboard</a>
-                    <form th:action="@{/logout}" method="POST" style="display:inline;">
-                        <button type="submit" class="btn btn-outline">Sair</button>
-                    </form>
-                </div>
+            <!-- Logged In actions -->
+            <div sec:authorize="isAuthenticated()">
+                <span style="margin-right: 15px; font-weight: 600;" sec:authentication="name">Usuário</span>
+                <a href="/finances" class="btn btn-dashboard">Dashboard</a>
+                <form th:action="@{/logout}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-outline">Sair</button>
+                </form>
             </div>
         </div>
-    </header>
+    </div>
+</header>
 
-    <!-- Hero Carousel -->
-    <section class="hero" id="hero-slider">
-        <!-- JS will populate slides here -->
-        <div class="hero-overlay"></div>
-        <div class="hero-content" id="hero-content">
-            <span class="hero-badge" id="hero-badge">Em Cartaz</span>
-            <h1 class="hero-title" id="hero-title">Carregando Novidades...</h1>
-            <p class="hero-desc" id="hero-desc">Buscando os melhores lançamentos nos cinemas mundiais.</p>
-        </div>
-        <div class="hero-indicators" id="hero-indicators"></div>
-    </section>
+<!-- Hero Carousel -->
+<section class="hero" id="hero-slider">
+    <!-- JS will populate slides here -->
+    <div class="hero-overlay"></div>
+    <div class="hero-content" id="hero-content">
+        <span class="hero-badge" id="hero-badge">Em Cartaz</span>
+        <h1 class="hero-title" id="hero-title">Carregando Novidades...</h1>
+        <p class="hero-desc" id="hero-desc">Buscando os melhores lançamentos nos cinemas mundiais.</p>
+    </div>
+    <div class="hero-indicators" id="hero-indicators"></div>
+</section>
 
-    <!-- Main Content -->
-    <main class="container">
-        
-        <!-- Tecmundo News Section -->
-        <div class="section-header">
-            <h2 class="section-title">Notícias Tecmundo</h2>
-            <a href="https://www.tecmundo.com.br" target="_blank" style="color: var(--accent-cool); font-weight: 600; text-decoration: none;">Ver todas &rarr;</a>
-        </div>
-        
-        <div class="news-grid" id="tecmundo-grid">
-            <div class="loading-shimmer"></div>
-            <div class="loading-shimmer"></div>
-            <div class="loading-shimmer"></div>
-        </div>
+<!-- Main Content -->
+<main class="container">
 
-        <br><br><br>
+    <!-- Tecmundo News Section -->
+    <div class="section-header">
+        <h2 class="section-title">Notícias Tecmundo</h2>
+        <a href="https://www.tecmundo.com.br" target="_blank"
+           style="color: var(--accent-cool); font-weight: 600; text-decoration: none;">Ver todas &rarr;</a>
+    </div>
 
-        <!-- Jovem Nerd / Geek News Section -->
-        <div class="section-header">
-            <h2 class="section-title geek">Mundo Geek & Anime</h2>
-            <a href="https://jovemnerd.com.br" target="_blank" style="color: var(--accent-hot); font-weight: 600; text-decoration: none;">Explorar &rarr;</a>
-        </div>
-        
-        <div class="news-grid geek-grid" id="geek-grid">
-            <div class="loading-shimmer"></div>
-            <div class="loading-shimmer"></div>
-            <div class="loading-shimmer"></div>
-        </div>
+    <div class="news-grid" id="tecmundo-grid">
+        <div class="loading-shimmer"></div>
+        <div class="loading-shimmer"></div>
+        <div class="loading-shimmer"></div>
+    </div>
 
-    </main>
+    <br><br><br>
 
-    <!-- Footer -->
-    <footer>
-        <div class="social-links">
-            <a href="https://www.instagram.com" target="_blank"><img src="/images/logo-instagram.png" alt="Instagram" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1384/1384063.png'"></a>
-            <a href="https://www.youtube.com" target="_blank"><img src="/images/logo-youtube.png" alt="YouTube" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1384/1384060.png'"></a>
-            <a href="https://www.mercadolivre.com.br" target="_blank" title="Mercado Livre"><img src="/images/logo-mercado-livre.png" alt="Mercado Livre" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"></a>
-        </div>
-        <p style="color: #64748b; font-size: 0.9rem;">&copy; 2026 Universo Geek. Todos os direitos reservados. Design inspirado em HQPop.</p>
-    </footer>
+    <!-- Jovem Nerd / Geek News Section -->
+    <div class="section-header">
+        <h2 class="section-title geek">Mundo Geek & Anime</h2>
+        <a href="https://jovemnerd.com.br" target="_blank"
+           style="color: var(--accent-hot); font-weight: 600; text-decoration: none;">Explorar &rarr;</a>
+    </div>
 
-    <!-- Scripts -->
-    <script>
-        // --- 1. Hero Carousel Logic ---
-        const movies = [
-            {
-                title: "Duna: Parte Dois",
-                desc: "A jornada mítica de Paul Atreides ganha seu ápice visual e narrativo. O filme do ano já está entre nós.",
-                img: "https://image.tmdb.org/t/p/original/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg",
-                badge: "Em Alta"
-            },
-            {
-                title: "Deadpool & Wolverine",
-                desc: "O mercenário tagarela se une a Wolverine em uma aventura que mudará a linha do tempo do MCU para sempre.",
-                img: "https://image.tmdb.org/t/p/original/9l1eZiJHmhr5jIlthMdJN5WYoff.jpg",
-                badge: "Marvel Studios"
-            },
-            {
-                title: "Godzilla e Kong: O Novo Império",
-                desc: "Os titãs entram em colisão! Explore as profundezas da Terra Oca neste embate épico pela sobrevivência.",
-                img: "https://image.tmdb.org/t/p/original/qrGtVFbrChJq0TFIPhG00k4dGF5.jpg",
-                badge: "Lançamento"
-            }
-        ];
+    <div class="news-grid geek-grid" id="geek-grid">
+        <div class="loading-shimmer"></div>
+        <div class="loading-shimmer"></div>
+        <div class="loading-shimmer"></div>
+    </div>
 
-        const heroSlider = document.getElementById('hero-slider');
-        const heroTitle = document.getElementById('hero-title');
-        const heroDesc = document.getElementById('hero-desc');
-        const heroBadge = document.getElementById('hero-badge');
-        const indicatorsContainer = document.getElementById('hero-indicators');
+</main>
 
-        let currentSlideIndex = 0;
+<!-- Footer -->
+<footer>
+    <div class="social-links">
+        <a href="https://www.instagram.com" target="_blank"><img src="/images/logo-instagram.png" alt="Instagram"
+                                                                 onerror="this.src='https://cdn-icons-png.flaticon.com/512/1384/1384063.png'"></a>
+        <a href="https://www.youtube.com" target="_blank"><img src="/images/logo-youtube.png" alt="YouTube"
+                                                               onerror="this.src='https://cdn-icons-png.flaticon.com/512/1384/1384060.png'"></a>
+        <a href="https://www.mercadolivre.com.br" target="_blank" title="Mercado Livre"><img
+                src="/images/logo-mercado-livre.png" alt="Mercado Livre"
+                onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"></a>
+    </div>
+    <p style="color: #64748b; font-size: 0.9rem;">&copy; 2026 Universo Geek. Todos os direitos reservados. Design
+        inspirado em HQPop.</p>
+</footer>
 
-        // Create Slides Backgrounds
-        movies.forEach((movie, index) => {
-            const slide = document.createElement('div');
-            slide.className = 'hero-slide';
-            if(index === 0) slide.classList.add('active');
-            slide.style.backgroundImage = `url('${movie.img}')`;
-            heroSlider.prepend(slide);
-
-            const indicator = document.createElement('div');
-            indicator.className = 'indicator';
-            if(index === 0) indicator.classList.add('active');
-            indicator.onclick = () => goToSlide(index);
-            indicatorsContainer.appendChild(indicator);
-        });
-
-        const slides = document.querySelectorAll('.hero-slide');
-        const indicators = document.querySelectorAll('.indicator');
-
-        function updateHeroContent(index) {
-            const movie = movies[index];
-            const contentDiv = document.getElementById('hero-content');
-            
-            // Re-trigger animation
-            contentDiv.style.animation = 'none';
-            contentDiv.offsetHeight; 
-            contentDiv.style.animation = 'slideUp 0.8s ease forwards';
-
-            heroTitle.textContent = movie.title;
-            heroDesc.textContent = movie.desc;
-            heroBadge.textContent = movie.badge;
+<!-- Scripts -->
+<script>
+    // --- 1. Hero Carousel Logic ---
+    const movies = [
+        {
+            title: "Super Mario Bros. O Filme",
+            desc: "A Illumination e a Nintendo retornam ao universo do encanador com uma adaptação fantástica de um dos jogos mais celebrados da franquia.",
+            img: "https://image.tmdb.org/t/p/original/nwA2uzjjtDYHF0KxXL2YvxAHLSA.jpg",
+            badge: "Em Alta"
+        },
+        {
+            title: "Mortal Kombat 2",
+            desc: "Liderado pela escalação de Karl Urban como Johnny Cage, a continuação parece pronta para abraçar os exageros e a brutalidade dos games clássicos.",
+            img: "https://image.tmdb.org/t/p/original/cWVGQxa4wcxkzuLLnsiLiM6BGue.jpg",
+            badge: "Cinema"
+        },
+        {
+            title: "Homem-Aranha: Sem Volta Para Casa",
+            desc: "O mundo esqueceu o Peter de Tom Holland e agora, sem Tia May, MJ, Ned e os Vingadores, ele deve seguir seu caminho como o Amigão da Vizinhança sozinho.",
+            img: "https://image.tmdb.org/t/p/original/4NuSDebFyMeCdFiZAMAAuqsrziw.jpg",
+            badge: "Marvel Studios"
         }
+    ];
 
-        function goToSlide(index) {
-            slides[currentSlideIndex].classList.remove('active');
-            indicators[currentSlideIndex].classList.remove('active');
-            
-            currentSlideIndex = index;
-            
-            slides[currentSlideIndex].classList.add('active');
-            indicators[currentSlideIndex].classList.add('active');
-            updateHeroContent(index);
-        }
+    const heroSlider = document.getElementById('hero-slider');
+    const heroTitle = document.getElementById('hero-title');
+    const heroDesc = document.getElementById('hero-desc');
+    const heroBadge = document.getElementById('hero-badge');
+    const indicatorsContainer = document.getElementById('hero-indicators');
 
-        // Initialize first slide UI
-        updateHeroContent(0);
+    let currentSlideIndex = 0;
 
-        setInterval(() => {
-            goToSlide((currentSlideIndex + 1) % movies.length);
-        }, 8000);
+    // Create Slides Backgrounds
+    movies.forEach((movie, index) => {
+        const slide = document.createElement('div');
+        slide.className = 'hero-slide';
+        if (index === 0) slide.classList.add('active');
+        slide.style.backgroundImage = `url('${movie.img}')`;
+        heroSlider.prepend(slide);
+
+        const indicator = document.createElement('div');
+        indicator.className = 'indicator';
+        if (index === 0) indicator.classList.add('active');
+        indicator.onclick = () => goToSlide(index);
+        indicatorsContainer.appendChild(indicator);
+    });
+
+    const slides = document.querySelectorAll('.hero-slide');
+    const indicators = document.querySelectorAll('.indicator');
+
+    function updateHeroContent(index) {
+        const movie = movies[index];
+        const contentDiv = document.getElementById('hero-content');
+
+        // Re-trigger animation
+        contentDiv.style.animation = 'none';
+        contentDiv.offsetHeight;
+        contentDiv.style.animation = 'slideUp 0.8s ease forwards';
+
+        heroTitle.textContent = movie.title;
+        heroDesc.textContent = movie.desc;
+        heroBadge.textContent = movie.badge;
+    }
+
+    function goToSlide(index) {
+        slides[currentSlideIndex].classList.remove('active');
+        indicators[currentSlideIndex].classList.remove('active');
+
+        currentSlideIndex = index;
+
+        slides[currentSlideIndex].classList.add('active');
+        indicators[currentSlideIndex].classList.add('active');
+        updateHeroContent(index);
+    }
+
+    // Initialize first slide UI
+    updateHeroContent(0);
+
+    setInterval(() => {
+        goToSlide((currentSlideIndex + 1) % movies.length);
+    }, 8000);
 
 
-        // --- 2. RSS Feed Logic using RSS2JSON ---
-        const RSS2JSON_API = 'https://api.rss2json.com/v1/api.json?rss_url=';
+    // --- 2. Backend News Fetch Logic ---
+    async function fetchNews(endpoint, containerId, isGeek = false) {
+        try {
+            const response = await fetch(endpoint);
+            if (!response.ok) throw new Error("A requisição Falhou");
 
-        async function fetchRSS(feedUrl, containerId, isGeek = false) {
-            try {
-                // To avoid CORS blocks from browsers, rss2json proxies perfectly
-                const response = await fetch(RSS2JSON_API + encodeURIComponent(feedUrl));
-                if (!response.ok) throw new Error("A requisição Falhou");
-                
-                const data = await response.json();
-                if (data.status !== 'ok') throw new Error("Erro no feed");
+            const items = await response.json();
 
-                const container = document.getElementById(containerId);
-                container.innerHTML = ''; // Limpar shimmers
-                
-                // Mostrar os ultimos 6 posts
-                data.items.slice(0, 6).forEach(item => {
-                    const date = new Date(item.pubDate).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' });
-                    
-                    // Extrair imagem do RSS 
-                    let imgUrl = item.thumbnail || (item.enclosure && item.enclosure.link);
-                    if (!imgUrl) {
-                        const match = item.content.match(/<img[^>]+src="([^">]+)"/);
-                        imgUrl = match ? match[1] : '/images/stars-bg.jpg';
-                    }
+            const container = document.getElementById(containerId);
+            container.innerHTML = ''; // Limpar shimmers
 
-                    // Tentar pegar autor
-                    let author = item.author || (isGeek ? 'Redação Geek' : 'Redação Tecmundo');
-                    // Limpar autor de formatacao se houver
-                    if(author.length > 25) author = author.substring(0, 25) + '...';
-                    
-                    const categoryLabel = isGeek ? 'MUNDO GEEK' : 'TECNOLOGIA';
-                    const tagClass = isGeek ? 'category-tag geek-tag' : 'category-tag';
+            items.forEach(item => {
+                const categoryLabel = isGeek ? 'MUNDO GEEK' : 'TECNOLOGIA';
+                const tagClass = isGeek ? 'category-tag geek-tag' : 'category-tag';
 
-                    const card = document.createElement('a');
-                    card.href = item.link;
-                    card.target = "_blank";
-                    card.className = 'news-card';
-                    
-                    card.innerHTML = `
+                const card = document.createElement('a');
+                card.href = item.link;
+                card.target = "_blank";
+                card.className = 'news-card';
+
+                card.innerHTML = `
                         <div class="image-wrapper">
-                            <img src="${imgUrl}" alt="Imagem do artigo" onerror="this.src='/images/stars-bg.jpg'">
+                            <img src="${item.image}" alt="Imagem do artigo" onerror="this.src='/images/stars-bg.jpg'">
                             <span class="${tagClass}">${categoryLabel}</span>
                         </div>
                         <div class="card-content">
                             <h3 class="card-title">${item.title}</h3>
                             <div class="card-meta">
-                                <span>POR ${author.toUpperCase()}</span>
-                                <span>🗓️ ${date}</span>
+                                <span>POR ${item.author.toUpperCase()}</span>
+                                <span>🗓️ ${item.date}</span>
                             </div>
                         </div>
                     `;
-                    
-                    container.appendChild(card);
-                });
-            } catch (error) {
-                console.error('Erro buscando RSS:', error);
-                document.getElementById(containerId).innerHTML = `
+
+                container.appendChild(card);
+            });
+        } catch (error) {
+            console.error('Erro buscando notícias:', error);
+            document.getElementById(containerId).innerHTML = `
                     <div style="grid-column: 1/-1; padding: 30px; background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.3); border-radius: 8px;">
                         <h3 style="color: #f87171; margin-bottom:10px;">Não foi possível carregar as notícias.</h3>
-                        <p style="color: #cbd5e1;">A API do feed RSS pode estar indisponível no momento ou atingiu o limite de consultas.</p>
+                        <p style="color: #cbd5e1;">A API do backend pode estar indisponível.</p>
                     </div>`;
-            }
         }
+    }
 
-        // Executar após carregar o DOM
-        document.addEventListener('DOMContentLoaded', () => {
-            // Feed Oficial do Tecmundo
-            fetchRSS('https://www.tecmundo.com.br/rss', 'tecmundo-grid', false);
-            
-            // Feed Oficial do Jovem Nerd (Mundo Geek e Filmes)
-            fetchRSS('https://jovemnerd.com.br/feed', 'geek-grid', true);
-        });
+    // Executar após carregar o DOM
+    document.addEventListener('DOMContentLoaded', () => {
+        // Backend via Java Controller para Tecmundo
+        fetchNews('/api/noticias/tecmundo', 'tecmundo-grid', false);
 
-    </script>
+        // Backend via Java Controller para Smart Animes
+        fetchNews('/api/noticias/smartanimes', 'geek-grid', true);
+    });
+
+</script>
 </body>
 </html>

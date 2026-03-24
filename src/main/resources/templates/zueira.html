@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zueira - Universo Geek</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;700;900&display=swap"
+          rel="stylesheet">
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #ec4899;
+            margin-bottom: 30px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            text-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+        }
+
+        .main-image {
+            max-width: 90%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+            max-height: 60vh;
+            object-fit: contain;
+        }
+
+        .qr-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .qr-section p {
+            margin-top: 0;
+            color: #cbd5e1;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        #qrcode {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        #qrcode:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-home {
+            margin-top: 30px;
+            padding: 10px 20px;
+            background: transparent;
+            color: #38bdf8;
+            border: 1px solid #38bdf8;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-home:hover {
+            background: rgba(56, 189, 248, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<h1>Toma Curioso! 😂</h1>
+
+<!-- 👇 TROQUE O LINK DA IMAGEM ABAIXO QUANDO QUISER MUDAR A ZUEIRA 👇 -->
+<img src="https://i.imgur.com/qHgwBWn.jpeg" alt="Imagem Surpresa" class="main-image">
+
+<div class="qr-section">
+    <p>Gere o terror! Tire um print ou escaneie o QR Code abaixo<br> para mandar essa página exata para alguém.</p>
+    <img id="qrcode" src="" alt="QR Code desta página">
+</div>
+
+<a href="/" class="btn-home">Voltar ao Início</a>
+
+<!-- Lógica que gera o QR Code automático da página atual Mágica ✨ -->
+<script>
+    // Pega a URL exata do navegador e cria o QR Code dinâmico
+    const currentUrl = encodeURIComponent(window.location.href);
+    const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + currentUrl;
+    document.getElementById('qrcode').src = qrUrl;
+</script>
+
+</body>
+</html>

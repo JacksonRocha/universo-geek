@@ -39,7 +39,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/home", "/login", "/register", "/favicon.ico", "/static/css/**", "/static/js/**", "/images/**", "/static/**").permitAll()
+                        .requestMatchers("/", "/home", "/login", "/register", "/favicon.ico", "/static/css/**", "/static/js/**", "/images/**", "/static/**", "/api/noticias/**", "/zueira").permitAll()
                         .requestMatchers("/work").hasRole("WORK")
                         .requestMatchers("/hobby").hasRole("HOBBY")
                         .requestMatchers("/develop").hasRole("DEVELOP")

@@ -102,4 +102,9 @@ public class UniversoGeekController {
         return "access-denied";
     }
 
+    @GetMapping("/zueira")
+    public String zueira() {
+        return "zueira";
+    }
+
 }
