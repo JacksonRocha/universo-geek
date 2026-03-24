@@ -89,7 +89,26 @@
 <h1>Toma Curioso! 😂</h1>
 
 <!-- 👇 TROQUE O LINK DA IMAGEM ABAIXO QUANDO QUISER MUDAR A ZUEIRA 👇 -->
-<img src="https://i.imgur.com/qHgwBWn.jpeg" alt="Imagem Surpresa" class="main-image">
+<img th:src="${imagemUrl}" alt="Imagem Surpresa" class="main-image">
+
+<!-- ZONA Oculta para Usuários Logados -->
+<th:block th:if="${logado}">
+    <div style="margin-bottom: 20px; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border: 1px dashed #ec4899;">
+        <p style="color: #ec4899; font-weight: bold; margin-top: 0;">Área Secreta do Admin: Trocar a Zueira</p>
+        <input type="text" id="novaImagem" placeholder="Cole a URL da nova imagem aqui" style="width: 300px; max-width: 100%; padding: 8px; border-radius: 4px; border: none; margin-bottom: 10px;">
+        <br>
+        <button onclick="mudarImagem()" style="padding: 8px 15px; background: #ec4899; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Gerar Novo Link e QR Code!</button>
+        <p style="font-size: 0.8rem; color: #cbd5e1; margin-bottom: 0; margin-top: 10px;">Ao alterar, o QR code lá de baixo e o Link do topo serão atualizados com esta nova foto!</p>
+    </div>
+    <script>
+        function mudarImagem() {
+            const url = document.getElementById('novaImagem').value;
+            if(url) {
+                window.location.href = '/zueira?img=' + encodeURIComponent(url);
+            }
+        }
+    </script>
+</th:block>
 
 <div class="qr-section">
     <p>Gere o terror! Tire um print ou escaneie o QR Code abaixo<br> para mandar essa página exata para alguém.</p>

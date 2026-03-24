@@ -103,7 +103,13 @@ public class UniversoGeekController {
     }
 
     @GetMapping("/zueira")
-    public String zueira() {
+    public String zueira(@org.springframework.web.bind.annotation.RequestParam(name = "img", required = false) String img, Model model, java.security.Principal principal) {
+        if (img != null && !img.trim().isEmpty()) {
+            model.addAttribute("imagemUrl", img);
+        } else {
+            model.addAttribute("imagemUrl", "https://i.imgur.com/qHgwBWn.jpeg");
+        }
+        model.addAttribute("logado", principal != null);
         return "zueira";
     }
 

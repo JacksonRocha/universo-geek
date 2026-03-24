@@ -500,11 +500,13 @@
                 <a href="/login" class="btn btn-primary">Registrar</a>
             </div>
             <!-- Logged In actions -->
-            <div sec:authorize="isAuthenticated()">
-                <span style="margin-right: 15px; font-weight: 600;" sec:authentication="name">Usuário</span>
-                <a href="/finances" class="btn btn-dashboard">Dashboard</a>
-                <form th:action="@{/logout}" method="POST" style="display:inline;">
-                    <button type="submit" class="btn btn-outline">Sair</button>
+            <div sec:authorize="isAuthenticated()" style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-weight: 600; color: white;" sec:authentication="name">Usuário</span>
+                <a href="/finances" class="btn btn-dashboard" style="background: #ec4899; color: white; border: none;">Financeiro</a>
+                <a href="/work" class="btn btn-dashboard" style="background: #ec4899; color: white; border: none;">Work</a>
+                <a href="/zueira" class="btn btn-dashboard" style="background: #ec4899; color: white; border: none;">Zueira</a>
+                <form th:action="@{/logout}" method="POST" style="margin:0;">
+                    <button type="submit" class="btn btn-outline" style="border-color: rgba(255,255,255,0.2); color: white;">Sair</button>
                 </form>
             </div>
         </div>

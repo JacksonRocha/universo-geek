@@ -2,10 +2,442 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Work - Universo Geek</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workspace - Universo Geek (Trello)</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            background: #ab5d29; /* Trello Rust/Brown Background */
+            color: #172b4d; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            overflow: hidden; /* Prevent full page scroll, columns will scroll */
+        }
+        
+        /* Trello Top Header mimicking the screenshot */
+        .trello-header {
+            padding: 12px 20px; 
+            background: rgba(0,0,0,0.24); /* Darkened semi-transparent overlay */
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            color: white;
+            backdrop-filter: blur(4px);
+        }
+        
+        .trello-board-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .badge-template {
+            background-color: rgba(255,255,255,0.2);
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-weight: 400;
+        }
+
+        .kanban-board { 
+            display: flex; 
+            gap: 16px; 
+            padding: 16px 20px; 
+            box-sizing: border-box; 
+            height: calc(100vh - 55px); 
+            overflow-x: auto; 
+            align-items: flex-start;
+        }
+        
+        .kanban-col { 
+            border-radius: 10px; 
+            min-width: 300px; 
+            width: 300px;
+            display: flex; 
+            flex-direction: column; 
+            max-height: 100%; 
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+        }
+        
+        .col-header { 
+            padding: 12px 16px; 
+            font-weight: 600; 
+            font-size: 15px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            color: white;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        
+        .task-list { 
+            padding: 8px; 
+            overflow-y: auto; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px; 
+            min-height: 10px;
+        }
+        
+        /* Custom Scrollbar for columns */
+        .task-list::-webkit-scrollbar { width: 8px; }
+        .task-list::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+
+        .task-card { 
+            background: #ffffff; 
+            padding: 10px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            box-shadow: 0 1px 2px rgba(9,30,66,0.25);
+            position: relative; 
+            color: #172b4d;
+            border-bottom: 1px solid rgba(9,30,66,0.13);
+        }
+        
+        .task-card:hover { 
+            background: #f4f5f7; 
+        }
+        
+        /* For dark cards inside specific columns (like Guia do Trello) */
+        .dark-card {
+            background: #22272b !important;
+            color: #b6c2cf !important;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            border-bottom: 1px solid rgba(0,0,0,0.5);
+        }
+        .dark-card:hover { background: #2c333a !important; }
+        .dark-card .task-title { color: #ebecf0; }
+        .dark-card .task-desc { color: #8c9bab; }
+
+        .task-title { font-weight: 500; font-size: 14px; margin-bottom: 4px; color: inherit; line-height: 20px;}
+        .task-desc { 
+            font-size: 12px; 
+            color: #5e6c84; 
+            margin-bottom: 8px; 
+            display: -webkit-box; 
+            -webkit-line-clamp: 2; 
+            -webkit-box-orient: vertical; 
+            overflow: hidden; 
+            line-height: 16px;
+        }
+        
+        .task-img { 
+            width: 100%; 
+            height: 140px; 
+            object-fit: cover; 
+            border-radius: 6px; 
+            margin-bottom: 8px;
+        }
+        
+        .task-badges { 
+            display: flex; 
+            justify-content: flex-start; 
+            align-items: center; 
+            font-size: 12px;
+            gap: 12px;
+            color: inherit;
+        }
+        
+        .add-btn { 
+            color: rgba(255,255,255,0.8); 
+            padding: 10px 16px; 
+            cursor: pointer; 
+            text-align: left; 
+            font-weight: 500;
+            font-size: 14px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+        .add-btn:hover { background: rgba(0,0,0,0.1); color: white;}
+        
+        /* Modal Styles */
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top:0; left:0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.6); 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 1000;
+        }
+        .modal-content { 
+            background: #f4f5f7; 
+            padding: 24px; 
+            border-radius: 8px; 
+            width: 90%;
+            max-width: 500px; 
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            color: #172b4d;
+        }
+        .modal label {
+            display: block;
+            margin-bottom: 4px;
+            color: #5e6c84;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .modal input, .modal select, .modal textarea { 
+            width: 100%; 
+            box-sizing: border-box; 
+            padding: 10px; 
+            margin-bottom: 16px; 
+            background: #ffffff; 
+            border: 2px solid #dfe1e6; 
+            color: #172b4d; 
+            border-radius: 4px;
+            font-family: inherit;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .modal input:focus, .modal select:focus, .modal textarea:focus {
+            outline: none;
+            border-color: #0052cc;
+            background: #ffffff;
+        }
+        .btn-save { background: #0052cc; color: white; padding: 10px 16px; border: none; border-radius: 3px; cursor: pointer; font-weight: 600; font-size: 14px;}
+        .btn-save:hover { background: #0065ff; }
+        .btn-delete { background: transparent; color: #172b4d; padding: 10px 16px; border-radius: 3px; cursor: pointer; font-weight: 600; border: none; margin-left: 8px;}
+        .btn-delete:hover { background: rgba(9,30,66,0.08); }
+        .close-btn { float: right; cursor: pointer; color: #42526e; font-size: 24px; line-height: 1;}
+        .close-btn:hover { color: #172b4d; }
+    </style>
 </head>
-<body style="background: #0f0c29; color: white; text-align: center; padding-top: 50px;">
-<h1>🚀 Página WORK</h1>
-<p>Conteúdo sobre trabalho, projetos profissionais e carreira.</p>
+<body>
+    <div class="trello-header">
+        <h2 class="trello-board-name">
+            Minhas tarefas | Trello
+            <span class="badge-template">Template</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 5px;"><path d="M6 9l6 6 6-6"/></svg>
+        </h2>
+        
+        <div style="display: flex; gap: 10px;">
+            <a href="/" style="color: white; text-decoration: none; font-size: 14px; font-weight: 600; padding: 6px 12px; background: rgba(255,255,255,0.2); border-radius: 3px;">🏠 Voltar para Universo Geek</a>
+        </div>
+    </div>
+
+    <!-- Trello Board -->
+    <div class="kanban-board" id="board">
+        <!-- Columns will be injected by JS -->
+    </div>
+
+    <!-- Modal Adicionar / Editar -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" style="margin-top: 0; color: #172b4d; margin-bottom: 24px;">Nova Tarefa</h2>
+            <input type="hidden" id="taskId">
+            
+            <label>Título:</label>
+            <input type="text" id="taskTitle" placeholder="O que precisa ser feito?" required>
+            
+            <label>Descrição:</label>
+            <textarea id="taskDesc" rows="4" placeholder="Adicione uma descrição mais detalhada..."></textarea>
+            
+            <label>URL da Imagem de Capa (Opcional):</label>
+            <input type="text" id="taskImg" placeholder="https://...">
+
+            <div style="display: flex; gap: 16px;">
+                <div style="flex: 1;">
+                    <label>Data:</label>
+                    <input type="date" id="taskDate">
+                </div>
+                <div style="flex: 1;">
+                    <label>Status Opcional:</label>
+                    <select id="taskStatus">
+                        <option value="A_FAZER">⚪ A Fazer</option>
+                        <option value="FAZENDO">🟡 Em Progresso</option>
+                        <option value="CONCLUIDO">🟢 Concluído</option>
+                    </select>
+                </div>
+            </div>
+
+            <label>Lista do Trello (Coluna):</label>
+            <select id="taskBloco">
+                <option value="ATIVIDADES_DO_DIA">Guia do Trello</option>
+                <option value="PRIORIDADES">A fazer</option>
+                <option value="JIRAS">Em progresso</option>
+                <option value="REUNIOES">Concluído</option>
+            </select>
+
+            <div style="margin-top: 16px; display: flex;">
+                <button class="btn-save" onclick="saveTask()">Salvar</button>
+                <button class="btn-delete" id="btnDelete" onclick="deleteTask()" style="display:none;">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        // Mirroring exactly the screenshot design provided by the user
+        const blocos = [
+            { id: "ATIVIDADES_DO_DIA", title: "Guia do Trello", bg: "#4f316e", headerBg: "#4f316e", darkCards: true },
+            { id: "PRIORIDADES", title: "A fazer", bg: "#8b4a15", headerBg: "#8b4a15", darkCards: false  },
+            { id: "JIRAS", title: "Em progresso", bg: "#3d592c", headerBg: "#3d592c", darkCards: false  },
+            { id: "REUNIOES", title: "Concluído 🚀", bg: "#1d1c1a", headerBg: "#1d1c1a", darkCards: false  }
+        ];
+
+        function formatDate(dateString) {
+            if(!dateString) return '';
+            const [year, month, day] = dateString.split('-');
+            return `${day}/${month}`;
+        }
+
+        async function loadTasks() {
+            try {
+                const res = await fetch('/api/work/tasks');
+                if(res.status === 401 || res.status === 403) {
+                    document.getElementById('board').innerHTML = '<h3 style="color: white; margin: auto;">Você precisa estar logado para acessar seu Trello! <a href="/login" style="color:#00c2e0;">Entrar</a></h3>';
+                    return;
+                }
+                const tasks = await res.json();
+                renderBoard(tasks || []);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function renderBoard(tasks) {
+            const board = document.getElementById('board');
+            board.innerHTML = '';
+            
+            blocos.forEach(b => {
+                const colTasks = tasks.filter(t => t.bloco === b.id);
+                
+                let cardsHtml = colTasks.map(t => {
+                    const imgHtml = t.imageUrl ? `<img src="${t.imageUrl}" class="task-img">` : '';
+                    
+                    // Small attachment icon
+                    const attachmentHtml = t.imageUrl || t.descricao ? `<span style="display:flex; align-items:center; gap:4px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></span>` : '';
+                    
+                    const dateHtml = t.dataEntrega ? `<span style="background: rgba(9,30,66,0.08); padding: 2px 6px; border-radius: 3px; color: #5e6c84;">🗓️ ${formatDate(t.dataEntrega)}</span>` : '';
+                    
+                    return `
+                        <div class="task-card ${b.darkCards ? 'dark-card' : ''}" onclick='openModal(${JSON.stringify(t).replace(/'/g, "&#39;")})'>
+                            ${imgHtml}
+                            <div class="task-title">${t.titulo}</div>
+                            ${t.descricao ? `<div class="task-desc">${t.descricao}</div>` : ''}
+                            <div class="task-badges">
+                                ${attachmentHtml}
+                                ${dateHtml}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                board.innerHTML += `
+                    <div class="kanban-col" style="background: ${b.bg};">
+                        <div class="col-header" style="background: ${b.headerBg};">
+                            <span>${b.title}</span> 
+                            <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></span>
+                        </div>
+                        <div class="task-list">
+                            ${cardsHtml}
+                        </div>
+                        <div class="add-btn" onclick="openModalNew('${b.id}')">+ Adicionar um cartão</div>
+                    </div>
+                `;
+            });
+        }
+
+        function openModalNew(blocoId) {
+            document.getElementById('taskId').value = '';
+            document.getElementById('taskTitle').value = '';
+            document.getElementById('taskDesc').value = '';
+            document.getElementById('taskImg').value = '';
+            document.getElementById('taskDate').value = '';
+            document.getElementById('taskBloco').value = blocoId;
+            document.getElementById('taskStatus').value = 'A_FAZER';
+            
+            document.getElementById('modalTitle').innerText = 'Novo Cartão';
+            document.getElementById('btnDelete').style.display = 'none';
+            document.getElementById('taskModal').style.display = 'flex';
+        }
+
+        function openModal(task) {
+            document.getElementById('taskId').value = task.id;
+            document.getElementById('taskTitle').value = task.titulo || '';
+            document.getElementById('taskDesc').value = task.descricao || '';
+            document.getElementById('taskImg').value = task.imageUrl || '';
+            document.getElementById('taskDate').value = task.dataEntrega || '';
+            document.getElementById('taskBloco').value = task.bloco;
+            document.getElementById('taskStatus').value = task.status;
+            
+            document.getElementById('modalTitle').innerText = 'Editar Cartão';
+            document.getElementById('btnDelete').style.display = 'block';
+            document.getElementById('taskModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('taskModal').style.display = 'none';
+        }
+
+        async function saveTask() {
+            const titulo = document.getElementById('taskTitle').value.trim();
+            if(!titulo) {
+                alert("O título é obrigatório!");
+                return;
+            }
+
+            const btn = document.querySelector('.btn-save');
+            btn.innerText = 'Salvando...';
+            btn.disabled = true;
+
+            const id = document.getElementById('taskId').value;
+            const task = {
+                titulo: titulo,
+                descricao: document.getElementById('taskDesc').value,
+                imageUrl: document.getElementById('taskImg').value,
+                dataEntrega: document.getElementById('taskDate').value || null,
+                bloco: document.getElementById('taskBloco').value,
+                status: document.getElementById('taskStatus').value
+            };
+
+            const url = id ? '/api/work/tasks/' + id : '/api/work/tasks';
+            const method = id ? 'PUT' : 'POST';
+
+            try {
+                await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(task)
+                });
+                closeModal();
+                loadTasks();
+            } catch (err) {
+                alert("Ocorreu um erro ao salvar o cartão.");
+            } finally {
+                btn.innerText = 'Salvar';
+                btn.disabled = false;
+            }
+        }
+
+        async function deleteTask() {
+            if(!confirm("Tem certeza de que deseja excluir este cartão?")) return;
+            const id = document.getElementById('taskId').value;
+            try {
+                await fetch('/api/work/tasks/' + id, { method: 'DELETE' });
+                closeModal();
+                loadTasks();
+            } catch (err) {
+                alert("Erro ao excluir.");
+            }
+        }
+
+        // Initialize board
+        loadTasks();
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('taskModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
 </body>
 </html>
