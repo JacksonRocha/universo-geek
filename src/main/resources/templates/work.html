@@ -3,347 +3,616 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workspace - Universo Geek (Trello)</title>
+    <title>Minhas Tarefas | Jackson - Universo Geek</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSRF Meta Tags for Spring Security -->
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <style>
-        body { 
-            background: #ab5d29; /* Trello Rust/Brown Background */
-            color: #172b4d; 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            overflow: hidden; /* Prevent full page scroll, columns will scroll */
+        :root {
+            /* Column Backgrounds (Slightly more vibrant/premium) */
+            --bg-backlog: #4c3c8c;
+            --bg-afazer: #8e4719;
+            --bg-progresso: #3b5f3b;
+            --bg-concluido: #1e1e1e;
+            
+            /* Card Backgrounds (Noticeably lighter than blocks) */
+            --card-backlog: #6352b2;
+            --card-afazer: #a85d2e;
+            --card-progresso: #4a7a4a;
+            --card-concluido: #333333;
+            
+            /* Theme Accent (Rust/Brown matched) */
+            --accent-page: #ab5d29;
+            --accent-hover: #c46a2f;
         }
-        
-        /* Trello Top Header mimicking the screenshot */
-        .trello-header {
-            padding: 12px 20px; 
-            background: rgba(0,0,0,0.24); /* Darkened semi-transparent overlay */
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            color: white;
-            backdrop-filter: blur(4px);
-        }
-        
-        .trello-board-name {
-            font-size: 18px;
-            font-weight: 700;
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ab5d29; /* Trello Rust/Brown */
             margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        /* Standard Header */
+        .workspace-header {
+            padding: 20px 30px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .workspace-header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .btn-voltar {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 12px;
-        }
-
-        .badge-template {
-            background-color: rgba(255,255,255,0.2);
-            font-size: 12px;
-            padding: 4px 8px;
-            border-radius: 3px;
-            font-weight: 400;
-        }
-
-        .kanban-board { 
-            display: flex; 
-            gap: 16px; 
-            padding: 16px 20px; 
-            box-sizing: border-box; 
-            height: calc(100vh - 55px); 
-            overflow-x: auto; 
-            align-items: flex-start;
-        }
-        
-        .kanban-col { 
-            border-radius: 10px; 
-            min-width: 300px; 
-            width: 300px;
-            display: flex; 
-            flex-direction: column; 
-            max-height: 100%; 
-            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-        }
-        
-        .col-header { 
-            padding: 12px 16px; 
-            font-weight: 600; 
-            font-size: 15px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            color: white;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-        }
-        
-        .task-list { 
-            padding: 8px; 
-            overflow-y: auto; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 8px; 
-            min-height: 10px;
-        }
-        
-        /* Custom Scrollbar for columns */
-        .task-list::-webkit-scrollbar { width: 8px; }
-        .task-list::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
-
-        .task-card { 
-            background: #ffffff; 
-            padding: 10px; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            box-shadow: 0 1px 2px rgba(9,30,66,0.25);
-            position: relative; 
-            color: #172b4d;
-            border-bottom: 1px solid rgba(9,30,66,0.13);
-        }
-        
-        .task-card:hover { 
-            background: #f4f5f7; 
-        }
-        
-        /* For dark cards inside specific columns (like Guia do Trello) */
-        .dark-card {
-            background: #22272b !important;
-            color: #b6c2cf !important;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.5);
-            border-bottom: 1px solid rgba(0,0,0,0.5);
-        }
-        .dark-card:hover { background: #2c333a !important; }
-        .dark-card .task-title { color: #ebecf0; }
-        .dark-card .task-desc { color: #8c9bab; }
-
-        .task-title { font-weight: 500; font-size: 14px; margin-bottom: 4px; color: inherit; line-height: 20px;}
-        .task-desc { 
-            font-size: 12px; 
-            color: #5e6c84; 
-            margin-bottom: 8px; 
-            display: -webkit-box; 
-            -webkit-line-clamp: 2; 
-            -webkit-box-orient: vertical; 
-            overflow: hidden; 
-            line-height: 16px;
-        }
-        
-        .task-img { 
-            width: 100%; 
-            height: 140px; 
-            object-fit: cover; 
-            border-radius: 6px; 
-            margin-bottom: 8px;
-        }
-        
-        .task-badges { 
-            display: flex; 
-            justify-content: flex-start; 
-            align-items: center; 
-            font-size: 12px;
-            gap: 12px;
-            color: inherit;
-        }
-        
-        .add-btn { 
-            color: rgba(255,255,255,0.8); 
-            padding: 10px 16px; 
-            cursor: pointer; 
-            text-align: left; 
-            font-weight: 500;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             font-size: 14px;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
         }
-        .add-btn:hover { background: rgba(0,0,0,0.1); color: white;}
-        
-        /* Modal Styles */
-        .modal { 
-            display: none; 
-            position: fixed; 
-            top:0; left:0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.6); 
-            justify-content: center; 
-            align-items: center; 
-            z-index: 1000;
+
+        .btn-voltar:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        .modal-content { 
-            background: #f4f5f7; 
-            padding: 24px; 
-            border-radius: 8px; 
-            width: 90%;
-            max-width: 500px; 
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            color: #172b4d;
+
+        /* Board */
+        .board {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+            overflow-x: auto;
+            align-items: flex-start;
+            flex-grow: 1;
         }
-        .modal label {
-            display: block;
-            margin-bottom: 4px;
-            color: #5e6c84;
-            font-size: 12px;
+
+        /* Custom Scrollbar */
+        .board::-webkit-scrollbar { height: 10px; }
+        .board::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        .board::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
+        .column {
+            min-width: 300px;
+            width: 300px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            max-height: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .column-header {
+            padding: 15px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Outfit', sans-serif;
             font-weight: 600;
-            text-transform: uppercase;
+            font-size: 16px;
         }
-        .modal input, .modal select, .modal textarea { 
-            width: 100%; 
-            box-sizing: border-box; 
-            padding: 10px; 
-            margin-bottom: 16px; 
-            background: #ffffff; 
-            border: 2px solid #dfe1e6; 
-            color: #172b4d; 
-            border-radius: 4px;
-            font-family: inherit;
-            transition: background 0.2s, border-color 0.2s;
+
+        .task-list {
+            padding: 10px;
+            overflow-y: auto;
+            flex-grow: 1;
+            min-height: 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
-        .modal input:focus, .modal select:focus, .modal textarea:focus {
-            outline: none;
-            border-color: #0052cc;
+
+        .add-task-btn {
+            padding: 12px 18px;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 0 0 12px 12px;
+            transition: background 0.2s;
+        }
+
+        .add-task-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #fff;
+        }
+
+        /* Task Card */
+        .card {
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            filter: brightness(1.1);
+        }
+
+        .card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            font-size: 15px;
+            margin: 0 0 8px 0;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .card p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0 0 12px 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 10px;
+        }
+
+        .date-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Progress Marks */
+        .progress-marks {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .mark {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s;
+        }
+
+        .mark.active {
+            background: #4caf50;
+            color: #fff;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+        }
+
+        /* Column Themes */
+        .column[data-id="BACKLOG"] { background: var(--bg-backlog); }
+        .column[data-id="BACKLOG"] .card { background: var(--card-backlog); }
+        
+        .column[data-id="A_FAZER"] { background: var(--bg-afazer); }
+        .column[data-id="A_FAZER"] .card { background: var(--card-afazer); }
+        
+        .column[data-id="FAZENDO"] { background: var(--bg-progresso); }
+        .column[data-id="FAZENDO"] .card { background: var(--card-progresso); }
+        
+        .column[data-id="CONCLUIDO"] { background: var(--bg-concluido); }
+        .column[data-id="CONCLUIDO"] .card { background: var(--card-concluido); }
+
+        /* Modal - Premium Design */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
             background: #ffffff;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 24px;
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            color: #1e293b;
+            animation: modalSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .btn-save { background: #0052cc; color: white; padding: 10px 16px; border: none; border-radius: 3px; cursor: pointer; font-weight: 600; font-size: 14px;}
-        .btn-save:hover { background: #0065ff; }
-        .btn-delete { background: transparent; color: #172b4d; padding: 10px 16px; border-radius: 3px; cursor: pointer; font-weight: 600; border: none; margin-left: 8px;}
-        .btn-delete:hover { background: rgba(9,30,66,0.08); }
-        .close-btn { float: right; cursor: pointer; color: #42526e; font-size: 24px; line-height: 1;}
-        .close-btn:hover { color: #172b4d; }
+
+        @keyframes modalSlideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 32px 40px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+        }
+
+        .close-btn {
+            background: rgba(0, 0, 0, 0.05);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #64748b;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .close-btn:hover { 
+            background: #ef4444; 
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 24px;
+        }
+
+        .form-row .form-group { flex: 1; }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #f1f5f9;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 15px;
+            background: #f8fafc;
+            color: #1e293b;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.05);
+        }
+
+        .modal-footer {
+            padding: 0 40px 40px;
+            background: #fff;
+            display: flex;
+            gap: 16px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary { 
+            background: #2563eb; 
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .btn-primary:hover { 
+            background: #1d4ed8;
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-ghost { background: #f1f5f9; color: #64748b; }
+        .btn-ghost:hover { background: #e2e8f0; color: #1e293b; }
+
+        .btn-danger { color: #ef4444; border: 2px solid #fef2f2; background: #fff; }
+        .btn-danger:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
+
     </style>
 </head>
 <body>
-    <div class="trello-header">
-        <h2 class="trello-board-name">
-            Minhas tarefas | Trello
-            <span class="badge-template">Template</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 5px;"><path d="M6 9l6 6 6-6"/></svg>
-        </h2>
-        
-        <div style="display: flex; gap: 10px;">
-            <a href="/" style="color: white; text-decoration: none; font-size: 14px; font-weight: 600; padding: 6px 12px; background: rgba(255,255,255,0.2); border-radius: 3px;">🏠 Voltar para Universo Geek</a>
+    <header class="workspace-header">
+        <div style="font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; letter-spacing: -1px; text-transform: uppercase;">
+            Minhas Tarefas | Jackson
         </div>
-    </div>
+        <a href="/home" class="btn-voltar">
+            <i class="fas fa-arrow-left"></i> Voltar para Universo Geek
+        </a>
+    </header>
 
-    <!-- Trello Board -->
-    <div class="kanban-board" id="board">
+    <div class="board" id="board">
         <!-- Columns will be injected by JS -->
     </div>
 
-    <!-- Modal Adicionar / Editar -->
+    <!-- Enhanced Modal -->
     <div id="taskModal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle" style="margin-top: 0; color: #172b4d; margin-bottom: 24px;">Nova Tarefa</h2>
-            <input type="hidden" id="taskId">
-            
-            <label>Título:</label>
-            <input type="text" id="taskTitle" placeholder="O que precisa ser feito?" required>
-            
-            <label>Descrição:</label>
-            <textarea id="taskDesc" rows="4" placeholder="Adicione uma descrição mais detalhada..."></textarea>
-            
-            <label>URL da Imagem de Capa (Opcional):</label>
-            <input type="text" id="taskImg" placeholder="https://...">
-
-            <div style="display: flex; gap: 16px;">
-                <div style="flex: 1;">
-                    <label>Data:</label>
-                    <input type="date" id="taskDate">
+            <div class="modal-header">
+                <h2 id="modalTitle">Nova Tarefa</h2>
+                <button class="close-btn" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="taskId">
+                
+                <div class="form-group">
+                    <label>Título da Tarefa</label>
+                    <input type="text" id="taskTitle" placeholder="O que precisa ser feito?" required>
                 </div>
-                <div style="flex: 1;">
-                    <label>Status Opcional:</label>
+                
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="taskDesc" rows="3" placeholder="Detalhes, links ou notas..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>URL da Imagem de Capa</label>
+                    <input type="text" id="taskImg" placeholder="https://imagem.jpg (opcional)">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Data de Entrega</label>
+                        <input type="date" id="taskDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Coluna / Bloco</label>
+                        <select id="taskBloco">
+                            <option value="BACKLOG">Backlog</option>
+                            <option value="A_FAZER">A fazer</option>
+                            <option value="FAZENDO">Em progresso</option>
+                            <option value="CONCLUIDO">Concluído</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="display: none;">
+                    <label>Status Técnico</label>
                     <select id="taskStatus">
-                        <option value="A_FAZER">⚪ A Fazer</option>
-                        <option value="FAZENDO">🟡 Em Progresso</option>
-                        <option value="CONCLUIDO">🟢 Concluído</option>
+                        <option value="BACKLOG">Backlog</option>
+                        <option value="A_FAZER">A Fazer</option>
+                        <option value="FAZENDO">Em Progresso</option>
+                        <option value="CONCLUIDO">Concluído</option>
                     </select>
                 </div>
             </div>
-
-            <label>Lista do Trello (Coluna):</label>
-            <select id="taskBloco">
-                <option value="ATIVIDADES_DO_DIA">Guia do Trello</option>
-                <option value="PRIORIDADES">A fazer</option>
-                <option value="JIRAS">Em progresso</option>
-                <option value="REUNIOES">Concluído</option>
-            </select>
-
-            <div style="margin-top: 16px; display: flex;">
-                <button class="btn-save" onclick="saveTask()">Salvar</button>
-                <button class="btn-delete" id="btnDelete" onclick="deleteTask()" style="display:none;">Excluir</button>
+            <div class="modal-footer">
+                <button class="btn btn-danger" id="btnDelete" onclick="deleteTask()" style="margin-right: auto;">
+                    <i class="fas fa-trash-alt"></i> Excluir
+                </button>
+                <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="saveTask()" id="btnSave">Salvar Alterações</button>
             </div>
         </div>
     </div>
 
     <script th:inline="javascript">
-        // Mirroring exactly the screenshot design provided by the user
-        const blocos = [
-            { id: "ATIVIDADES_DO_DIA", title: "Guia do Trello", bg: "#4f316e", headerBg: "#4f316e", darkCards: true },
-            { id: "PRIORIDADES", title: "A fazer", bg: "#8b4a15", headerBg: "#8b4a15", darkCards: false  },
-            { id: "JIRAS", title: "Em progresso", bg: "#3d592c", headerBg: "#3d592c", darkCards: false  },
-            { id: "REUNIOES", title: "Concluído 🚀", bg: "#1d1c1a", headerBg: "#1d1c1a", darkCards: false  }
+        const columns = [
+            { id: "BACKLOG", title: "Backlog", icon: "fas fa-list-ul" },
+            { id: "A_FAZER", title: "A Fazer", icon: "fas fa-thumbtack" },
+            { id: "FAZENDO", title: "Em Progresso", icon: "fas fa-bolt" },
+            { id: "CONCLUIDO", title: "Concluído 🚀", icon: "fas fa-check-double" }
         ];
 
-        function formatDate(dateString) {
-            if(!dateString) return '';
-            const [year, month, day] = dateString.split('-');
-            return `${day}/${month}`;
-        }
+        let allTasks = [];
 
         async function loadTasks() {
             try {
                 const res = await fetch('/api/work/tasks');
-                if(res.status === 401 || res.status === 403) {
-                    document.getElementById('board').innerHTML = '<h3 style="color: white; margin: auto;">Você precisa estar logado para acessar seu Trello! <a href="/login" style="color:#00c2e0;">Entrar</a></h3>';
-                    return;
-                }
-                const tasks = await res.json();
-                renderBoard(tasks || []);
+                if(!res.ok) throw new Error("Erro ao carregar");
+                allTasks = await res.json();
+                renderBoard();
             } catch (err) {
                 console.error(err);
+                document.getElementById('board').innerHTML = '<div style="margin: auto; text-align: center;"><i class="fas fa-exclamation-triangle" style="font-size: 40px; margin-bottom: 20px;"></i><br>Erro ao conectar com o servidor.</div>';
             }
         }
 
-        function renderBoard(tasks) {
+        function renderBoard() {
             const board = document.getElementById('board');
             board.innerHTML = '';
             
-            blocos.forEach(b => {
-                const colTasks = tasks.filter(t => t.bloco === b.id);
+            const tasksByCol = {
+                BACKLOG: allTasks.filter(t => t.bloco === 'BACKLOG' || ['PRIORIDADES', 'REUNIOES', 'ATIVIDADES_DO_DIA', 'JIRAS'].includes(t.bloco)),
+                A_FAZER: allTasks.filter(t => t.bloco === 'A_FAZER'),
+                FAZENDO: allTasks.filter(t => t.bloco === 'FAZENDO'),
+                CONCLUIDO: allTasks.filter(t => t.bloco === 'CONCLUIDO')
+            };
+
+            columns.forEach(col => {
+                const colTasks = tasksByCol[col.id];
                 
-                let cardsHtml = colTasks.map(t => {
-                    const imgHtml = t.imageUrl ? `<img src="${t.imageUrl}" class="task-img">` : '';
-                    
-                    // Small attachment icon
-                    const attachmentHtml = t.imageUrl || t.descricao ? `<span style="display:flex; align-items:center; gap:4px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></span>` : '';
-                    
-                    const dateHtml = t.dataEntrega ? `<span style="background: rgba(9,30,66,0.08); padding: 2px 6px; border-radius: 3px; color: #5e6c84;">🗓️ ${formatDate(t.dataEntrega)}</span>` : '';
+                const colEl = document.createElement('div');
+                colEl.className = 'column';
+                colEl.dataset.id = col.id;
+                colEl.ondragover = (e) => e.preventDefault();
+                colEl.ondrop = (e) => handleDrop(e, col.id);
+
+                const tasksHtml = colTasks.map(t => {
+                    const dateFormatted = t.dataEntrega ? new Date(t.dataEntrega).toLocaleDateString('pt-BR', {day: '2-digit', month: '2-digit'}) : '';
+                    const creationFormatted = formatDateTime(t.dataCriacao);
                     
                     return `
-                        <div class="task-card ${b.darkCards ? 'dark-card' : ''}" onclick='openModal(${JSON.stringify(t).replace(/'/g, "&#39;")})'>
-                            ${imgHtml}
-                            <div class="task-title">${t.titulo}</div>
-                            ${t.descricao ? `<div class="task-desc">${t.descricao}</div>` : ''}
-                            <div class="task-badges">
-                                ${attachmentHtml}
-                                ${dateHtml}
+                        <div class="card" draggable="true" ondragstart="handleDragStart(event, ${t.id})" onclick='openModal(${JSON.stringify(t).replace(/'/g, "&apos;")})'>
+                            ${t.imageUrl ? `<img src="${t.imageUrl}" alt="Capa">` : ''}
+                            <div style="font-size: 10px; color: rgba(255, 255, 255, 0.4); margin-bottom: 5px; font-weight: 500;">
+                                <i class="far fa-clock"></i> Criado: ${creationFormatted}
+                            </div>
+                            <h3>${t.titulo}</h3>
+                            ${t.descricao ? `<p>${t.descricao}</p>` : ''}
+                            <div class="card-footer">
+                                <div class="date-badge">
+                                    ${dateFormatted ? `<i class="far fa-calendar-alt"></i> ${dateFormatted}` : ''}
+                                </div>
+                                <div class="card-icons">
+                                    <i class="fas fa-paperclip" style="opacity: ${t.imageUrl ? 1 : 0.3}"></i>
+                                </div>
+                            </div>
+                            <div class="progress-marks">
+                                <div class="mark active" title="Criado em: ${creationFormatted}">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                                <div class="mark ${t.dataAFazer ? 'active' : ''}" title="${t.dataAFazer ? 'Movido p/ A Fazer em: ' + formatDateTime(t.dataAFazer) : 'Pendente: A Fazer'}">
+                                    <i class="fas fa-thumbtack"></i>
+                                </div>
+                                <div class="mark ${t.dataEmProgresso ? 'active' : ''}" title="${t.dataEmProgresso ? 'Iniciado em: ' + formatDateTime(t.dataEmProgresso) : 'Pendente: Em Progresso'}">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div class="mark ${t.dataConcluido ? 'active' : ''}" title="${t.dataConcluido ? 'Concluído em: ' + formatDateTime(t.dataConcluido) : 'Pendente: Concluir'}">
+                                    <i class="fas fa-check"></i>
+                                </div>
                             </div>
                         </div>
                     `;
                 }).join('');
 
-                board.innerHTML += `
-                    <div class="kanban-col" style="background: ${b.bg};">
-                        <div class="col-header" style="background: ${b.headerBg};">
-                            <span>${b.title}</span> 
-                            <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></span>
-                        </div>
-                        <div class="task-list">
-                            ${cardsHtml}
-                        </div>
-                        <div class="add-btn" onclick="openModalNew('${b.id}')">+ Adicionar um cartão</div>
+                colEl.innerHTML = `
+                    <div class="column-header">
+                        <span><i class="${col.icon}" style="margin-right: 8px; opacity: 0.8;"></i> ${col.title}</span>
+                        <span style="opacity: 0.5; font-size: 13px;">${colTasks.length}</span>
+                    </div>
+                    <div class="task-list">
+                        ${tasksHtml}
+                    </div>
+                    <div class="add-task-btn" onclick="openModalNew('${col.id}')">
+                        <i class="fas fa-plus" style="margin-right: 5px;"></i> Adicionar cartão
                     </div>
                 `;
+                board.appendChild(colEl);
             });
         }
 
+        function formatDateTime(isoString) {
+            if (!isoString) return 'Pendente';
+            const date = new Date(isoString);
+            return date.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+        }
+
+        // --- Drag & Drop ---
+        function handleDragStart(ev, taskId) {
+            ev.dataTransfer.setData("taskId", taskId);
+        }
+
+        async function handleDrop(ev, targetBloco) {
+            ev.preventDefault();
+            const taskId = ev.dataTransfer.getData("taskId");
+            if(!taskId) return;
+
+            try {
+                // Sync UI immediately for better feel
+                const taskIndex = allTasks.findIndex(t => t.id == taskId);
+                if(taskIndex > -1) {
+                    allTasks[taskIndex].bloco = targetBloco;
+                    allTasks[taskIndex].status = targetBloco; // Synchronize status as well
+                    renderBoard();
+                }
+
+                const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+                const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
+                await fetch('/api/work/tasks/' + taskId, {
+                    method: 'PUT',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        [csrfHeader]: csrfToken
+                    },
+                    body: JSON.stringify({ bloco: targetBloco, status: targetBloco })
+                });
+                loadTasks(); // Refresh to get server timestamps
+            } catch (err) {
+                console.error(err);
+                loadTasks();
+            }
+        }
+
+        // --- Modal Logic ---
         function openModalNew(blocoId) {
             document.getElementById('taskId').value = '';
             document.getElementById('taskTitle').value = '';
@@ -351,9 +620,9 @@
             document.getElementById('taskImg').value = '';
             document.getElementById('taskDate').value = '';
             document.getElementById('taskBloco').value = blocoId;
-            document.getElementById('taskStatus').value = 'A_FAZER';
+            document.getElementById('taskStatus').value = blocoId;
             
-            document.getElementById('modalTitle').innerText = 'Novo Cartão';
+            document.getElementById('modalTitle').innerText = 'Novo Cartão no ' + columns.find(c => c.id === blocoId).title;
             document.getElementById('btnDelete').style.display = 'none';
             document.getElementById('taskModal').style.display = 'flex';
         }
@@ -378,14 +647,11 @@
 
         async function saveTask() {
             const titulo = document.getElementById('taskTitle').value.trim();
-            if(!titulo) {
-                alert("O título é obrigatório!");
-                return;
-            }
+            if(!titulo) return alert("O título é obrigatório!");
 
-            const btn = document.querySelector('.btn-save');
-            btn.innerText = 'Salvando...';
+            const btn = document.getElementById('btnSave');
             btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
 
             const id = document.getElementById('taskId').value;
             const task = {
@@ -394,33 +660,45 @@
                 imageUrl: document.getElementById('taskImg').value,
                 dataEntrega: document.getElementById('taskDate').value || null,
                 bloco: document.getElementById('taskBloco').value,
-                status: document.getElementById('taskStatus').value
+                status: document.getElementById('taskBloco').value 
             };
 
-            const url = id ? '/api/work/tasks/' + id : '/api/work/tasks';
-            const method = id ? 'PUT' : 'POST';
+            const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+            const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 
             try {
-                await fetch(url, {
-                    method: method,
-                    headers: { 'Content-Type': 'application/json' },
+                const res = await fetch(id ? '/api/work/tasks/' + id : '/api/work/tasks', {
+                    method: id ? 'PUT' : 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        [csrfHeader]: csrfToken
+                    },
                     body: JSON.stringify(task)
                 });
-                closeModal();
-                loadTasks();
+                
+                if (res.ok) {
+                    closeModal();
+                    loadTasks();
+                }
             } catch (err) {
-                alert("Ocorreu um erro ao salvar o cartão.");
+                alert("Erro ao salvar.");
             } finally {
-                btn.innerText = 'Salvar';
                 btn.disabled = false;
+                btn.innerText = 'Salvar Alterações';
             }
         }
 
         async function deleteTask() {
-            if(!confirm("Tem certeza de que deseja excluir este cartão?")) return;
+            if(!confirm("Deseja realmente excluir este cartão?")) return;
             const id = document.getElementById('taskId').value;
+            const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+            const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
             try {
-                await fetch('/api/work/tasks/' + id, { method: 'DELETE' });
+                await fetch('/api/work/tasks/' + id, { 
+                    method: 'DELETE',
+                    headers: { [csrfHeader]: csrfToken }
+                });
                 closeModal();
                 loadTasks();
             } catch (err) {
@@ -428,16 +706,12 @@
             }
         }
 
-        // Initialize board
-        loadTasks();
+        // Close on click outside
+        window.onclick = (event) => {
+            if (event.target == document.getElementById('taskModal')) closeModal();
+        };
 
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('taskModal');
-            if (event.target == modal) {
-                closeModal();
-            }
-        }
+        loadTasks();
     </script>
 </body>
 </html>

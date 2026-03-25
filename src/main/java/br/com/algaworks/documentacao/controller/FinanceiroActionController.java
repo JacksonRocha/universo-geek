@@ -39,40 +39,101 @@ public class FinanceiroActionController {
             @RequestParam StatusTransacao status,
             @RequestParam Long categoriaId,
             @RequestParam(required = false) Long instituicaoId,
+            @RequestParam(defaultValue = "false") Boolean isParcelado,
+            @RequestParam(required = false) Integer totalParcelas,
             Principal principal) {
         
         if (principal != null) {
             Optional<Usuario> userOpt = usuarioRepository.findByUsername(principal.getName());
             if (userOpt.isPresent()) {
-                TransacaoFinanceira transacao = new TransacaoFinanceira();
-                transacao.setDescricao(descricao);
-                transacao.setValor(valor);
-                transacao.setDataVencimento(LocalDate.parse(dataVencimento));
-                if (dataPagamento != null && !dataPagamento.isEmpty()) {
-                    transacao.setDataPagamento(LocalDate.parse(dataPagamento));
-                }
-                transacao.setTipo(tipo);
-                transacao.setStatus(status);
-                transacao.setUsuario(userOpt.get());
-                
-                categoriaRepository.findById(categoriaId).ifPresent(transacao::setCategoria);
-                if (instituicaoId != null) {
-                    instituicaoRepository.findById(instituicaoId).ifPresent(transacao::setInstituicao);
-                }
+                Usuario usuario = userOpt.get();
+                CategoriaTransacao categoria = categoriaRepository.findById(categoriaId).orElse(null);
+                InstituicaoFinanceira instituicao = instituicaoId != null ? instituicaoRepository.findById(instituicaoId).orElse(null) : null;
 
-                transacaoRepository.save(transacao);
+                int iteracoes = (isParcelado && totalParcelas != null && totalParcelas > 1) ? totalParcelas : 1;
+                LocalDate dataBase = LocalDate.parse(dataVencimento);
 
-                // Update Instituicao Saldo if Pago
-                if (status == StatusTransacao.PAGO && instituicaoId != null && transacao.getInstituicao() != null) {
-                    InstituicaoFinanceira inst = transacao.getInstituicao();
-                    if (tipo == TipoTransacao.RECEITA) {
-                        inst.setSaldoAtual(inst.getSaldoAtual().add(valor));
-                    } else if (tipo == TipoTransacao.DESPESA) {
-                        inst.setSaldoAtual(inst.getSaldoAtual().subtract(valor));
+                for (int i = 0; i < iteracoes; i++) {
+                    TransacaoFinanceira transacao = new TransacaoFinanceira();
+                    String descFinal = descricao;
+                    if (isParcelado && totalParcelas > 1) {
+                        descFinal += " (" + (i + 1) + "/" + totalParcelas + ")";
                     }
-                    instituicaoRepository.save(inst);
+                    
+                    transacao.setDescricao(descFinal);
+                    transacao.setValor(valor);
+                    transacao.setDataVencimento(dataBase.plusMonths(i));
+                    
+                    if (i == 0 && dataPagamento != null && !dataPagamento.isEmpty()) {
+                        transacao.setDataPagamento(LocalDate.parse(dataPagamento));
+                    }
+                    
+                    transacao.setTipo(tipo);
+                    // Only first installment can be PAGO on creation usually, or all if not parcelado
+                    transacao.setStatus(i == 0 ? status : StatusTransacao.PENDENTE);
+                    transacao.setUsuario(usuario);
+                    transacao.setCategoria(categoria);
+                    transacao.setInstituicao(instituicao);
+                    
+                    if (isParcelado) {
+                        transacao.setIsParcelado(true);
+                        transacao.setTotalParcelas(totalParcelas);
+                        transacao.setParcelaAtual(i + 1);
+                    }
+
+                    transacaoRepository.save(transacao);
+
+                    // Update balance if PAGO
+                    if (transacao.getStatus() == StatusTransacao.PAGO && instituicao != null) {
+                        if (tipo == TipoTransacao.RECEITA) {
+                            instituicao.setSaldoAtual(instituicao.getSaldoAtual().add(valor));
+                        } else {
+                            instituicao.setSaldoAtual(instituicao.getSaldoAtual().subtract(valor));
+                        }
+                        instituicaoRepository.save(instituicao);
+                    }
                 }
             }
+        }
+        return "redirect:/finances";
+    }
+
+    @PostMapping("/transacao/pagar")
+    public String pagarTransacao(@RequestParam Long id, Principal principal) {
+        if (principal != null) {
+            transacaoRepository.findById(id).ifPresent(t -> {
+                if (t.getUsuario().getUsername().equals(principal.getName()) && t.getStatus() != StatusTransacao.PAGO) {
+                    t.setStatus(StatusTransacao.PAGO);
+                    t.setDataPagamento(LocalDate.now());
+                    transacaoRepository.save(t);
+                    
+                    if (t.getInstituicao() != null) {
+                        InstituicaoFinanceira inst = t.getInstituicao();
+                        if (t.getTipo() == TipoTransacao.RECEITA) {
+                            inst.setSaldoAtual(inst.getSaldoAtual().add(t.getValor()));
+                        } else {
+                            inst.setSaldoAtual(inst.getSaldoAtual().subtract(t.getValor()));
+                        }
+                        instituicaoRepository.save(inst);
+                    }
+                }
+            });
+        }
+        return "redirect:/finances";
+    }
+
+    @PostMapping("/instituicao/editar-saldo")
+    public String editarSaldo(
+            @RequestParam Long id,
+            @RequestParam BigDecimal novoSaldo,
+            Principal principal) {
+        if (principal != null) {
+            instituicaoRepository.findById(id).ifPresent(inst -> {
+                if (inst.getUsuario().getUsername().equals(principal.getName())) {
+                    inst.setSaldoAtual(novoSaldo);
+                    instituicaoRepository.save(inst);
+                }
+            });
         }
         return "redirect:/finances";
     }

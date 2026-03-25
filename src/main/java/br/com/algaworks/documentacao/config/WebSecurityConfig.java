@@ -38,8 +38,11 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/**")
+                )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/home", "/login", "/register", "/favicon.ico", "/static/css/**", "/static/js/**", "/images/**", "/static/**", "/api/noticias/**", "/zueira").permitAll()
+                        .requestMatchers("/", "/home", "/login", "/register", "/favicon.ico", "/static/css/**", "/static/js/**", "/images/**", "/static/**", "/api/noticias/**", "/zueira", "/error").permitAll()
                         .requestMatchers("/work").hasRole("WORK")
                         .requestMatchers("/hobby").hasRole("HOBBY")
                         .requestMatchers("/develop").hasRole("DEVELOP")

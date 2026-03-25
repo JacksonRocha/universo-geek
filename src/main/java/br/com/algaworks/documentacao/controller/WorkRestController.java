@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,8 +50,8 @@ public class WorkRestController {
         nova.setDescricao(dto.getDescricao());
         nova.setImageUrl(dto.getImageUrl());
         nova.setDataEntrega(dto.getDataEntrega());
-        nova.setBloco(dto.getBloco() == null ? BlocoTarefa.ATIVIDADES_DO_DIA : dto.getBloco());
-        nova.setStatus(dto.getStatus() == null ? StatusTarefa.A_FAZER : dto.getStatus());
+        nova.setBloco(dto.getBloco() == null ? BlocoTarefa.BACKLOG : dto.getBloco());
+        nova.setStatus(StatusTarefa.valueOf(nova.getBloco().name()));
         nova.setUsuario(usuarioOpt.get());
 
         TarefaTrabalho salva = tarefaRepository.save(nova);
@@ -71,8 +72,18 @@ public class WorkRestController {
         if(dto.getDescricao() != null) tarefa.setDescricao(dto.getDescricao());
         if(dto.getImageUrl() != null) tarefa.setImageUrl(dto.getImageUrl());
         if(dto.getDataEntrega() != null) tarefa.setDataEntrega(dto.getDataEntrega());
-        if(dto.getBloco() != null) tarefa.setBloco(dto.getBloco());
-        if(dto.getStatus() != null) tarefa.setStatus(dto.getStatus());
+        if(dto.getBloco() != null && dto.getBloco() != tarefa.getBloco()) {
+            tarefa.setBloco(dto.getBloco());
+            tarefa.setStatus(StatusTarefa.valueOf(tarefa.getBloco().name()));
+            
+            if (tarefa.getStatus() == StatusTarefa.A_FAZER) {
+                if (tarefa.getDataAFazer() == null) tarefa.setDataAFazer(LocalDateTime.now());
+            } else if (tarefa.getStatus() == StatusTarefa.FAZENDO) {
+                if (tarefa.getDataEmProgresso() == null) tarefa.setDataEmProgresso(LocalDateTime.now());
+            } else if (tarefa.getStatus() == StatusTarefa.CONCLUIDO) {
+                if (tarefa.getDataConcluido() == null) tarefa.setDataConcluido(LocalDateTime.now());
+            }
+        }
 
         TarefaTrabalho atualizada = tarefaRepository.save(tarefa);
         return ResponseEntity.ok(new TarefaTrabalhoDTO(atualizada));

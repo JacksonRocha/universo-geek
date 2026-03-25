@@ -57,6 +57,15 @@ public class TransacaoFinanceira {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
+    @Column(name = "is_parcelado")
+    private Boolean isParcelado = false;
+
+    @Column(name = "total_parcelas")
+    private Integer totalParcelas;
+
+    @Column(name = "parcela_atual")
+    private Integer parcelaAtual;
+
     // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -86,4 +95,13 @@ public class TransacaoFinanceira {
     public void setLocalGasto(String localGasto) { this.localGasto = localGasto; }
     public Usuario getUsuario() { return usuario; }
     public void setUsuario(Usuario usuario) { this.usuario = usuario; }
+
+    public Boolean getIsParcelado() { return isParcelado; }
+    public void setIsParcelado(Boolean parcelado) { isParcelado = parcelado; }
+
+    public Integer getTotalParcelas() { return totalParcelas; }
+    public void setTotalParcelas(Integer totalParcelas) { this.totalParcelas = totalParcelas; }
+
+    public Integer getParcelaAtual() { return parcelaAtual; }
+    public void setParcelaAtual(Integer parcelaAtual) { this.parcelaAtual = parcelaAtual; }
 }

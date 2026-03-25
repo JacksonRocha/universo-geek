@@ -1,8 +1,13 @@
 package br.com.algaworks.documentacao.model;
 
 public enum BlocoTarefa {
-    ATIVIDADES_DO_DIA,
+    BACKLOG,
+    A_FAZER,
+    FAZENDO,
+    CONCLUIDO,
+    /* Legacy values to prevent crashes */
     PRIORIDADES,
-    JIRAS,
-    REUNIOES
+    REUNIOES,
+    ATIVIDADES_DO_DIA,
+    JIRAS
 }

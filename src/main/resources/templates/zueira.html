@@ -82,9 +82,36 @@
         .btn-home:hover {
             background: rgba(56, 189, 248, 0.1);
         }
+
+        .btn-voltar {
+            background: #ec4899; /* Pink as in home hero */
+            color: white;
+            text-decoration: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-voltar:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
+            background: #d61f69;
+        }
     </style>
 </head>
 <body>
+    <div style="position: absolute; top: 20px; left: 20px; z-index: 1000;">
+        <a href="/home" class="btn-voltar">
+            <i class="fas fa-arrow-left"></i> Voltar para Universo Geek
+        </a>
+    </div>
 
 <h1>Toma Curioso! 😂</h1>
 
@@ -115,15 +142,12 @@
     <img id="qrcode" src="" alt="QR Code desta página">
 </div>
 
-<a href="/" class="btn-home">Voltar ao Início</a>
-
-<!-- Lógica que gera o QR Code automático da página atual Mágica ✨ -->
-<script>
-    // Pega a URL exata do navegador e cria o QR Code dinâmico
-    const currentUrl = encodeURIComponent(window.location.href);
-    const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + currentUrl;
-    document.getElementById('qrcode').src = qrUrl;
-</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        const currentUrl = window.location.href;
+        const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + encodeURIComponent(currentUrl);
+        document.getElementById('qrcode').src = qrUrl;
+    </script>
 
 </body>
 </html>

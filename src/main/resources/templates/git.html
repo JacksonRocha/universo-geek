@@ -4,33 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Documentação Git - Universo Geek</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
-            padding: 2rem;
-            background-color: #f4f4f9;
-            color: #333;
+            padding: 100px 2rem 2rem 2rem;
+            background-color: #0f172a;
+            color: #f1f5f9;
         }
 
         h1, h2, h3 {
-            color: #4a4a8a;
+            color: #38bdf8;
         }
 
         pre, code {
-            background-color: #eee;
-            padding: 0.5rem;
-            border-radius: 5px;
+            background-color: #1e293b;
+            color: #38bdf8;
+            padding: 1rem;
+            border-radius: 8px;
             display: block;
             overflow-x: auto;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .section {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 12px;
             margin-bottom: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-voltar {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: #38bdf8;
+            color: #0f172a;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .btn-voltar:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.6);
+            background: #7dd3fc;
         }
     </style>
 </head>
 <body>
+    <a href="/home" class="btn-voltar">
+        <i class="fas fa-arrow-left"></i> Voltar para Home
+    </a>
 
 <h1>🚀 Documentação Git - Universo Geek</h1>
 

@@ -10,6 +10,7 @@ import br.com.algaworks.documentacao.repository.CategoriaTransacaoRepository;
 import br.com.algaworks.documentacao.repository.InstituicaoFinanceiraRepository;
 import br.com.algaworks.documentacao.repository.UsuarioRepository;
 import br.com.algaworks.documentacao.service.FinanceiroService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,7 +39,8 @@ public class UniversoGeekController {
     private CartaoCreditoRepository cartaoCreditoRepository;
 
     @GetMapping({"/", "/home"})
-    public String home(Model model) {
+    public String home(Model model, HttpServletRequest request) {
+        request.getSession(true); // Garante a criação da sessão antes do commit do response
         model.addAttribute("mensagem", "Bem-vindo ao Universo Geek!");
         return "home"; // templates/home.html (Thymeleaf)
     }

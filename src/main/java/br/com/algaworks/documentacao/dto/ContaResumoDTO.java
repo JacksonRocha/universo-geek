@@ -3,17 +3,22 @@ package br.com.algaworks.documentacao.dto;
 import java.math.BigDecimal;
 
 public class ContaResumoDTO {
+    private Long id;
     private String nome;
     private String tipo;
     private BigDecimal saldo;
-    private String logoUrl; // optional, to simulate the UI icons like Itaú, Nubank
+    private String logoUrl;
 
-    public ContaResumoDTO(String nome, String tipo, BigDecimal saldo, String logoUrl) {
+    public ContaResumoDTO(Long id, String nome, String tipo, BigDecimal saldo, String logoUrl) {
+        this.id = id;
         this.nome = nome;
         this.tipo = tipo;
         this.saldo = saldo;
         this.logoUrl = logoUrl;
     }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     // Getters and Setters
     public String getNome() { return nome; }

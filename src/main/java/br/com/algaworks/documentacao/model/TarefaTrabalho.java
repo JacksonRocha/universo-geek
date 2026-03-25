@@ -2,6 +2,7 @@ package br.com.algaworks.documentacao.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tarefa_trabalho")
@@ -25,6 +26,23 @@ public class TarefaTrabalho {
 
     @Enumerated(EnumType.STRING)
     private StatusTarefa status;
+
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataAFazer;
+    private LocalDateTime dataEmProgresso;
+    private LocalDateTime dataConcluido;
+
+    @PrePersist
+    protected void onCreate() {
+        dataCriacao = LocalDateTime.now();
+        if (this.status == StatusTarefa.A_FAZER) {
+            dataAFazer = LocalDateTime.now();
+        } else if (this.status == StatusTarefa.FAZENDO) {
+            dataEmProgresso = LocalDateTime.now();
+        } else if (this.status == StatusTarefa.CONCLUIDO) {
+            dataConcluido = LocalDateTime.now();
+        }
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
@@ -54,4 +72,16 @@ public class TarefaTrabalho {
 
     public Usuario getUsuario() { return usuario; }
     public void setUsuario(Usuario usuario) { this.usuario = usuario; }
+
+    public LocalDateTime getDataCriacao() { return dataCriacao; }
+    public void setDataCriacao(LocalDateTime dataCriacao) { this.dataCriacao = dataCriacao; }
+
+    public LocalDateTime getDataAFazer() { return dataAFazer; }
+    public void setDataAFazer(LocalDateTime dataAFazer) { this.dataAFazer = dataAFazer; }
+
+    public LocalDateTime getDataEmProgresso() { return dataEmProgresso; }
+    public void setDataEmProgresso(LocalDateTime dataEmProgresso) { this.dataEmProgresso = dataEmProgresso; }
+
+    public LocalDateTime getDataConcluido() { return dataConcluido; }
+    public void setDataConcluido(LocalDateTime dataConcluido) { this.dataConcluido = dataConcluido; }
 }

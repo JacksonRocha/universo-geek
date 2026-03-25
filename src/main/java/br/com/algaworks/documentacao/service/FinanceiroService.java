@@ -68,6 +68,16 @@ public class FinanceiroService {
                 if (isMesAtual) {
                     resumo.getDespesasMesList().add(t);
                     resumo.setDespesasMes(resumo.getDespesasMes().add(t.getValor()));
+                    
+                    // Categorização: Imediato vs Cartão de Crédito
+                    if (t.getInstituicao() != null && t.getInstituicao().getTipo() == TipoInstituicao.CARTAO_CREDITO) {
+                        resumo.getDespesasCartaoMesList().add(t);
+                        resumo.setTotalDespesasCartao(resumo.getTotalDespesasCartao().add(t.getValor()));
+                    } else {
+                        resumo.getDespesasImediatasMesList().add(t);
+                        resumo.setTotalDespesasImediatas(resumo.getTotalDespesasImediatas().add(t.getValor()));
+                    }
+                    
                     totalDespesasMesChart = totalDespesasMesChart.add(t.getValor());
                     despesasPorCategoria.put(t.getCategoria(), despesasPorCategoria.getOrDefault(t.getCategoria(), BigDecimal.ZERO).add(t.getValor()));
                 }
@@ -87,13 +97,16 @@ public class FinanceiroService {
         for (InstituicaoFinanceira conta : contas) {
             saldoTotal = saldoTotal.add(conta.getSaldoAtual());
             saldosContas.add(new ContaResumoDTO(
+                    conta.getId(),
                     conta.getNome(), 
                     conta.getTipo().name(), 
                     conta.getSaldoAtual(), 
                     null
             ));
         }
-        resumo.setSaldoAtual(saldoTotal);
+        // O saldo atual é o que sobra das Receitas menos as Despesas (Imediatas + Cartão)
+        BigDecimal saldoCalculado = resumo.getReceitasMes().subtract(resumo.getTotalDespesasImediatas().add(resumo.getTotalDespesasCartao()));
+        resumo.setSaldoAtual(saldoCalculado);
         resumo.setSaldosContas(saldosContas);
 
         // Categorias Despesas Chart

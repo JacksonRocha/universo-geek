@@ -20,6 +20,11 @@ public class ResumoFinanceiroDTO {
     
     private List<br.com.algaworks.documentacao.model.TransacaoFinanceira> receitasMesList = new java.util.ArrayList<>();
     private List<br.com.algaworks.documentacao.model.TransacaoFinanceira> despesasMesList = new java.util.ArrayList<>();
+    private List<br.com.algaworks.documentacao.model.TransacaoFinanceira> despesasImediatasMesList = new java.util.ArrayList<>();
+    private List<br.com.algaworks.documentacao.model.TransacaoFinanceira> despesasCartaoMesList = new java.util.ArrayList<>();
+    
+    private BigDecimal totalDespesasImediatas = BigDecimal.ZERO;
+    private BigDecimal totalDespesasCartao = BigDecimal.ZERO;
 
     // Getters and Setters
     public List<br.com.algaworks.documentacao.model.TransacaoFinanceira> getReceitasMesList() { return receitasMesList; }
@@ -45,6 +50,14 @@ public class ResumoFinanceiroDTO {
     public void setReceitasFuturas(BigDecimal receitasFuturas) { this.receitasFuturas = receitasFuturas; }
     public BigDecimal getDespesasFuturas() { return despesasFuturas; }
     public void setDespesasFuturas(BigDecimal despesasFuturas) { this.despesasFuturas = despesasFuturas; }
+    public List<br.com.algaworks.documentacao.model.TransacaoFinanceira> getDespesasImediatasMesList() { return despesasImediatasMesList; }
+    public void setDespesasImediatasMesList(List<br.com.algaworks.documentacao.model.TransacaoFinanceira> list) { this.despesasImediatasMesList = list; }
+    public List<br.com.algaworks.documentacao.model.TransacaoFinanceira> getDespesasCartaoMesList() { return despesasCartaoMesList; }
+    public void setDespesasCartaoMesList(List<br.com.algaworks.documentacao.model.TransacaoFinanceira> list) { this.despesasCartaoMesList = list; }
+    public BigDecimal getTotalDespesasImediatas() { return totalDespesasImediatas; }
+    public void setTotalDespesasImediatas(BigDecimal total) { this.totalDespesasImediatas = total; }
+    public BigDecimal getTotalDespesasCartao() { return totalDespesasCartao; }
+    public void setTotalDespesasCartao(BigDecimal total) { this.totalDespesasCartao = total; }
     public List<ContaResumoDTO> getSaldosContas() { return saldosContas; }
     public void setSaldosContas(List<ContaResumoDTO> saldosContas) { this.saldosContas = saldosContas; }
     public List<CategoriaResumoDTO> getCategoriasDespesas() { return categoriasDespesas; }

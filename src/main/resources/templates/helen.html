@@ -7,35 +7,53 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
     <meta name="description" content="Mensagem de amor dedicada para Helen 💖">
     <meta name="author" content="Jackson Rocha">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             background: linear-gradient(135deg, #ff758c, #ff7eb3);
             color: white;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Inter', sans-serif;
             text-align: center;
-            margin-top: 80px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
 
-        a {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 12px 25px;
-            background-color: royalblue;
+        .btn-voltar {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
             text-decoration: none;
-            font-size: 18px;
-            border-radius: 10px;
-            transition: background-color 0.3s ease;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            font-size: 14px;
+            backdrop-filter: blur(5px);
         }
 
-        a:hover {
-            background-color: navy;
+        .btn-voltar:hover {
+            transform: translateY(-2px) scale(1.05);
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
         }
     </style>
 </head>
 <body>
-<h1 style="color: white;">Helen, eu te amo! 💖</h1>
-<p>Você é a razão do meu sorriso e minha inspiração todos os dias. ❤️</p>
-<a href="/">Voltar para o Universo Geek</a>
+    <a href="/home" class="btn-voltar">
+        <i class="fas fa-arrow-left"></i> Voltar para Universo Geek
+    </a>
+    <h1 style="color: white; font-size: 3rem; margin-bottom: 10px;">Helen, eu te amo! 💖</h1>
+    <p style="font-size: 1.2rem; opacity: 0.9;">Você é a razão do meu sorriso e minha inspiração todos os dias. ❤️</p>
 </body>
 </html>

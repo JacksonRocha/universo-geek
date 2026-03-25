@@ -4,6 +4,7 @@ import br.com.algaworks.documentacao.model.BlocoTarefa;
 import br.com.algaworks.documentacao.model.StatusTarefa;
 import br.com.algaworks.documentacao.model.TarefaTrabalho;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class TarefaTrabalhoDTO {
     private Long id;
@@ -13,6 +14,10 @@ public class TarefaTrabalhoDTO {
     private LocalDate dataEntrega;
     private BlocoTarefa bloco;
     private StatusTarefa status;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataAFazer;
+    private LocalDateTime dataEmProgresso;
+    private LocalDateTime dataConcluido;
 
     public TarefaTrabalhoDTO() {}
 
@@ -24,6 +29,10 @@ public class TarefaTrabalhoDTO {
         this.dataEntrega = tarefa.getDataEntrega();
         this.bloco = tarefa.getBloco();
         this.status = tarefa.getStatus();
+        this.dataCriacao = tarefa.getDataCriacao();
+        this.dataAFazer = tarefa.getDataAFazer();
+        this.dataEmProgresso = tarefa.getDataEmProgresso();
+        this.dataConcluido = tarefa.getDataConcluido();
     }
 
     public Long getId() { return id; }
@@ -46,4 +55,16 @@ public class TarefaTrabalhoDTO {
 
     public StatusTarefa getStatus() { return status; }
     public void setStatus(StatusTarefa status) { this.status = status; }
+
+    public LocalDateTime getDataCriacao() { return dataCriacao; }
+    public void setDataCriacao(LocalDateTime dataCriacao) { this.dataCriacao = dataCriacao; }
+
+    public LocalDateTime getDataAFazer() { return dataAFazer; }
+    public void setDataAFazer(LocalDateTime dataAFazer) { this.dataAFazer = dataAFazer; }
+
+    public LocalDateTime getDataEmProgresso() { return dataEmProgresso; }
+    public void setDataEmProgresso(LocalDateTime dataEmProgresso) { this.dataEmProgresso = dataEmProgresso; }
+
+    public LocalDateTime getDataConcluido() { return dataConcluido; }
+    public void setDataConcluido(LocalDateTime dataConcluido) { this.dataConcluido = dataConcluido; }
 }
