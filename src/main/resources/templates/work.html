@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minhas Tarefas | Jackson - Universo Geek</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;800&display=swap"
+          rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- CSRF Meta Tags for Spring Security -->
@@ -18,13 +19,17 @@
             --bg-afazer: #8e4719;
             --bg-progresso: #3b5f3b;
             --bg-concluido: #1e1e1e;
-            
+
             /* Card Backgrounds (Noticeably lighter than blocks) */
             --card-backlog: #6352b2;
             --card-afazer: #a85d2e;
             --card-progresso: #4a7a4a;
             --card-concluido: #333333;
-            
+
+            /* Meetings Theme (Red) */
+            --bg-reunioes: #7f1d1d;
+            --card-reunioes: #991b1b;
+
             /* Theme Accent (Rust/Brown matched) */
             --accent-page: #ab5d29;
             --accent-hover: #c46a2f;
@@ -94,9 +99,18 @@
         }
 
         /* Custom Scrollbar */
-        .board::-webkit-scrollbar { height: 10px; }
-        .board::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
-        .board::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+        .board::-webkit-scrollbar {
+            height: 10px;
+        }
+
+        .board::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .board::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
 
         .column {
             min-width: 300px;
@@ -229,17 +243,116 @@
         }
 
         /* Column Themes */
-        .column[data-id="BACKLOG"] { background: var(--bg-backlog); }
-        .column[data-id="BACKLOG"] .card { background: var(--card-backlog); }
-        
-        .column[data-id="A_FAZER"] { background: var(--bg-afazer); }
-        .column[data-id="A_FAZER"] .card { background: var(--card-afazer); }
-        
-        .column[data-id="FAZENDO"] { background: var(--bg-progresso); }
-        .column[data-id="FAZENDO"] .card { background: var(--card-progresso); }
-        
-        .column[data-id="CONCLUIDO"] { background: var(--bg-concluido); }
-        .column[data-id="CONCLUIDO"] .card { background: var(--card-concluido); }
+        .column[data-id="BACKLOG"] {
+            background: var(--bg-backlog);
+        }
+
+        .column[data-id="BACKLOG"] .card {
+            background: var(--card-backlog);
+        }
+
+        .column[data-id="A_FAZER"] {
+            background: var(--bg-afazer);
+        }
+
+        .column[data-id="A_FAZER"] .card {
+            background: var(--card-afazer);
+        }
+
+        .column[data-id="FAZENDO"] {
+            background: var(--bg-progresso);
+        }
+
+        .column[data-id="FAZENDO"] .card {
+            background: var(--card-progresso);
+        }
+
+        .column[data-id="CONCLUIDO"] {
+            background: var(--bg-concluido);
+        }
+
+        .column[data-id="CONCLUIDO"] .card {
+            background: var(--card-concluido);
+        }
+
+        .column[data-id="REUNIOES"] {
+            background: var(--bg-reunioes);
+        }
+
+        .column[data-id="REUNIOES"] .card {
+            background: var(--card-reunioes);
+            border-left: 3px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .column[data-id="REUNIOES"] .card h3 {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .column[data-id="REUNIOES"] .card p, .column[data-id="REUNIOES"] .card div {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .column[data-id="REUNIOES"] .column-header {
+            color: #fff;
+        }
+
+        .card.realizada {
+            border-left: 5px solid #10b981 !important;
+            opacity: 0.8;
+            background: rgba(16, 185, 129, 0.15) !important;
+        }
+
+        .card.realizada h3 {
+            text-decoration: line-through;
+            color: #10b981 !important;
+        }
+
+        /* Quick Move Icons */
+        .move-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .move-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            cursor: pointer;
+            background: #10b981;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+            transition: all 0.2s;
+        }
+
+        .move-btn:hover {
+            transform: scale(1.2);
+            filter: brightness(1.1);
+        }
+
+        .move-btn.backlog {
+            background: #6366f1;
+        }
+
+        .move-btn.todo {
+            background: #f59e0b;
+        }
+
+        .move-btn.doing {
+            background: #10b981;
+        }
+
+        .move-btn.done {
+            background: #10b981;
+        }
 
         /* Modal - Premium Design */
         .modal {
@@ -270,8 +383,14 @@
         }
 
         @keyframes modalSlideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .modal-header {
@@ -306,8 +425,8 @@
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .close-btn:hover { 
-            background: #ef4444; 
+        .close-btn:hover {
+            background: #ef4444;
             color: #fff;
             transform: rotate(90deg);
         }
@@ -325,7 +444,9 @@
             gap: 24px;
         }
 
-        .form-row .form-group { flex: 1; }
+        .form-row .form-group {
+            flex: 1;
+        }
 
         label {
             display: block;
@@ -377,308 +498,722 @@
             gap: 10px;
         }
 
-        .btn-primary { 
-            background: #2563eb; 
+        .btn-primary {
+            background: #2563eb;
             color: #fff;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
-        .btn-primary:hover { 
+
+        .btn-primary:hover {
             background: #1d4ed8;
             box-shadow: 0 6px 16px rgba(37, 99, 235, 0.5);
             transform: translateY(-2px);
         }
 
-        .btn-ghost { background: #f1f5f9; color: #64748b; }
-        .btn-ghost:hover { background: #e2e8f0; color: #1e293b; }
+        .btn-ghost {
+            background: #f1f5f9;
+            color: #64748b;
+        }
 
-        .btn-danger { color: #ef4444; border: 2px solid #fef2f2; background: #fff; }
-        .btn-danger:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
+        .btn-ghost:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .btn-danger {
+            color: #ef4444;
+            border: 2px solid #fef2f2;
+            background: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
+        }
+
+        /* Urgency Badge */
+        .urgency-marker {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ef4444;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 50px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 10;
+        }
+
+        .planned-marker {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #3b82f6;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 50px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 10;
+        }
+
+        /* Stats Panel (v3 - Full Page Sidebar) */
+        .stats-panel {
+            min-width: 400px;
+            width: 400px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            padding: 30px;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            height: calc(100vh - 82px); /* Full height minus header */
+            position: absolute;
+            right: 0;
+            top: 82px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .board {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+            overflow-x: auto;
+            align-items: flex-start;
+            flex-grow: 1;
+            margin-right: 400px; /* Space for the absolute sidebar */
+        }
+
+        .stats-header {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            text-transform: capitalize;
+        }
+
+        #statsContainer {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 15px;
+            flex-grow: 1;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 18px;
+            border-radius: 14px;
+            border-left: 4px solid var(--accent-page);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-group input {
+            width: auto;
+            height: auto;
+        }
 
     </style>
 </head>
 <body>
-    <header class="workspace-header">
-        <div style="font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; letter-spacing: -1px; text-transform: uppercase;">
-            Minhas Tarefas | Jackson
-        </div>
-        <a href="/home" class="btn-voltar">
-            <i class="fas fa-arrow-left"></i> Voltar para Universo Geek
-        </a>
-    </header>
-
-    <div class="board" id="board">
-        <!-- Columns will be injected by JS -->
+<header class="workspace-header">
+    <div style="font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; letter-spacing: -1px; text-transform: uppercase;">
+        Minhas Tarefas | Jackson
     </div>
+    <a href="/home" class="btn-voltar">
+        <i class="fas fa-arrow-left"></i> Voltar para Universo Geek
+    </a>
+</header>
 
-    <!-- Enhanced Modal -->
-    <div id="taskModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">Nova Tarefa</h2>
-                <button class="close-btn" onclick="closeModal()">
-                    <i class="fas fa-times"></i>
-                </button>
+<div class="board" id="board" style="display: flex; gap: 20px; overflow-x: auto; padding: 20px;">
+    <div id="columns-container" style="display: flex; gap: 20px;"></div>
+
+    <!-- Sprint Stats Panel -->
+    <div class="stats-panel" id="statsPanel">
+        <div class="stats-header" id="sprintLabel">Sprint Março 2026</div>
+        <div id="statsContainer" style="display: flex; flex-direction: column; gap: 15px;">
+            <!-- Stat Cards injected by JS -->
+        </div>
+    </div>
+</div>
+
+<!-- Enhanced Modal -->
+<div id="taskModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">Nova Tarefa</h2>
+            <button type="button" class="close-btn" onclick="kanbanApp.closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="taskId">
+
+            <div class="form-group">
+                <label>Título da Tarefa</label>
+                <input type="text" id="taskTitle" placeholder="O que precisa ser feito?" required>
             </div>
-            <div class="modal-body">
-                <input type="hidden" id="taskId">
-                
-                <div class="form-group">
-                    <label>Título da Tarefa</label>
-                    <input type="text" id="taskTitle" placeholder="O que precisa ser feito?" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>Descrição</label>
-                    <textarea id="taskDesc" rows="3" placeholder="Detalhes, links ou notas..."></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>URL da Imagem de Capa</label>
-                    <input type="text" id="taskImg" placeholder="https://imagem.jpg (opcional)">
-                </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Data de Entrega</label>
-                        <input type="date" id="taskDate">
-                    </div>
-                    <div class="form-group">
-                        <label>Coluna / Bloco</label>
-                        <select id="taskBloco">
-                            <option value="BACKLOG">Backlog</option>
-                            <option value="A_FAZER">A fazer</option>
-                            <option value="FAZENDO">Em progresso</option>
-                            <option value="CONCLUIDO">Concluído</option>
-                        </select>
-                    </div>
+            <div class="form-group">
+                <label>Descrição</label>
+                <textarea id="taskDesc" rows="3" placeholder="Detalhes, links ou notas..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>URL da Imagem de Capa</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="taskImg" placeholder="https://imagem.jpg (ou suba ao lado)">
+                    <button type="button" class="btn btn-ghost"
+                            onclick="event.stopPropagation(); document.getElementById('fileInput').click()"
+                            style="padding: 10px; min-width: 50px;" title="Subir para Imgur">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </button>
                 </div>
-                
-                <div class="form-group" style="display: none;">
-                    <label>Status Técnico</label>
-                    <select id="taskStatus">
+                <input type="file" id="fileInput" style="display: none;" onchange="uploadToImgur(this)">
+                <small id="uploadStatus"
+                       style="font-size: 10px; color: #94a3b8; display: block; margin-top: 5px;"></small>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Data de Entrega</label>
+                    <input type="date" id="taskDate">
+                </div>
+                <div class="form-group">
+                    <label>Coluna / Bloco</label>
+                    <select id="taskBloco" onchange="kanbanApp.handleBlocoChange(this.value)">
                         <option value="BACKLOG">Backlog</option>
-                        <option value="A_FAZER">A Fazer</option>
-                        <option value="FAZENDO">Em Progresso</option>
+                        <option value="REUNIOES">Reuniões</option>
+                        <option value="A_FAZER">A fazer</option>
+                        <option value="FAZENDO">Em progresso</option>
                         <option value="CONCLUIDO">Concluído</option>
                     </select>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-danger" id="btnDelete" onclick="deleteTask()" style="margin-right: auto;">
-                    <i class="fas fa-trash-alt"></i> Excluir
-                </button>
-                <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-                <button class="btn btn-primary" onclick="saveTask()" id="btnSave">Salvar Alterações</button>
+
+            <div class="form-row">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="checkbox-group">
+                        <input type="checkbox" id="taskUrgente" onchange="handleExclusivity('U')"> Urgência 🚨
+                    </label>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="checkbox-group">
+                        <input type="checkbox" id="taskPlanejado" onchange="handleExclusivity('P')"> Planejado 📅
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group" id="solicitanteGroup" style="display: none; margin-top: 15px;">
+                <label>Solicitante da Urgência</label>
+                <input type="text" id="taskSolicitante" placeholder="Quem solicitou?">
+            </div>
+
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Esforço (Horas)</label>
+                <input type="number" id="taskHoras" placeholder="Ex: 4" min="0">
+            </div>
+
+            <!-- Meeting Specific Fields -->
+            <div id="meetingFields"
+                 style="display: none; border-top: 1px solid #e2e8f0; padding-top: 20px; margin-top: 20px;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Projeto</label>
+                        <input type="text" id="taskProjeto" placeholder="Qual projeto?">
+                    </div>
+                    <div class="form-group">
+                        <label>Duração (Minutos)</label>
+                        <input type="number" id="taskDuracao" placeholder="Ex: 60">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Participantes</label>
+                    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                        <input type="text" id="participantInput" placeholder="Nome do participante..."
+                               onkeypress="if(event.key==='Enter'){event.preventDefault(); kanbanApp.addParticipant()}">
+                        <button type="button" class="btn btn-primary" onclick="kanbanApp.addParticipant()"
+                                style="padding: 10px 15px;">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <div id="participantsList"
+                         style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;"></div>
+                    <textarea id="taskParticipantes" style="display: none;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-group">
+                        <input type="checkbox" id="taskRealizada"> JÁ FOI REALIZADA? ✅
+                    </label>
+                </div>
             </div>
         </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" id="btnDelete"
+                    onclick="event.stopPropagation(); kanbanApp.processDelete()" style="margin-right: auto;">
+                <i class="fas fa-trash-alt"></i> Excluir
+            </button>
+            <button type="button" class="btn btn-ghost" onclick="event.stopPropagation(); kanbanApp.closeModal()">
+                Cancelar
+            </button>
+            <button type="button" class="btn btn-primary" onclick="event.stopPropagation(); kanbanApp.saveTask()"
+                    id="btnSave">Salvar Alterações
+            </button>
+        </div>
     </div>
+</div>
 
-    <script th:inline="javascript">
-        const columns = [
-            { id: "BACKLOG", title: "Backlog", icon: "fas fa-list-ul" },
-            { id: "A_FAZER", title: "A Fazer", icon: "fas fa-thumbtack" },
-            { id: "FAZENDO", title: "Em Progresso", icon: "fas fa-bolt" },
-            { id: "CONCLUIDO", title: "Concluído 🚀", icon: "fas fa-check-double" }
-        ];
+<script th:inline="javascript">
 
-        let allTasks = [];
+    // --- Kanban Application Module ---
+    const kanbanApp = {
+        allTasks: [],
+        columns: [
+            {id: "BACKLOG", title: "Backlog", icon: "fas fa-list-ul"},
+            {id: "A_FAZER", title: "A Fazer", icon: "fas fa-thumbtack"},
+            {id: "FAZENDO", title: "Em Progresso", icon: "fas fa-bolt"},
+            {id: "CONCLUIDO", title: "Concluíndo 🚀", icon: "fas fa-check-double"},
+            {id: "REUNIOES", title: "Reuniões", icon: "fas fa-users"}
+        ],
 
-        async function loadTasks() {
+        init() {
+            this.loadTasks();
+            this.setupGlobalListeners();
+
+            // Dynamic Sprint Label
+            const now = new Date();
+            const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+            document.getElementById('sprintLabel').innerText = `Sprint ${monthNames[now.getMonth()]} ${now.getFullYear()}`;
+        },
+
+        setupGlobalListeners() {
+            // Close modal on ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') this.closeModal();
+            });
+
+            // Close on click outside (background only)
+            const modal = document.getElementById('taskModal');
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) this.closeModal();
+            });
+        },
+
+        handleBlocoChange(val) {
+            document.getElementById('taskBloco').value = val || 'BACKLOG';
+            const isMeeting = val === 'REUNIOES';
+            const meetingDiv = document.getElementById('meetingFields');
+            const standardGroups = [
+                document.getElementById('taskUrgente').closest('.form-row'),
+                document.getElementById('taskHoras').closest('.form-group')
+            ];
+
+            if (isMeeting) {
+                meetingDiv.style.display = 'block';
+                standardGroups.forEach(g => g.style.display = 'none');
+                document.getElementById('solicitanteGroup').style.display = 'none';
+            } else {
+                meetingDiv.style.display = 'none';
+                standardGroups.forEach(g => g.style.display = 'flex');
+                if (document.getElementById('taskHoras').closest('.form-group')) {
+                    document.getElementById('taskHoras').closest('.form-group').style.display = 'block';
+                }
+                toggleSolicitante();
+            }
+            this.updateModalTheme(val);
+        },
+
+        bindEvents() {
+            document.getElementById('btnSave').addEventListener('click', () => this.saveTask());
+            document.getElementById('btnDelete').addEventListener('click', () => this.processDelete());
+
+            // Close modal on ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') this.closeModal();
+            });
+
+            // Close on click outside
+            document.getElementById('taskModal').addEventListener('click', (e) => {
+                if (e.target.id === 'taskModal') this.closeModal();
+            });
+        },
+
+        async loadTasks() {
             try {
                 const res = await fetch('/api/work/tasks');
-                if(!res.ok) throw new Error("Erro ao carregar");
-                allTasks = await res.json();
-                renderBoard();
+                if (!res.ok) throw new Error("Erro ao carregar");
+                this.allTasks = await res.json();
+                this.renderBoard();
             } catch (err) {
                 console.error(err);
-                document.getElementById('board').innerHTML = '<div style="margin: auto; text-align: center;"><i class="fas fa-exclamation-triangle" style="font-size: 40px; margin-bottom: 20px;"></i><br>Erro ao conectar com o servidor.</div>';
+                document.getElementById('board').innerHTML = '<div style="margin: auto; text-align: center;"><i class="fas fa-exclamation-triangle" style="font-size: 40px; margin-bottom: 20px;"></i><br>Erro ao carregar colunas.</div>';
             }
-        }
+        },
 
-        function renderBoard() {
-            const board = document.getElementById('board');
-            board.innerHTML = '';
-            
-            const tasksByCol = {
-                BACKLOG: allTasks.filter(t => t.bloco === 'BACKLOG' || ['PRIORIDADES', 'REUNIOES', 'ATIVIDADES_DO_DIA', 'JIRAS'].includes(t.bloco)),
-                A_FAZER: allTasks.filter(t => t.bloco === 'A_FAZER'),
-                FAZENDO: allTasks.filter(t => t.bloco === 'FAZENDO'),
-                CONCLUIDO: allTasks.filter(t => t.bloco === 'CONCLUIDO')
-            };
+        renderBoard() {
+            const container = document.getElementById('columns-container');
+            container.innerHTML = '';
 
-            columns.forEach(col => {
-                const colTasks = tasksByCol[col.id];
-                
+            const finishedTasks = this.allTasks.filter(t => t.bloco === 'CONCLUIDO');
+            const meetingTasks = this.allTasks.filter(t => t.bloco === 'REUNIOES');
+            const meetingMinutes = meetingTasks.reduce((acc, t) => acc + (parseFloat(t.duracao) || 0), 0);
+            const meetingHoursVal = meetingMinutes / 60;
+
+            const urgentTasks = this.allTasks.filter(t => t.urgente);
+            const plannedTasks = this.allTasks.filter(t => t.planejado);
+
+            // Specialized: "Horas Totais Cards" (Planejado + Urgentes + Reuniões)
+            const specializedHours = (urgentTasks.reduce((acc, t) => acc + (t.horas || 0), 0) +
+                    plannedTasks.filter(t => !t.urgente).reduce((acc, t) => acc + (t.horas || 0), 0)) +
+                meetingHoursVal;
+
+            const workingHours = 176;
+
+            // Stats Grid rendering
+            document.getElementById('statsContainer').innerHTML = `
+                    <div class="stat-card" style="border-left-color: #3b82f6; background: rgba(59, 130, 246, 0.1);">
+                        <div class="stat-label">Horas Úteis no Mês</div>
+                        <div class="stat-value">${workingHours}h</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: #f59e0b; background: rgba(245, 158, 11, 0.1);">
+                        <div class="stat-label">Horas Totais Cards (Urg/Plan/Reun)</div>
+                        <div class="stat-value">${this.formatHoursToHM(specializedHours)}</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);">
+                        <div class="stat-label">Cards Concluídos / Criados</div>
+                        <div class="stat-value">${finishedTasks.length} / ${this.allTasks.filter(t => t.bloco !== 'REUNIOES').length}</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: #6366f1; background: rgba(99, 102, 241, 0.1);">
+                        <div class="stat-label">Total de Reuniões</div>
+                        <div class="stat-value">${meetingTasks.length}</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: #94a3b8; background: rgba(148, 163, 184, 0.1);">
+                        <div class="stat-label">Tempo em Reuniões</div>
+                        <div class="stat-value">${this.formatHoursToHM(meetingHoursVal)}</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
+                        <div class="stat-label">Cards Urgentes / Planejados</div>
+                        <div class="stat-value">${urgentTasks.length} / ${plannedTasks.length}</div>
+                    </div>
+                `;
+
+            this.columns.forEach(col => {
+                let colTasks = [];
+                if (col.id === 'REUNIOES') {
+                    colTasks = this.allTasks.filter(t => t.bloco === 'REUNIOES');
+                } else if (col.id === 'BACKLOG') {
+                    colTasks = this.allTasks.filter(t => t.bloco === 'BACKLOG' || ['PRIORIDADES', 'ATIVIDADES_DO_DIA', 'JIRAS'].includes(t.bloco));
+                } else {
+                    colTasks = this.allTasks.filter(t => t.bloco === col.id);
+                }
+
                 const colEl = document.createElement('div');
                 colEl.className = 'column';
                 colEl.dataset.id = col.id;
                 colEl.ondragover = (e) => e.preventDefault();
-                colEl.ondrop = (e) => handleDrop(e, col.id);
+                colEl.ondrop = (e) => this.handleDrop(e, col.id);
 
                 const tasksHtml = colTasks.map(t => {
-                    const dateFormatted = t.dataEntrega ? new Date(t.dataEntrega).toLocaleDateString('pt-BR', {day: '2-digit', month: '2-digit'}) : '';
-                    const creationFormatted = formatDateTime(t.dataCriacao);
-                    
+                    const creation = this.formatDateTime(t.dataCriacao);
+                    const isMeeting = t.bloco === 'REUNIOES';
+
                     return `
-                        <div class="card" draggable="true" ondragstart="handleDragStart(event, ${t.id})" onclick='openModal(${JSON.stringify(t).replace(/'/g, "&apos;")})'>
-                            ${t.imageUrl ? `<img src="${t.imageUrl}" alt="Capa">` : ''}
-                            <div style="font-size: 10px; color: rgba(255, 255, 255, 0.4); margin-bottom: 5px; font-weight: 500;">
-                                <i class="far fa-clock"></i> Criado: ${creationFormatted}
-                            </div>
-                            <h3>${t.titulo}</h3>
-                            ${t.descricao ? `<p>${t.descricao}</p>` : ''}
-                            <div class="card-footer">
-                                <div class="date-badge">
-                                    ${dateFormatted ? `<i class="far fa-calendar-alt"></i> ${dateFormatted}` : ''}
+                            <div class="card ${t.realizada ? 'realizada' : ''}" draggable="true" ondragstart="kanbanApp.handleDragStart(event, ${t.id})" onclick='kanbanApp.openModal(${JSON.stringify(t).replace(/'/g, "&apos;")})'>
+                                ${t.urgente ? `<div class="urgency-marker"><i class="fas fa-exclamation-circle"></i> Urgente</div>` : ''}
+                                ${t.planejado ? `<div class="planned-marker"><i class="fas fa-calendar-check"></i> Planejado</div>` : ''}
+                                ${isMeeting && t.realizada ? `<div class="urgency-marker" style="background: #10b981;"><i class="fas fa-check-circle"></i> Realizada</div>` : ''}
+                                
+                                ${t.imageUrl ? `<img src="${t.imageUrl}" alt="Capa" style="margin-top: ${t.urgente || t.planejado || (isMeeting && t.realizada) ? '25px' : '0'};">` : ''}
+                                
+                                <div style="font-size: 10px; color: rgba(255, 255, 255, 0.4); margin-bottom: 5px; font-weight: 500; margin-top: ${!t.imageUrl && (t.urgente || t.planejado || (isMeeting && t.realizada)) ? '25px' : '0'};">
+                                    <i class="far fa-clock"></i> ${isMeeting ? 'Agendado' : 'Criado'}: ${creation}
                                 </div>
-                                <div class="card-icons">
+                                
+                                <h3>${isMeeting && t.tema ? `[REUNIÃO] ${t.tema}` : t.titulo}</h3>
+                                
+                                ${isMeeting ? `
+                                    <div style="font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 5px;">
+                                        ${t.projeto ? `<div><strong>Projeto:</strong> ${t.projeto}</div>` : ''}
+                                        ${t.duracao ? `<div><strong>Duração:</strong> ${t.duracao}</div>` : ''}
+                                        ${t.participantes ? `<div style="margin-top: 3px; font-style: italic;">${t.participantes.substring(0, 60)}...</div>` : ''}
+                                    </div>
+                                ` : (t.descricao ? `<p>${t.descricao}</p>` : '')}
+
+                                <div class="card-footer">
+                                    <div class="date-badge">
+                                        ${t.dataEntrega ? `<i class="far fa-calendar-alt"></i> ${new Date(t.dataEntrega).toLocaleDateString('pt-BR')}` : ''}
+                                        ${t.horas && !isMeeting ? `<span style="margin-left: 8px;"><i class="fas fa-hourglass-half"></i> ${t.horas}h</span>` : ''}
+                                        ${isMeeting ? `<span style="margin-left: 8px;"><i class="far fa-clock"></i> ${t.duracao || 0}m</span>` : ''}
+                                    </div>
                                     <i class="fas fa-paperclip" style="opacity: ${t.imageUrl ? 1 : 0.3}"></i>
                                 </div>
+
+                                ${!isMeeting ? `
+                                    <div class="move-actions">
+                                        <div class="move-btn backlog" onclick="event.stopPropagation(); kanbanApp.moveTask(${t.id}, 'BACKLOG')" title="Mover para Backlog"><i class="fas fa-plus"></i></div>
+                                        <div class="move-btn todo" onclick="event.stopPropagation(); kanbanApp.moveTask(${t.id}, 'A_FAZER')" title="Mover para A Fazer"><i class="fas fa-thumbtack"></i></div>
+                                        <div class="move-btn doing" onclick="event.stopPropagation(); kanbanApp.moveTask(${t.id}, 'FAZENDO')" title="Mover para Fazendo"><i class="fas fa-play"></i></div>
+                                        <div class="move-btn done" onclick="event.stopPropagation(); kanbanApp.moveTask(${t.id}, 'CONCLUIDO')" title="Mover para Concluído"><i class="fas fa-check"></i></div>
+                                    </div>
+                                ` : ''}
                             </div>
-                            <div class="progress-marks">
-                                <div class="mark active" title="Criado em: ${creationFormatted}">
-                                    <i class="fas fa-plus"></i>
-                                </div>
-                                <div class="mark ${t.dataAFazer ? 'active' : ''}" title="${t.dataAFazer ? 'Movido p/ A Fazer em: ' + formatDateTime(t.dataAFazer) : 'Pendente: A Fazer'}">
-                                    <i class="fas fa-thumbtack"></i>
-                                </div>
-                                <div class="mark ${t.dataEmProgresso ? 'active' : ''}" title="${t.dataEmProgresso ? 'Iniciado em: ' + formatDateTime(t.dataEmProgresso) : 'Pendente: Em Progresso'}">
-                                    <i class="fas fa-play"></i>
-                                </div>
-                                <div class="mark ${t.dataConcluido ? 'active' : ''}" title="${t.dataConcluido ? 'Concluído em: ' + formatDateTime(t.dataConcluido) : 'Pendente: Concluir'}">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                        `;
                 }).join('');
 
                 colEl.innerHTML = `
-                    <div class="column-header">
-                        <span><i class="${col.icon}" style="margin-right: 8px; opacity: 0.8;"></i> ${col.title}</span>
-                        <span style="opacity: 0.5; font-size: 13px;">${colTasks.length}</span>
-                    </div>
-                    <div class="task-list">
-                        ${tasksHtml}
-                    </div>
-                    <div class="add-task-btn" onclick="openModalNew('${col.id}')">
-                        <i class="fas fa-plus" style="margin-right: 5px;"></i> Adicionar cartão
-                    </div>
-                `;
-                board.appendChild(colEl);
+                        <div class="column-header">
+                            <span><i class="${col.icon}" style="margin-right: 8px;"></i> ${col.title}</span>
+                            <span style="opacity: 0.5;">${colTasks.length}</span>
+                        </div>
+                        <div class="task-list">${tasksHtml}</div>
+                        <div class="add-task-btn" onclick="kanbanApp.openModalNew('${col.id}')">
+                            <i class="fas fa-plus"></i> Adicionar cartão
+                        </div>
+                    `;
+                container.appendChild(colEl);
             });
-        }
+        },
 
-        function formatDateTime(isoString) {
-            if (!isoString) return 'Pendente';
-            const date = new Date(isoString);
-            return date.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
-        }
+        formatDateTime(iso) {
+            return iso ? new Date(iso).toLocaleString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            }) : 'Pendente';
+        },
 
-        // --- Drag & Drop ---
-        function handleDragStart(ev, taskId) {
-            ev.dataTransfer.setData("taskId", taskId);
-        }
+        formatHoursToHM(decimalHours) {
+            const totalMinutes = Math.round(decimalHours * 60);
+            const hrs = Math.floor(totalMinutes / 60);
+            const mins = totalMinutes % 60;
+            return `${hrs}:${mins.toString().padStart(2, '0')}h`;
+        },
 
-        async function handleDrop(ev, targetBloco) {
+        handleDragStart(ev, id) {
+            ev.dataTransfer.setData("taskId", id);
+        },
+
+        async handleDrop(ev, target) {
             ev.preventDefault();
-            const taskId = ev.dataTransfer.getData("taskId");
-            if(!taskId) return;
+            const id = ev.dataTransfer.getData("taskId");
+            if (!id) return;
+
+            const task = this.allTasks.find(t => t.id == id);
+            if (!task) return;
+
+            // Restriction: Reunioes column is exclusive
+            const isMeeting = task.bloco === 'REUNIOES';
+            if (target === 'REUNIOES' && !isMeeting) {
+                alert("Apenas reuniões podem ser movidas para esta coluna.");
+                return;
+            }
+            if (isMeeting && target !== 'REUNIOES') {
+                alert("Reuniões não podem ser movidas para outras colunas.");
+                return;
+            }
+
+            this.moveTask(id, target);
+        },
+
+        async moveTask(id, target) {
+            const csrf = document.querySelector('meta[name="_csrf"]').content;
+            const header = document.querySelector('meta[name="_csrf_header"]').content;
 
             try {
-                // Sync UI immediately for better feel
-                const taskIndex = allTasks.findIndex(t => t.id == taskId);
-                if(taskIndex > -1) {
-                    allTasks[taskIndex].bloco = targetBloco;
-                    allTasks[taskIndex].status = targetBloco; // Synchronize status as well
-                    renderBoard();
-                }
-
-                const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-                const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-
-                await fetch('/api/work/tasks/' + taskId, {
+                const res = await fetch('/api/work/tasks/' + id, {
                     method: 'PUT',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        [csrfHeader]: csrfToken
-                    },
-                    body: JSON.stringify({ bloco: targetBloco, status: targetBloco })
+                    headers: {'Content-Type': 'application/json', [header]: csrf},
+                    body: JSON.stringify({bloco: target, status: target})
                 });
-                loadTasks(); // Refresh to get server timestamps
+                if (res.ok) this.loadTasks();
             } catch (err) {
                 console.error(err);
-                loadTasks();
             }
-        }
+        },
 
-        // --- Modal Logic ---
-        function openModalNew(blocoId) {
+        openModalNew(bloco) {
             document.getElementById('taskId').value = '';
             document.getElementById('taskTitle').value = '';
             document.getElementById('taskDesc').value = '';
             document.getElementById('taskImg').value = '';
             document.getElementById('taskDate').value = '';
-            document.getElementById('taskBloco').value = blocoId;
-            document.getElementById('taskStatus').value = blocoId;
-            
-            document.getElementById('modalTitle').innerText = 'Novo Cartão no ' + columns.find(c => c.id === blocoId).title;
+            document.getElementById('taskSolicitante').value = '';
+            document.getElementById('taskHoras').value = '0';
+
+            // Reset Meeting fields
+            document.getElementById('taskProjeto').value = '';
+            document.getElementById('taskDuracao').value = '';
+            document.getElementById('taskParticipantes').value = '';
+            document.getElementById('taskRealizada').checked = false;
+            if (document.getElementById('participantInput')) document.getElementById('participantInput').value = '';
+            this.renderParticipantsList('');
+
+            this.handleBlocoChange(bloco); // Sets visibility and theme
+            document.getElementById('modalTitle').innerText = 'Novo Cartão';
             document.getElementById('btnDelete').style.display = 'none';
             document.getElementById('taskModal').style.display = 'flex';
-        }
+        },
 
-        function openModal(task) {
+        openModal(task) {
             document.getElementById('taskId').value = task.id;
-            document.getElementById('taskTitle').value = task.titulo || '';
-            document.getElementById('taskDesc').value = task.descricao || '';
+            document.getElementById('taskTitle').value = task.titulo || task.tema || '';
+            document.getElementById('taskDesc').value = task.descricao || task.assunto || '';
             document.getElementById('taskImg').value = task.imageUrl || '';
             document.getElementById('taskDate').value = task.dataEntrega || '';
             document.getElementById('taskBloco').value = task.bloco;
-            document.getElementById('taskStatus').value = task.status;
-            
+            document.getElementById('taskUrgente').checked = task.urgente || false;
+            document.getElementById('taskPlanejado').checked = task.planejado || false;
+            document.getElementById('taskSolicitante').value = task.solicitante || '';
+            document.getElementById('taskHoras').value = task.horas || 0;
+
+            // Populate Meeting fields
+            document.getElementById('taskProjeto').value = task.projeto || '';
+            document.getElementById('taskDuracao').value = task.duracao || '';
+            document.getElementById('taskParticipantes').value = task.participantes || '';
+            document.getElementById('taskRealizada').checked = task.realizada || false;
+
+            this.renderParticipantsList(task.participantes || '');
+
+            this.handleBlocoChange(task.bloco);
             document.getElementById('modalTitle').innerText = 'Editar Cartão';
             document.getElementById('btnDelete').style.display = 'block';
             document.getElementById('taskModal').style.display = 'flex';
-        }
+        },
 
-        function closeModal() {
+        addParticipant() {
+            const input = document.getElementById('participantInput');
+            const name = input.value.trim();
+            if (!name) return;
+
+            const area = document.getElementById('taskParticipantes');
+            const current = area.value.trim();
+            area.value = current ? current + "\n" + name : name;
+            input.value = '';
+            this.renderParticipantsList(area.value);
+        },
+
+        renderParticipantsList(text) {
+            const list = document.getElementById('participantsList');
+            list.innerHTML = '';
+            if (!text) return;
+
+            text.split("\n").filter(n => n.trim()).forEach(name => {
+                const span = document.createElement('span');
+                span.style = "background: #f1f5f9; padding: 4px 12px; border-radius: 20px; font-size: 13px; color: #475569; display: flex; align-items: center; gap: 8px; border: 1px solid #e2e8f0;";
+                span.innerHTML = `${name} <i class="fas fa-times" style="cursor:pointer; color:#ef4444" onclick="kanbanApp.removeParticipant('${name}')"></i>`;
+                list.appendChild(span);
+            });
+        },
+
+        removeParticipant(name) {
+            const area = document.getElementById('taskParticipantes');
+            const names = area.value.split("\n").filter(n => n.trim() !== name);
+            area.value = names.join("\n");
+            this.renderParticipantsList(area.value);
+        },
+
+        updateModalTheme(bloco) {
+            const safeBloco = (bloco || 'BACKLOG').toLowerCase().replace('_', '');
+            const colColor = getComputedStyle(document.documentElement).getPropertyValue(`--bg-${safeBloco}`).trim() || '#1e293b';
+            document.querySelector('.modal-header').style.background = `linear-gradient(135deg, ${colColor} 0%, #1e293b 100%)`;
+            document.querySelector('.modal-header h2').style.color = '#fff';
+            document.querySelector('.close-btn').style.color = '#fff';
+        },
+
+        closeModal() {
             document.getElementById('taskModal').style.display = 'none';
-        }
+        },
 
-        async function saveTask() {
-            const titulo = document.getElementById('taskTitle').value.trim();
-            if(!titulo) return alert("O título é obrigatório!");
+        async saveTask() {
+            const id = document.getElementById('taskId').value;
+            const bloco = document.getElementById('taskBloco').value;
+            const isMeeting = bloco === 'REUNIOES';
+
+            const task = {
+                id: id || null,
+                titulo: document.getElementById('taskTitle').value.trim(),
+                descricao: document.getElementById('taskDesc').value,
+                imageUrl: document.getElementById('taskImg').value,
+                dataEntrega: document.getElementById('taskDate').value || null,
+                bloco: bloco,
+                urgente: document.getElementById('taskUrgente').checked,
+                planejado: document.getElementById('taskPlanejado').checked,
+                solicitante: document.getElementById('taskSolicitante').value,
+                horas: parseInt(document.getElementById('taskHoras').value) || 0,
+                // Meeting fields mapping
+                tema: isMeeting ? document.getElementById('taskTitle').value : null,
+                assunto: isMeeting ? document.getElementById('taskDesc').value : null,
+                projeto: document.getElementById('taskProjeto').value,
+                participantes: document.getElementById('taskParticipantes').value,
+                duracao: document.getElementById('taskDuracao').value,
+                realizada: document.getElementById('taskRealizada').checked
+            };
+
+            if (!task.titulo) return alert("Título é obrigatório!");
 
             const btn = document.getElementById('btnSave');
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
 
-            const id = document.getElementById('taskId').value;
-            const task = {
-                titulo: titulo,
-                descricao: document.getElementById('taskDesc').value,
-                imageUrl: document.getElementById('taskImg').value,
-                dataEntrega: document.getElementById('taskDate').value || null,
-                bloco: document.getElementById('taskBloco').value,
-                status: document.getElementById('taskBloco').value 
-            };
-
-            const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-            const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+            const csrf = document.querySelector('meta[name="_csrf"]').content;
+            const header = document.querySelector('meta[name="_csrf_header"]').content;
 
             try {
                 const res = await fetch(id ? '/api/work/tasks/' + id : '/api/work/tasks', {
                     method: id ? 'PUT' : 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        [csrfHeader]: csrfToken
-                    },
+                    headers: {'Content-Type': 'application/json', [header]: csrf},
                     body: JSON.stringify(task)
                 });
-                
                 if (res.ok) {
-                    closeModal();
-                    loadTasks();
+                    this.closeModal();
+                    this.loadTasks();
                 }
             } catch (err) {
                 alert("Erro ao salvar.");
@@ -686,32 +1221,94 @@
                 btn.disabled = false;
                 btn.innerText = 'Salvar Alterações';
             }
-        }
+        },
 
-        async function deleteTask() {
-            if(!confirm("Deseja realmente excluir este cartão?")) return;
+        async processDelete() {
             const id = document.getElementById('taskId').value;
-            const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-            const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+            console.log("[DELETE] Instant delete for ID:", id);
+
+            if (!id) return alert("Erro crítico: ID não encontrado.");
+
+            const btn = document.getElementById('btnDelete');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Excluindo...';
+
+            const csrf = document.querySelector('meta[name="_csrf"]').content;
+            const header = document.querySelector('meta[name="_csrf_header"]').content;
 
             try {
-                await fetch('/api/work/tasks/' + id, { 
+                const res = await fetch('/api/work/tasks/' + id, {
                     method: 'DELETE',
-                    headers: { [csrfHeader]: csrfToken }
+                    headers: {[header]: csrf}
                 });
-                closeModal();
-                loadTasks();
+                if (res.ok) {
+                    this.closeModal();
+                    this.loadTasks();
+                } else {
+                    alert("Servidor recusou a exclusão (Erro " + res.status + ")");
+                }
             } catch (err) {
-                alert("Erro ao excluir.");
+                alert("Falha de conexão.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-trash-alt"></i> Excluir';
             }
         }
+    };
 
-        // Close on click outside
-        window.onclick = (event) => {
-            if (event.target == document.getElementById('taskModal')) closeModal();
-        };
+    // Static compatibility functions
+    function handleExclusivity(type) {
+        const urg = document.getElementById('taskUrgente');
+        const plan = document.getElementById('taskPlanejado');
+        if (type === 'U' && urg.checked) plan.checked = false;
+        else if (type === 'P' && plan.checked) urg.checked = false;
+        toggleSolicitante();
+    }
 
-        loadTasks();
-    </script>
+    function toggleSolicitante() {
+        const isU = document.getElementById('taskUrgente').checked;
+        document.getElementById('solicitanteGroup').style.display = isU ? 'block' : 'none';
+    }
+
+    async function uploadToImgur(input) {
+        const file = input.files[0];
+        if (!file) return;
+        const status = document.getElementById('uploadStatus');
+        status.innerText = "⏳ Subindo via Proxy...";
+        status.style.color = "#3b82f6";
+
+        const formData = new FormData();
+        formData.append("image", file);
+
+        const csrf = document.querySelector('meta[name="_csrf"]').content;
+        const header = document.querySelector('meta[name="_csrf_header"]').content;
+
+        try {
+            // Now using our OWN secure backend proxy
+            const res = await fetch("/api/work/tasks/upload", {
+                method: "POST",
+                headers: {[header]: csrf},
+                body: formData
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                document.getElementById('taskImg').value = data.link;
+                status.innerText = "✅ Sucesso (via Proxy)!";
+                status.style.color = "#10b981";
+            } else {
+                throw new Error(data.error || "Erro no proxy");
+            }
+        } catch (err) {
+            console.error("Upload Error:", err);
+            status.innerText = "⚠️ Erro: " + err.message;
+            status.style.color = "#ef4444";
+        }
+    }
+
+    // START APP
+    document.addEventListener('DOMContentLoaded', () => kanbanApp.init());
+</script>
 </body>
 </html>

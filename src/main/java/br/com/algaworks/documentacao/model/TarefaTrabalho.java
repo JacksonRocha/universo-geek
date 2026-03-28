@@ -31,6 +31,22 @@ public class TarefaTrabalho {
     private LocalDateTime dataAFazer;
     private LocalDateTime dataEmProgresso;
     private LocalDateTime dataConcluido;
+    
+    private Boolean urgente = false;
+    private Boolean planejado = false;
+    private String solicitante;
+    private Integer horas = 0;
+
+    // Meeting Specific Fields
+    private String tema;
+    private String assunto;
+    private String projeto;
+    
+    @Column(columnDefinition = "TEXT")
+    private String participantes;
+    
+    private String duracao;
+    private Boolean realizada = false;
 
     @PrePersist
     protected void onCreate() {
@@ -84,4 +100,34 @@ public class TarefaTrabalho {
 
     public LocalDateTime getDataConcluido() { return dataConcluido; }
     public void setDataConcluido(LocalDateTime dataConcluido) { this.dataConcluido = dataConcluido; }
+
+    public Boolean getUrgente() { return urgente; }
+    public void setUrgente(Boolean urgente) { this.urgente = urgente; }
+
+    public Boolean getPlanejado() { return planejado; }
+    public void setPlanejado(Boolean planejado) { this.planejado = planejado; }
+
+    public String getSolicitante() { return solicitante; }
+    public void setSolicitante(String solicitante) { this.solicitante = solicitante; }
+
+    public Integer getHoras() { return horas; }
+    public void setHoras(Integer horas) { this.horas = horas; }
+
+    public String getTema() { return tema; }
+    public void setTema(String tema) { this.tema = tema; }
+
+    public String getAssunto() { return assunto; }
+    public void setAssunto(String assunto) { this.assunto = assunto; }
+
+    public String getProjeto() { return projeto; }
+    public void setProjeto(String projeto) { this.projeto = projeto; }
+
+    public String getParticipantes() { return participantes; }
+    public void setParticipantes(String participantes) { this.participantes = participantes; }
+
+    public String getDuracao() { return duracao; }
+    public void setDuracao(String duracao) { this.duracao = duracao; }
+
+    public Boolean getRealizada() { return realizada; }
+    public void setRealizada(Boolean realizada) { this.realizada = realizada; }
 }
