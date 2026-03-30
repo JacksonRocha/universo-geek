@@ -25,6 +25,8 @@ public class ResumoFinanceiroDTO {
     
     private BigDecimal totalDespesasImediatas = BigDecimal.ZERO;
     private BigDecimal totalDespesasCartao = BigDecimal.ZERO;
+    
+    private List<DevedorResumoDTO> devedores = new java.util.ArrayList<>();
 
     // Getters and Setters
     public List<br.com.algaworks.documentacao.model.TransacaoFinanceira> getReceitasMesList() { return receitasMesList; }
@@ -62,4 +64,6 @@ public class ResumoFinanceiroDTO {
     public void setSaldosContas(List<ContaResumoDTO> saldosContas) { this.saldosContas = saldosContas; }
     public List<CategoriaResumoDTO> getCategoriasDespesas() { return categoriasDespesas; }
     public void setCategoriasDespesas(List<CategoriaResumoDTO> categoriasDespesas) { this.categoriasDespesas = categoriasDespesas; }
+    public List<DevedorResumoDTO> getDevedores() { return devedores; }
+    public void setDevedores(List<DevedorResumoDTO> devedores) { this.devedores = devedores; }
 }

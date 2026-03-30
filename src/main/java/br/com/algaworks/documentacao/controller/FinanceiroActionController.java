@@ -29,6 +29,9 @@ public class FinanceiroActionController {
     @Autowired
     private CategoriaTransacaoRepository categoriaRepository;
 
+    @Autowired
+    private br.com.algaworks.documentacao.repository.DividaTerceiroRepository dividaTerceiroRepository;
+
     @PostMapping("/transacao")
     public String salvarTransacao(
             @RequestParam String descricao,
@@ -174,15 +177,143 @@ public class FinanceiroActionController {
     @PostMapping("/categoria")
     public String salvarCategoria(
             @RequestParam String nome,
-            @RequestParam String cor,
+            @RequestParam(required = false) String cor,
             Principal principal) {
         if (principal != null) {
             usuarioRepository.findByUsername(principal.getName()).ifPresent(user -> {
                 CategoriaTransacao cat = new CategoriaTransacao();
                 cat.setNome(nome);
-                cat.setCor(cor);
+                
+                // If cor is not provided, generate a random pleasant one
+                if (cor == null || cor.trim().isEmpty()) {
+                    String[] vibrantColors = {"#3b82f6", "#10b981", "#ef4444", "#f59e0b", "#8b5cf6", "#ec4899", "#06b6d4"};
+                    cat.setCor(vibrantColors[(int) (Math.random() * vibrantColors.length)]);
+                } else {
+                    cat.setCor(cor);
+                }
+                
                 cat.setUsuario(user);
                 categoriaRepository.save(cat);
+            });
+        }
+        return "redirect:/finances";
+    }
+
+    @PostMapping("/divida-terceiro")
+    public String salvarDividaTerceiro(
+            @RequestParam String devedor,
+            @RequestParam String item,
+            @RequestParam BigDecimal valorTotal,
+            @RequestParam Integer totalParcelas,
+            @RequestParam String dataCompra,
+            @RequestParam(required = false) Long instituicaoId,
+            Principal principal) {
+        if (principal != null) {
+            usuarioRepository.findByUsername(principal.getName()).ifPresent(user -> {
+                DividaTerceiro divida = new DividaTerceiro();
+                divida.setDevedor(devedor);
+                divida.setItem(item);
+                divida.setValorTotal(valorTotal);
+                divida.setTotalParcelas(totalParcelas);
+                divida.setDataCompra(LocalDate.parse(dataCompra));
+                divida.setInstituicaoId(instituicaoId);
+                divida.setUsuario(user);
+                divida.setParcelasPagas(0);
+                dividaTerceiroRepository.save(divida);
+
+                // Se houver instituição vinculada, cria as transações financeiras correspondentes
+                if (instituicaoId != null) {
+                    InstituicaoFinanceira inst = instituicaoRepository.findById(instituicaoId).orElse(null);
+                    // Busca uma categoria "Terceiros" ou usa a primeira disponível
+                    CategoriaTransacao cat = categoriaRepository.findAll().stream()
+                            .filter(c -> c.getNome().equalsIgnoreCase("Terceiros") && c.getUsuario().getId().equals(user.getId()))
+                            .findFirst()
+                            .orElse(categoriaRepository.findAll().stream()
+                                    .filter(c -> c.getUsuario().getId().equals(user.getId()))
+                                    .findFirst().orElse(null));
+
+                    if (cat != null) {
+                        BigDecimal valorParcela = valorTotal.divide(new BigDecimal(totalParcelas), 2, java.math.RoundingMode.HALF_UP);
+                        LocalDate dataBase = LocalDate.parse(dataCompra);
+
+                        for (int i = 0; i < totalParcelas; i++) {
+                            TransacaoFinanceira trans = new TransacaoFinanceira();
+                            trans.setDescricao(item + " (" + (i + 1) + "/" + totalParcelas + ") - " + devedor);
+                            trans.setValor(valorParcela);
+                            trans.setDataVencimento(dataBase.plusMonths(i));
+                            trans.setTipo(TipoTransacao.DESPESA);
+                            trans.setStatus(StatusTransacao.PENDENTE);
+                            trans.setUsuario(user);
+                            trans.setCategoria(cat);
+                            trans.setInstituicao(inst);
+                            trans.setIsParcelado(true);
+                            trans.setTotalParcelas(totalParcelas);
+                            trans.setParcelaAtual(i + 1);
+                            transacaoRepository.save(trans);
+                        }
+                    }
+                }
+            });
+        }
+        return "redirect:/finances";
+    }
+
+    @PostMapping("/divida-terceiro/pagar-parcela")
+    public String pagarParcelaTerceiro(@RequestParam Long id, Principal principal) {
+        if (principal != null) {
+            dividaTerceiroRepository.findById(id).ifPresent(d -> {
+                if (d.getUsuario().getUsername().equals(principal.getName())) {
+                    if (d.getParcelasPagas() < d.getTotalParcelas()) {
+                        d.setParcelasPagas(d.getParcelasPagas() + 1);
+                        dividaTerceiroRepository.save(d);
+
+                        // Cria uma transação de RECEITA para refletir o reembolso do terceiro
+                        TransacaoFinanceira trans = new TransacaoFinanceira();
+                        trans.setDescricao("Reembolso: " + d.getDevedor() + " - " + d.getItem() + " (" + d.getParcelasPagas() + "/" + d.getTotalParcelas() + ")");
+                        
+                        BigDecimal valorParcela = d.getValorTotal().divide(new BigDecimal(d.getTotalParcelas()), 2, java.math.RoundingMode.HALF_UP);
+                        trans.setValor(valorParcela);
+                        trans.setDataVencimento(LocalDate.now());
+                        trans.setDataPagamento(LocalDate.now());
+                        trans.setTipo(TipoTransacao.RECEITA);
+                        trans.setStatus(StatusTransacao.PAGO);
+                        trans.setUsuario(d.getUsuario());
+                        
+                        // Busca categoria "Terceiros"
+                        CategoriaTransacao cat = categoriaRepository.findAll().stream()
+                                .filter(c -> c.getNome().equalsIgnoreCase("Terceiros") && c.getUsuario().getId().equals(d.getUsuario().getId()))
+                                .findFirst().orElse(null);
+                        
+                        if (cat == null) {
+                             cat = categoriaRepository.findAll().stream()
+                                    .filter(c -> c.getUsuario().getId().equals(d.getUsuario().getId()))
+                                    .findFirst().orElse(null);
+                        }
+                        trans.setCategoria(cat);
+
+                        if (d.getInstituicaoId() != null) {
+                            instituicaoRepository.findById(d.getInstituicaoId()).ifPresent(inst -> {
+                                trans.setInstituicao(inst);
+                                inst.setSaldoAtual(inst.getSaldoAtual().add(valorParcela));
+                                instituicaoRepository.save(inst);
+                            });
+                        }
+                        
+                        transacaoRepository.save(trans);
+                    }
+                }
+            });
+        }
+        return "redirect:/finances";
+    }
+
+    @PostMapping("/divida-terceiro/excluir")
+    public String excluirDividaTerceiro(@RequestParam Long id, Principal principal) {
+        if (principal != null) {
+            dividaTerceiroRepository.findById(id).ifPresent(d -> {
+                if (d.getUsuario().getUsername().equals(principal.getName())) {
+                    dividaTerceiroRepository.delete(d);
+                }
             });
         }
         return "redirect:/finances";

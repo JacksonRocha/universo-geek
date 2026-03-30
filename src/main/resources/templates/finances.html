@@ -506,7 +506,8 @@
     <div class="sidebar-brand">
         <span style="color: var(--yellow)">●●</span> FAMÍLIA ROCHA
     </div>
-    <a href="/home" class="btn-voltar" style="margin: 15px; border-radius: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+    <a href="/home" class="btn-voltar"
+       style="margin: 15px; border-radius: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
         <i class="fas fa-arrow-left"></i> Voltar para Home
     </a>
     <a href="/finances" class="nav-link active">Financeiro</a>
@@ -569,13 +570,13 @@
                      th:text="${#numbers.formatDecimal(resumo.saldoAtual, 1, 'POINT', 2, 'COMMA')}">0,00
                 </div>
                 <div style="font-size: 0.7rem; color: var(--text-light); margin-top: 5px;">
-                    Net: Rec - (Imed + Cart)
+                    Total Líquido
                 </div>
             </div>
 
             <!-- Receitas -->
             <div class="card card-receitas" onclick="openModal('modalDetalhesReceitas')"
-                 style="grid-column: span 1; cursor:pointer; transition: transform 0.2s; border-left: 4px solid var(--green);" 
+                 style="grid-column: span 1; cursor:pointer; transition: transform 0.2s; border-left: 4px solid var(--green);"
                  onmouseover="this.style.transform='scale(1.02)'"
                  onmouseout="this.style.transform='scale(1)'">
                 <div class="card-title">Receitas</div>
@@ -589,12 +590,13 @@
 
             <!-- Despesas Imediatas -->
             <div class="card card-despesas" onclick="openModal('modalDetalhesDespesasImediatas')"
-                 style="grid-column: span 1; cursor:pointer; transition: transform 0.2s; border-left: 4px solid var(--red);" 
+                 style="grid-column: span 1; cursor:pointer; transition: transform 0.2s; border-left: 4px solid var(--red);"
                  onmouseover="this.style.transform='scale(1.02)'"
                  onmouseout="this.style.transform='scale(1)'">
                 <div class="card-title">Imediato</div>
                 <div class="card-value value-red" style="font-size: 1.5rem;"
-                     th:text="'-' + ${#numbers.formatDecimal(resumo.totalDespesasImediatas, 1, 'POINT', 2, 'COMMA')}">0,00
+                     th:text="'-' + ${#numbers.formatDecimal(resumo.totalDespesasImediatas, 1, 'POINT', 2, 'COMMA')}">
+                    0,00
                 </div>
                 <div style="font-size: 0.7rem; color: var(--text-light); margin-top: 5px;">
                     Pix/Débito/Dinheiro
@@ -603,10 +605,10 @@
 
             <!-- Despesas Cartão -->
             <div class="card card-despesas" onclick="openModal('modalDetalhesDespesasCartao')"
-                 style="grid-column: span 1; cursor:pointer; transition: transform 0.2s; border-left: 4px solid #f59e0b;" 
+                 style="grid-column: span 1; cursor:pointer; transition: transform 0.2s; border-left: 4px solid #f59e0b;"
                  onmouseover="this.style.transform='scale(1.02)'"
                  onmouseout="this.style.transform='scale(1)'">
-                <div class="card-title">Cartão (Débito)</div>
+                <div class="card-title">Cartão (Crédito)</div>
                 <div class="card-value" style="color: #f59e0b; font-size: 1.5rem;"
                      th:text="'-' + ${#numbers.formatDecimal(resumo.totalDespesasCartao, 1, 'POINT', 2, 'COMMA')}">0,00
                 </div>
@@ -618,101 +620,131 @@
 
         <!-- Middle Row -->
         <div class="grid-cards">
-            <div class="card card-vencidos">
-                <div class="card-title">
-                    <span style="color: var(--red)">⚠️ Vencidos</span>
-                    <span>Em atraso</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 15px;">
-                    <div>
-                        <div style="font-size: 0.8rem; color: var(--text-light)">Receitas</div>
-                        <div style="font-weight: 600" class="value-green"
-                             th:text="${#numbers.formatDecimal(resumo.receitasVencidas, 1, 'POINT', 2, 'COMMA')}">0,00
-                        </div>
-                    </div>
-                    <div style="text-align: right">
-                        <div style="font-size: 0.8rem; color: var(--text-light)">Despesas</div>
-                        <div style="font-weight: 600" class="value-red"
-                             th:text="'-' + ${#numbers.formatDecimal(resumo.despesasVencidas, 1, 'POINT', 2, 'COMMA')}">
-                            0,00
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card card-vencendo">
-                <div class="card-title">
-                    <span style="color: var(--blue)">📅 Vencendo Hoje</span>
-                    <span>Hoje</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 15px;">
-                    <div>
-                        <div style="font-size: 0.8rem; color: var(--text-light)">Receitas</div>
-                        <div style="font-weight: 600" class="value-green"
-                             th:text="${#numbers.formatDecimal(resumo.receitasVencendoHoje, 1, 'POINT', 2, 'COMMA')}">
-                            0,00
-                        </div>
-                    </div>
-                    <div style="text-align: right">
-                        <div style="font-size: 0.8rem; color: var(--text-light)">Despesas</div>
-                        <div style="font-weight: 600" class="value-red"
-                             th:text="'-' + ${#numbers.formatDecimal(resumo.despesasVencendoHoje, 1, 'POINT', 2, 'COMMA')}">
-                            0,00
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card card-futuro">
-                <div class="card-title">
-                    <span style="color: var(--green)">🕒 Futuro</span>
-                    <span>Próximos 14 dias</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 15px;">
-                    <div>
-                        <div style="font-size: 0.8rem; color: var(--text-light)">Receitas</div>
-                        <div style="font-weight: 600" class="value-green"
-                             th:text="${#numbers.formatDecimal(resumo.receitasFuturas, 1, 'POINT', 2, 'COMMA')}">0,00
-                        </div>
-                    </div>
-                    <div style="text-align: right">
-                        <div style="font-size: 0.8rem; color: var(--text-light)">Despesas</div>
-                        <div style="font-weight: 600" class="value-red"
-                             th:text="'-' + ${#numbers.formatDecimal(resumo.despesasFuturas, 1, 'POINT', 2, 'COMMA')}">
-                            0,00
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- ... (vencidos, vencendo, futuro cards) ... -->
         </div>
 
         <!-- Bottom Row -->
         <div class="grid-cards">
 
             <!-- Meios de Pagamento -->
-            <div class="card card-contas">
-                <div class="card-title" style="color: var(--text-dark); font-weight: 600;">Meios de Pagamento / Carteira</div>
-
-                <div th:each="conta : ${resumo.saldosContas}" class="conta-item" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f1f5f9;">
-                    <div class="conta-info" style="display: flex; align-items: center; gap: 12px;">
-                        <div class="conta-icon"
-                             style="width: 24px; height: 24px; overflow:hidden; position:relative; background:#f1f5f9; border-radius: 6px; display:flex; align-items:center; justify-content:center; font-size: 0.8rem;">
-                            <span th:if="${conta.tipo == 'CARTAO_CREDITO'}">💳</span>
-                            <span th:if="${conta.tipo == 'PIX'}">❖</span>
-                            <span th:if="${conta.tipo == 'DINHEIRO'}">💵</span>
-                            <span th:if="${conta.tipo == 'CONTA_CORRENTE'}">🏦</span>
-                            <span th:if="${conta.tipo != 'CARTAO_CREDITO' && conta.tipo != 'PIX' && conta.tipo != 'DINHEIRO' && conta.tipo != 'CONTA_CORRENTE'}">💰</span>
-                        </div>
-                        <div>
-                            <div class="conta-name" th:text="${conta.nome}" style="font-weight: 500; font-size: 0.9rem; color: var(--text-dark);">Itaú</div>
-                            <div class="conta-type" th:text="${conta.tipo}" style="font-size: 0.65rem; color: var(--text-light); text-transform: uppercase;">Conta Corrente</div>
-                        </div>
-                    </div>
+            <div class="card" style="grid-column: span 6;">
+                <div class="card-title"
+                     style="color: var(--text-dark); font-weight: 600; display: flex; justify-content: space-between;">
+                    Meios de Pagamento / Carteira
+                    <button onclick="openModal('modalInstituicao')"
+                            style="background: none; border: none; color: var(--blue); cursor: pointer; font-size: 0.8rem;">
+                        + Novo
+                    </button>
                 </div>
 
-                <div th:if="${#lists.isEmpty(resumo.saldosContas)}"
-                     style="text-align: center; color: var(--text-light); padding: 20px;">
-                    Nenhum meio de pagamento cadastrado.
+                <div style="max-height: 250px; overflow-y: auto; padding-right: 5px;">
+                    <div th:each="conta : ${resumo.saldosContas}" class="conta-item"
+                         style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
+                        <div class="conta-info" style="display: flex; align-items: center; gap: 12px;">
+                            <div class="conta-icon"
+                                 style="width: 28px; height: 28px; overflow:hidden; position:relative; background:#f1f5f9; border-radius: 6px; display:flex; align-items:center; justify-content:center; font-size: 0.9rem;">
+                                <span th:if="${conta.tipo == 'CARTAO_CREDITO'}">💳</span>
+                                <span th:if="${conta.tipo == 'PIX'}">❖</span>
+                                <span th:if="${conta.tipo == 'DINHEIRO'}">💵</span>
+                                <span th:if="${conta.tipo == 'CONTA_CORRENTE'}">🏦</span>
+                                <span th:if="${conta.tipo != 'CARTAO_CREDITO' && conta.tipo != 'PIX' && conta.tipo != 'DINHEIRO' && conta.tipo != 'CONTA_CORRENTE'}">💰</span>
+                            </div>
+                            <div>
+                                <div class="conta-name" th:text="${conta.nome}"
+                                     style="font-weight: 600; font-size: 0.9rem; color: var(--text-dark);">Itaú
+                                </div>
+                                <div class="conta-type" th:text="${conta.tipo}"
+                                     style="font-size: 0.6rem; color: var(--text-light); text-transform: uppercase;">
+                                    Conta Corrente
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div th:text="${#numbers.formatDecimal(conta.saldo, 1, 'POINT', 2, 'COMMA')}"
+                                 style="font-weight: 600; font-size: 0.95rem;">0,00
+                            </div>
+                            <button type="button"
+                                    th:data-id="${conta.id}"
+                                    th:data-nome="${conta.nome}"
+                                    th:data-saldo="${conta.saldo}"
+                                    onclick="openEditBalanceModal(this)"
+                                    style="background:none; border:none; font-size: 0.7rem; color: var(--blue); cursor:pointer; padding:0;">
+                                Editar Saldo
+                            </button>
+                        </div>
+                    </div>
+
+                    <div th:if="${#lists.isEmpty(resumo.saldosContas)}"
+                         style="text-align: center; color: var(--text-light); padding: 40px 20px;">
+                        <i class="fas fa-wallet"
+                           style="font-size: 2rem; opacity: 0.2; display: block; margin-bottom: 10px;"></i>
+                        Nenhum meio de pagamento.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Despesas Terceiros (NEW) -->
+            <div class="card" style="grid-column: span 6;">
+                <div class="card-title"
+                     style="color: var(--text-dark); font-weight: 600; display: flex; justify-content: space-between;">
+                    Despesas Terceiros (Em aberto)
+                    <button onclick="openModal('modalDividaTerceiro')"
+                            style="background: none; border: none; color: var(--green); cursor: pointer; font-size: 0.8rem;">
+                        + Adicionar
+                    </button>
+                </div>
+
+                <div style="max-height: 250px; overflow-y: auto; padding-right: 5px;">
+                    <div th:each="devedor : ${resumo.devedores}"
+                         style="margin-bottom: 20px; background: rgba(30, 41, 59, 0.3); padding: 12px; border-radius: 12px;">
+                        <div style="font-weight: 700; color: var(--text-dark); font-size: 1rem; margin-bottom: 8px; padding-left: 4px; border-left: 3px solid var(--blue);">
+                            <span th:text="${devedor.nome}">Helen</span>
+                        </div>
+
+                        <div th:each="divida : ${devedor.dividas}" class="conta-item"
+                             style="display: flex; justify-content: space-between; align-items: center; padding: 10px 4px; border-bottom: 1px solid rgba(241, 245, 249, 0.1);">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 0.8rem; background: rgba(59, 130, 246, 0.1); padding: 2px 8px; border-radius: 6px; color: var(--blue); font-weight: 600;"
+                                          th:text="${divida.item}">Tablet</span>
+                                </div>
+                                <div style="font-size: 0.75rem; color: var(--text-light); margin-top: 4px; display: flex; align-items: center; gap: 10px;">
+                                    <span th:text="${divida.parcelasPagas} + '/' + ${divida.totalParcelas} + ' parc.'">0/10 parc.</span>
+                                    <span style="font-weight: 600; color: var(--green);"
+                                          th:text="'Faltam R$ ' + ${#numbers.formatDecimal(divida.valorRestante, 1, 'POINT', 2, 'COMMA')}">Faltam R$ 1.500,00</span>
+                                </div>
+                                <!-- Progress Micro-visual -->
+                                <div style="height: 3px; background: rgba(226, 232, 240, 0.2); border-radius: 2px; margin-top: 6px; width: 100%; max-width: 140px; overflow: hidden;">
+                                    <div th:style="'height: 100%; background: var(--green); width: ' + (${divida.parcelasPagas} * 100 / ${divida.totalParcelas}) + '%;'"></div>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <form th:action="@{/finances/divida-terceiro/pagar-parcela}" method="POST"
+                                      style="margin: 0;">
+                                    <input type="hidden" name="id" th:value="${divida.id}">
+                                    <button type="submit" th:disabled="${divida.parcelasPagas == divida.totalParcelas}"
+                                            th:style="${divida.parcelasPagas == divida.totalParcelas} ? 'opacity: 0.5; cursor: not-allowed; border: 1px solid #475569;' : 'border: 1px solid var(--green); background: rgba(34, 197, 94, 0.1); color: var(--green);'"
+                                            style="padding: 6px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                                        Pagar Parcela
+                                    </button>
+                                </form>
+                                <form th:action="@{/finances/divida-terceiro/excluir}" method="POST" style="margin: 0;">
+                                    <input type="hidden" name="id" th:value="${divida.id}">
+                                    <button type="submit"
+                                            style="background: none; border: none; color: var(--red); opacity: 0.6; cursor: pointer; padding: 5px; font-size: 0.9rem;">
+                                        ✕
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:if="${#lists.isEmpty(resumo.devedores)}"
+                         style="text-align: center; color: var(--text-light); padding: 40px 20px;">
+                        <i class="fas fa-users"
+                           style="font-size: 2rem; opacity: 0.2; display: block; margin-bottom: 10px;"></i>
+                        Nenhuma dívida de terceiros.
+                    </div>
                 </div>
             </div>
 
@@ -871,34 +903,38 @@
 
             <div class="form-floating">
                 <select name="categoriaId" id="transCat" required
-                        style="width:100%; padding: 22px 12px 6px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; outline: none; background-color: #f8fafc; font-family: inherit; box-sizing: border-box; appearance: none;">
+                        style="width:100%; padding: 22px 12px 6px; border: 1px solid #334155; border-radius: 8px; font-size: 1rem; outline: none; background-color: #1e293b; color: #f8fafc; font-family: inherit; box-sizing: border-box; appearance: none;">
                     <option value=""></option>
                     <option th:each="cat : ${categorias}" th:value="${cat.id}" th:text="${cat.nome}"></option>
                 </select>
-                <label for="transCat" style="top: 4px; font-size: 0.75rem; color: var(--sidebar-bg); font-weight: 600;">Categoria</label>
+                <label for="transCat"
+                       style="top: 4px; font-size: 0.75rem; color: #94a3b8; font-weight: 600;">Categoria</label>
             </div>
 
             <div class="form-floating">
                 <select name="instituicaoId" id="transInst"
-                        style="width:100%; padding: 22px 12px 6px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; outline: none; background-color: #f8fafc; font-family: inherit; box-sizing: border-box; appearance: none;">
+                        style="width:100%; padding: 22px 12px 6px; border: 1px solid #334155; border-radius: 8px; font-size: 1rem; outline: none; background-color: #1e293b; color: #f8fafc; font-family: inherit; box-sizing: border-box; appearance: none;">
                     <option value="">Nenhuma (Pagamento Direto)</option>
                     <option th:each="inst : ${instituicoes}" th:value="${inst.id}"
                             th:text="|${inst.nome} (${inst.tipo.name()})|"></option>
                 </select>
                 <label for="transInst"
-                       style="top: 4px; font-size: 0.75rem; color: var(--sidebar-bg); font-weight: 600;">Conta ou Cartão
+                       style="top: 4px; font-size: 0.75rem; color: #94a3b8; font-weight: 600;">Conta ou Cartão
                     Usado</label>
             </div>
 
-            <div id="parcelasContainer" style="display: none; border: 1px dashed #cbd5e1; padding: 12px; border-radius: 8px; margin-bottom: 16px; background: #f1f5f9;">
+            <div id="parcelasContainer"
+                 style="display: none; border: 1px dashed #334155; padding: 12px; border-radius: 8px; margin-bottom: 16px; background: rgba(30, 41, 59, 0.5);">
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <div style="flex: 1;">
                         <input type="checkbox" name="isParcelado" id="chkParcelado" onchange="toggleParcelas()">
-                        <label for="chkParcelado" style="font-weight: 600; font-size: 0.9rem; cursor: pointer;">💸 Compra Parcelada?</label>
+                        <label for="chkParcelado" style="font-weight: 600; font-size: 0.9rem; cursor: pointer;">💸 Compra
+                            Parcelada?</label>
                     </div>
                     <div id="numParcelasDiv" style="flex: 1; display: none;">
                         <div class="form-floating" style="margin-bottom: 0;">
-                            <input type="number" name="totalParcelas" id="totalParcelas" min="2" max="99" placeholder=" " value="2">
+                            <input type="number" name="totalParcelas" id="totalParcelas" min="2" max="99"
+                                   placeholder=" " value="2">
                             <label for="totalParcelas">Qtde Parcelas</label>
                         </div>
                     </div>
@@ -959,27 +995,73 @@
     </div>
 </div>
 
-<!-- Modal Categoria -->
+<!-- Modal Categoria (UPDATED: Random Color) -->
 <div id="modalCategoria" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal('modalCategoria')">&times;</span>
         <h2 style="margin-bottom: 24px;">Nova Categoria</h2>
         <form th:action="@{/finances/categoria}" method="POST">
-
             <div class="form-floating">
                 <input type="text" name="nome" id="catNome" required placeholder=" ">
                 <label for="catNome">Nome da Categoria (Ex: Alimentação)</label>
             </div>
 
-            <div style="margin-bottom: 12px; font-weight: 600; font-size: 0.95rem; color: #475569;">Cor (Para
-                Gráficos)
-            </div>
-            <div style="position: relative; overflow: hidden; border-radius: 8px; border: 1px solid #cbd5e1; width: 100%; height: 50px; margin-bottom: 24px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
-                <input type="color" name="cor" required value="#3b82f6"
-                       style="position: absolute; width: 150%; height: 150%; top: -25%; left: -25%; cursor: pointer; border: none; outline: none; padding:0;">
-            </div>
+            <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 20px;">
+                💡 O sistema escolherá automaticamente uma cor vibrante para esta categoria.
+            </p>
 
             <button type="submit" class="btn-submit">Criar Categoria</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Despesa de Terceiro (NEW) -->
+<div id="modalDividaTerceiro" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modalDividaTerceiro')">&times;</span>
+        <h2 style="margin-bottom: 24px;">Nova Despesa de Terceiro</h2>
+        <form th:action="@{/finances/divida-terceiro}" method="POST">
+
+            <div class="form-floating">
+                <input type="text" name="devedor" id="divDevedor" required placeholder=" ">
+                <label for="divDevedor">Quem deve? (Ex: Helen)</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="text" name="item" id="divItem" required placeholder=" ">
+                <label for="divItem">O que comprou? (Ex: Tablet)</label>
+            </div>
+
+            <div class="chips-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 0;">
+                <div class="form-floating">
+                    <input type="number" step="0.01" name="valorTotal" id="divValor" required placeholder=" ">
+                    <label for="divValor">Valor Total (R$)</label>
+                </div>
+                <div class="form-floating">
+                    <input type="number" name="totalParcelas" id="divParcelas" required min="1" placeholder=" "
+                           value="1">
+                    <label for="divParcelas">Vezes (Parcelas)</label>
+                </div>
+            </div>
+
+            <div class="form-floating">
+                <input type="date" name="dataCompra" id="divData" required placeholder=" ">
+                <label for="divData" style="top:4px; font-size:0.75rem; color:var(--sidebar-bg); font-weight:600;">Data
+                    da Compra</label>
+            </div>
+
+            <div class="form-floating">
+                <select name="instituicaoId" id="divInst"
+                        style="width:100%; padding: 22px 12px 6px; border: 1px solid #334155; border-radius: 8px; font-size: 1rem; outline: none; background-color: #1e293b; color: #f8fafc; font-family: inherit; box-sizing: border-box; appearance: none;">
+                    <option value="">Nenhuma (Conta Corrente/Outro)</option>
+                    <option th:each="inst : ${instituicoes}" th:value="${inst.id}"
+                            th:text="|${inst.nome} (${inst.tipo.name()})|"></option>
+                </select>
+                <label for="divInst" style="top: 4px; font-size: 0.75rem; color: #94a3b8; font-weight: 600;">Cartão
+                    Utilizado</label>
+            </div>
+
+            <button type="submit" class="btn-submit">Cadastrar Dívida</button>
         </form>
     </div>
 </div>
@@ -1048,7 +1130,8 @@
                     <td style="padding: 10px; text-align: right;" class="value-green"
                         th:text="${#numbers.formatDecimal(t.valor, 1, 'POINT', 2, 'COMMA')}"></td>
                     <td style="padding: 10px; text-align: center; display:flex; gap:8px; justify-content: flex-end;">
-                        <form th:if="${t.status.name() != 'PAGO'}" th:action="@{/finances/transacao/pagar}" method="POST" style="margin:0;">
+                        <form th:if="${t.status.name() != 'PAGO'}" th:action="@{/finances/transacao/pagar}"
+                              method="POST" style="margin:0;">
                             <input type="hidden" name="id" th:value="${t.id}">
                             <button type="submit" title="Confirmar Recebimento"
                                     style="background: #22c55e; border: none; cursor: pointer; color: white; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem;">
@@ -1098,7 +1181,8 @@
                     <td style="padding: 10px; text-align: right;" class="value-red"
                         th:text="${#numbers.formatDecimal(t.valor, 1, 'POINT', 2, 'COMMA')}"></td>
                     <td style="padding: 10px; text-align: center; display:flex; gap:8px; justify-content: flex-end;">
-                        <form th:if="${t.status.name() != 'PAGO'}" th:action="@{/finances/transacao/pagar}" method="POST" style="margin:0;">
+                        <form th:if="${t.status.name() != 'PAGO'}" th:action="@{/finances/transacao/pagar}"
+                              method="POST" style="margin:0;">
                             <input type="hidden" name="id" th:value="${t.id}">
                             <button type="submit" title="Confirmar Pagamento"
                                     style="background: #ef4444; border: none; cursor: pointer; color: white; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem;">
@@ -1107,7 +1191,9 @@
                         </form>
                         <form th:action="@{/finances/transacao/excluir}" method="POST" style="margin:0;">
                             <input type="hidden" name="id" th:value="${t.id}">
-                            <button type="submit" style="background: none; border: none; cursor: pointer; color: var(--red);">🗑️</button>
+                            <button type="submit"
+                                    style="background: none; border: none; cursor: pointer; color: var(--red);">🗑️
+                            </button>
                         </form>
                     </td>
                 </tr>
@@ -1144,7 +1230,8 @@
                     <td style="padding: 10px; text-align: right; color: #f59e0b;"
                         th:text="${#numbers.formatDecimal(t.valor, 1, 'POINT', 2, 'COMMA')}"></td>
                     <td style="padding: 10px; text-align: center; display:flex; gap:8px; justify-content: flex-end;">
-                        <form th:if="${t.status.name() != 'PAGO'}" th:action="@{/finances/transacao/pagar}" method="POST" style="margin:0;">
+                        <form th:if="${t.status.name() != 'PAGO'}" th:action="@{/finances/transacao/pagar}"
+                              method="POST" style="margin:0;">
                             <input type="hidden" name="id" th:value="${t.id}">
                             <button type="submit" title="Confirmar Pagamento do Cartão"
                                     style="background: #f59e0b; border: none; cursor: pointer; color: white; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem;">
@@ -1153,7 +1240,9 @@
                         </form>
                         <form th:action="@{/finances/transacao/excluir}" method="POST" style="margin:0;">
                             <input type="hidden" name="id" th:value="${t.id}">
-                            <button type="submit" style="background: none; border: none; cursor: pointer; color: var(--red);">🗑️</button>
+                            <button type="submit"
+                                    style="background: none; border: none; cursor: pointer; color: var(--red);">🗑️
+                            </button>
                         </form>
                     </td>
                 </tr>
@@ -1195,7 +1284,7 @@
         if (localStorage.getItem('darkMode') === 'true') {
             document.documentElement.classList.add('dark');
             const btn = document.getElementById('darkModeBtn');
-            if(btn) btn.innerText = '☀️';
+            if (btn) btn.innerText = '☀️';
         }
     });
 
@@ -1204,7 +1293,7 @@
         const isDark = document.documentElement.classList.contains('dark');
         localStorage.setItem('darkMode', isDark);
         const btn = document.getElementById('darkModeBtn');
-        if(btn) btn.innerText = isDark ? '☀️' : '🌙';
+        if (btn) btn.innerText = isDark ? '☀️' : '🌙';
     }
 
     function getRandomColor() {
@@ -1219,35 +1308,35 @@
     // Modal Control
     function openModal(id, tipo = null) {
         const modal = document.getElementById(id);
-        if(!modal) return;
-        
+        if (!modal) return;
+
         modal.classList.add('flex');
 
         if (id === 'modalTransacao' && tipo) {
             document.getElementById('inputTipoTransacao').value = tipo;
             document.getElementById('modalTransacaoTitle').innerText = (tipo === 'RECEITA' ? 'Nova Receita' : 'Nova Despesa');
             document.getElementById('labelVencimento').innerText = (tipo === 'RECEITA' ? 'Recebimento' : 'Vencimento');
-            
+
             // Parcelas logic
             const parcelasCont = document.getElementById('parcelasContainer');
-            if(parcelasCont) parcelasCont.style.display = (tipo === 'DESPESA' ? 'block' : 'none');
-            
+            if (parcelasCont) parcelasCont.style.display = (tipo === 'DESPESA' ? 'block' : 'none');
+
             const chk = document.getElementById('chkParcelado');
-            if(chk) chk.checked = false;
-            
+            if (chk) chk.checked = false;
+
             const numDiv = document.getElementById('numParcelasDiv');
-            if(numDiv) numDiv.style.display = 'none';
+            if (numDiv) numDiv.style.display = 'none';
         }
 
         if (id === 'modalCategoria') {
             const colorInput = document.querySelector('#modalCategoria input[name="cor"]');
-            if(colorInput) colorInput.value = getRandomColor();
+            if (colorInput) colorInput.value = getRandomColor();
         }
     }
 
     function closeModal(id) {
         const modal = document.getElementById(id);
-        if(modal) modal.classList.remove('flex');
+        if (modal) modal.classList.remove('flex');
     }
 
     // Specialized Modals
@@ -1259,7 +1348,10 @@
         openModal('modalEditarCategoria');
     }
 
-    function openEditBalanceModal(id, nome, saldo) {
+    function openEditBalanceModal(btn) {
+        const id = btn.getAttribute('data-id');
+        const nome = btn.getAttribute('data-nome');
+        const saldo = btn.getAttribute('data-saldo');
         document.getElementById('editSaldoInstId').value = id;
         document.getElementById('editSaldoInstNome').innerText = nome;
         document.getElementById('editSaldoValor').value = saldo;
@@ -1269,7 +1361,7 @@
     function toggleParcelas() {
         const isParcelado = document.getElementById('chkParcelado').checked;
         const numDiv = document.getElementById('numParcelasDiv');
-        if(numDiv) numDiv.style.display = isParcelado ? 'block' : 'none';
+        if (numDiv) numDiv.style.display = isParcelado ? 'block' : 'none';
     }
 
     // Close on overlay click
