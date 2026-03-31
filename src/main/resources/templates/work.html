@@ -13,6 +13,7 @@
     <meta th:name="_csrf" th:content="${_csrf.token}"/>
     <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <style>
+        * { box-sizing: border-box; }
         :root {
             /* Column Backgrounds (Slightly more vibrant/premium) */
             --bg-backlog: #4c3c8c;
@@ -95,8 +96,10 @@
             gap: 20px;
             overflow-x: auto;
             align-items: flex-start;
-            flex: 1; /* Take up all available space */
-            min-width: 0; /* Allow shrinking below content width to trigger scrollbar */
+            flex: 1 1 0%; /* Allow full distribution of remaining space */
+            min-width: 0; 
+            max-width: calc(100% - 400px); /* Explicit hard limit */
+            position: relative;
         }
 
         /* Custom Scrollbar */
@@ -558,21 +561,21 @@
             min-width: 400px;
             width: 400px;
             flex-shrink: 0; /* Prevent sidebar from being squeezed */
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.4); /* Slightly Darker */
             backdrop-filter: blur(20px);
             border-radius: 0;
             padding: 30px;
-            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
             display: flex;
             flex-direction: column;
             gap: 25px;
             overflow-y: auto;
-            z-index: 100;
+            /* REMOVED Z-INDEX TO PREVENT OVERLAP (must stay in flex flow) */
         }
-
 
         .main-layout {
             display: flex;
+            flex-direction: row; /* Be explicit */
             flex: 1;
             overflow: hidden;
             width: 100%;

@@ -24,7 +24,7 @@ public class AdminInitializer {
 
     @PostConstruct
     public void init() {
-        if (usuarioRepository.findByUsername("JacksonRocha").isEmpty()) {
+        if (!usuarioRepository.findByUsername("JacksonRocha").isPresent()) {
             Role adminRole = roleRepository.findByNome("ADMIN")
                     .orElseGet(() -> roleRepository.save(new Role("ADMIN")));
 
