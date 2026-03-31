@@ -96,10 +96,9 @@
             gap: 20px;
             overflow-x: auto;
             align-items: flex-start;
-            flex: 1 1 0%; /* Allow full distribution of remaining space */
             min-width: 0; 
-            max-width: calc(100% - 400px); /* Explicit hard limit */
-            position: relative;
+            width: 100%;
+            grid-column: 1;
         }
 
         /* Custom Scrollbar */
@@ -558,27 +557,27 @@
 
         /* Stats Panel (v3 - Full Page Sidebar) */
         .stats-panel {
-            min-width: 400px;
-            width: 400px;
-            flex-shrink: 0; /* Prevent sidebar from being squeezed */
-            background: rgba(0, 0, 0, 0.4); /* Slightly Darker */
+            min-width: 340px;
+            width: 340px;
+            background: rgba(0, 0, 0, 0.45);
             backdrop-filter: blur(20px);
             border-radius: 0;
             padding: 30px;
             border-left: 1px solid rgba(255, 255, 255, 0.2);
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 20px;
             overflow-y: auto;
-            /* REMOVED Z-INDEX TO PREVENT OVERLAP (must stay in flex flow) */
+            grid-column: 2;
         }
 
         .main-layout {
-            display: flex;
-            flex-direction: row; /* Be explicit */
+            display: grid;
+            grid-template-columns: 1fr 340px;
             flex: 1;
             overflow: hidden;
             width: 100%;
+            height: 100%;
         }
 
         .stats-header {
