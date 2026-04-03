@@ -43,7 +43,7 @@ public class WorkRestController {
         if (principal == null) return ResponseEntity.status(401).build();
 
         Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(principal.getName());
-        if (usuarioOpt.isEmpty()) return ResponseEntity.status(401).build();
+        if (!usuarioOpt.isPresent()) return ResponseEntity.status(401).build();
 
         List<TarefaTrabalho> tarefas = tarefaRepository.findByUsuarioId(usuarioOpt.get().getId());
         List<TarefaTrabalhoDTO> dtos = tarefas.stream().map(TarefaTrabalhoDTO::new).collect(Collectors.toList());
@@ -55,7 +55,7 @@ public class WorkRestController {
         if (principal == null) return ResponseEntity.status(401).build();
 
         Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(principal.getName());
-        if (usuarioOpt.isEmpty()) return ResponseEntity.status(401).build();
+        if (!usuarioOpt.isPresent()) return ResponseEntity.status(401).build();
 
         TarefaTrabalho nova = new TarefaTrabalho();
         nova.setTitulo(dto.getTitulo());
@@ -87,7 +87,7 @@ public class WorkRestController {
         if (principal == null) return ResponseEntity.status(401).build();
 
         Optional<TarefaTrabalho> tarefaOpt = tarefaRepository.findById(id);
-        if (tarefaOpt.isEmpty() || !tarefaOpt.get().getUsuario().getUsername().equals(principal.getName())) {
+        if (!tarefaOpt.isPresent() || !tarefaOpt.get().getUsuario().getUsername().equals(principal.getName())) {
             return ResponseEntity.status(403).build();
         }
 
@@ -130,7 +130,7 @@ public class WorkRestController {
         if (principal == null) return ResponseEntity.status(401).build();
 
         Optional<TarefaTrabalho> tarefaOpt = tarefaRepository.findById(id);
-        if (tarefaOpt.isEmpty() || !tarefaOpt.get().getUsuario().getUsername().equals(principal.getName())) {
+        if (!tarefaOpt.isPresent() || !tarefaOpt.get().getUsuario().getUsername().equals(principal.getName())) {
             return ResponseEntity.status(403).build();
         }
 

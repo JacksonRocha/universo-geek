@@ -18,7 +18,7 @@ public class DataInitializerConfig {
             List<String> userRoles = Arrays.asList("WORK", "HOBBY", "DEVELOP", "FINANCES", "ADMIN");
             
             for (String roleName : userRoles) {
-                if (roleRepository.findByNome(roleName).isEmpty()) {
+                if (!roleRepository.findByNome(roleName).isPresent()) {
                     roleRepository.save(new Role(roleName));
                 }
             }
