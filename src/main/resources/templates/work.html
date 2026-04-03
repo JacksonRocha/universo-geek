@@ -909,7 +909,10 @@
             const container = document.getElementById('columns-container');
             container.innerHTML = '';
 
-            const finishedTasks = this.allTasks.filter(t => t.bloco === 'CONCLUIDO');
+            const nonMeetingTasks = this.allTasks.filter(t => t.bloco !== 'REUNIOES');
+            const finishedTasks = nonMeetingTasks.filter(t => t.bloco === 'CONCLUIDO' && t.realizada);
+            const createdCount = nonMeetingTasks.length;
+
             const meetingTasks = this.allTasks.filter(t => t.bloco === 'REUNIOES');
 
             // Only count meetings that are DONE (realizada)
@@ -941,7 +944,7 @@
                     </div>
                     <div class="stat-card" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);">
                         <div class="stat-label">Cards Concluídos / Criados</div>
-                        <div class="stat-value">${finishedTasks.length} / ${this.allTasks.filter(t => t.bloco !== 'REUNIOES').length}</div>
+                        <div class="stat-value">${finishedTasks.length} / ${createdCount}</div>
                     </div>
                     <div class="stat-card" style="border-left-color: #6366f1; background: rgba(99, 102, 241, 0.1);">
                         <div class="stat-label">Total de Reuniões</div>
@@ -985,7 +988,7 @@
                                     <div style="display: flex; flex-direction: column; gap: 5px;">
                                         ${t.urgente ? `<div class="urgency-marker"><i class="fas fa-exclamation-circle"></i> Urgente</div>` : ''}
                                         ${t.planejado ? `<div class="planned-marker"><i class="fas fa-calendar-check"></i> Planejado</div>` : ''}
-                                        ${isMeeting && t.realizada ? `<div class="urgency-marker" style="background: #10b981;"><i class="fas fa-check-circle"></i> Realizada</div>` : ''}
+                                        ${t.realizada ? `<div class="urgency-marker" style="background: #10b981;"><i class="fas fa-check-circle"></i> Concluído</div>` : ''}
                                     </div>
                                     <div onclick="event.stopPropagation(); kanbanApp.toggleRealizada(${t.id})" style="cursor:pointer; font-size: 20px; color: ${t.realizada ? '#10b981' : 'rgba(255,255,255,0.2)'}; padding: 2px;" title="Marcar como Concluído">
                                         <i class="fas ${t.realizada ? 'fa-check-square' : 'fa-square'}"></i>
@@ -1129,6 +1132,8 @@
             document.getElementById('taskDate').value = '';
             document.getElementById('taskSolicitante').value = '';
             document.getElementById('taskHoras').value = '0';
+            document.getElementById('taskUrgente').checked = false;
+            document.getElementById('taskPlanejado').checked = false;
 
             // Reset Meeting fields
             document.getElementById('taskProjeto').value = '';
