@@ -925,7 +925,7 @@
 
             // SPECIAL REQUEST: Only count hours if task is REALIZADA (Concluída)
             const realizedTechHours = this.allTasks
-                .filter(t => t.bloco !== 'REUNIOES' && t.realizada && (t.urgente || t.planejado))
+                .filter(t => t.bloco !== 'REUNIOES' && t.realizada)
                 .reduce((acc, t) => acc + (t.horas || 0), 0);
 
             const specializedHours = realizedTechHours + meetingHoursVal;
@@ -988,7 +988,6 @@
                                     <div style="display: flex; flex-direction: column; gap: 5px;">
                                         ${t.urgente ? `<div class="urgency-marker"><i class="fas fa-exclamation-circle"></i> Urgente</div>` : ''}
                                         ${t.planejado ? `<div class="planned-marker"><i class="fas fa-calendar-check"></i> Planejado</div>` : ''}
-                                        ${t.realizada ? `<div class="urgency-marker" style="background: #10b981;"><i class="fas fa-check-circle"></i> Concluído</div>` : ''}
                                     </div>
                                     <div onclick="event.stopPropagation(); kanbanApp.toggleRealizada(${t.id})" style="cursor:pointer; font-size: 20px; color: ${t.realizada ? '#10b981' : 'rgba(255,255,255,0.2)'}; padding: 2px;" title="Marcar como Concluído">
                                         <i class="fas ${t.realizada ? 'fa-check-square' : 'fa-square'}"></i>
