@@ -94,14 +94,17 @@
 
         /* Board */
         .board {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
             padding: 20px;
             gap: 20px;
             overflow: hidden;
-            align-items: flex-start;
-            min-width: 0;
             width: 100%;
             height: 100%;
+        }
+
+        #columns-container {
+            display: contents;
         }
 
         /* Custom Scrollbar */
@@ -119,7 +122,6 @@
         }
 
         .column {
-            flex: 1;
             min-width: 0;
             border-radius: 12px;
             display: flex;
@@ -584,7 +586,6 @@
 
         /* Stats Panel (v3 - As Column) */
         .stats-panel {
-            flex: 1;
             min-width: 0;
             background: rgba(0, 0, 0, 0.2);
             border-radius: 12px;
@@ -616,9 +617,8 @@
         }
 
         #statsContainer {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: auto auto;
+            display: flex;
+            flex-direction: column;
             gap: 15px;
             flex-grow: 1;
         }
@@ -679,7 +679,7 @@
 
 <div class="main-layout">
     <div class="board" id="board">
-        <div id="columns-container" style="display: flex; gap: 20px;"></div>
+        <div id="columns-container"></div>
 
         <!-- Sprint Stats Panel (now as a regular column) -->
         <div class="stats-panel" id="statsPanel">
@@ -898,9 +898,7 @@
             try {
                 const res = await fetch('/api/work/tasks');
                 if (!res.ok) throw new Error("Erro ao carregar");
-                let tasks = await res.json();
-                tasks.sort((a, b) => b.id - a.id);
-                this.allTasks = tasks;
+                this.allTasks = await res.json();
                 this.renderBoard();
             } catch (err) {
                 console.error(err);
@@ -994,15 +992,15 @@
                                         <i class="fas ${t.realizada ? 'fa-check-square' : 'fa-square'}"></i>
                                     </div>
                                 </div>
-                                
+
                                 ${t.imageUrl ? `<img src="${t.imageUrl}" alt="Capa" style="margin-top: 0;">` : ''}
-                                
+
                                 <div style="font-size: 10px; color: rgba(255, 255, 255, 0.4); margin-bottom: 5px; font-weight: 500; margin-top: 8px;">
                                     <i class="far fa-clock"></i> ${isMeeting ? 'Agendado' : 'Criado'}: ${creation}
                                 </div>
-                                
+
                                 <h3>${isMeeting && t.tema ? `[REUNIÃO] ${t.tema}` : t.titulo}</h3>
-                                
+
                                 ${isMeeting ? `
                                     <div style="font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 5px;">
                                         ${t.projeto ? `<div><strong>Projeto:</strong> ${t.projeto}</div>` : ''}
