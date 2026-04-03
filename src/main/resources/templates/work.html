@@ -123,6 +123,7 @@
 
         .column {
             min-width: 0;
+            min-height: 0;
             border-radius: 12px;
             display: flex;
             flex-direction: column;
@@ -587,6 +588,7 @@
         /* Stats Panel (v3 - As Column) */
         .stats-panel {
             min-width: 0;
+            min-height: 0;
             background: rgba(0, 0, 0, 0.2);
             border-radius: 12px;
             padding: 20px;
@@ -898,7 +900,9 @@
             try {
                 const res = await fetch('/api/work/tasks');
                 if (!res.ok) throw new Error("Erro ao carregar");
-                this.allTasks = await res.json();
+                let tasks = await res.json();
+                tasks.sort((a, b) => b.id - a.id);
+                this.allTasks = tasks;
                 this.renderBoard();
             } catch (err) {
                 console.error(err);
@@ -928,7 +932,7 @@
 
             const specializedHours = realizedTechHours + meetingHoursVal;
 
-            const workingHours = 176;
+            const workingHours = (new Date().getMonth() === 3) ? 160 : 176;
 
             // Stats Grid rendering
             document.getElementById('statsContainer').innerHTML = `
