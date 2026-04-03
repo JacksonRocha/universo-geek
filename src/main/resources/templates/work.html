@@ -13,7 +13,10 @@
     <meta th:name="_csrf" th:content="${_csrf.token}"/>
     <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <style>
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
+
         :root {
             /* Column Backgrounds (Slightly more vibrant/premium) */
             --bg-backlog: #4c3c8c;
@@ -94,11 +97,11 @@
             display: flex;
             padding: 20px;
             gap: 20px;
-            overflow-x: auto;
+            overflow: hidden;
             align-items: flex-start;
-            min-width: 0; 
+            min-width: 0;
             width: 100%;
-            grid-column: 1;
+            height: 100%;
         }
 
         /* Custom Scrollbar */
@@ -116,8 +119,8 @@
         }
 
         .column {
-            min-width: 300px;
-            width: 300px;
+            flex: 1;
+            min-width: 0;
             border-radius: 12px;
             display: flex;
             flex-direction: column;
@@ -341,10 +344,29 @@
             filter: brightness(1.2);
         }
 
-        .move-btn.active.backlog { background: #6366f1; color: #fff; box-shadow: 0 0 10px rgba(99, 102, 241, 0.4); }
-        .move-btn.active.todo { background: #f59e0b; color: #fff; box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); }
-        .move-btn.active.doing { background: #22c55e; color: #fff; box-shadow: 0 0 10px rgba(34, 197, 94, 0.4); }
-        .move-btn.active.done { background: #10b981; color: #fff; box-shadow: 0 0 10px rgba(16, 185, 129, 0.4); }
+        .move-btn.active.backlog {
+            background: #6366f1;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+        }
+
+        .move-btn.active.todo {
+            background: #f59e0b;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+        }
+
+        .move-btn.active.doing {
+            background: #22c55e;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+        }
+
+        .move-btn.active.done {
+            background: #10b981;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+        }
 
         /* Modal - Premium Design */
         .modal {
@@ -562,19 +584,17 @@
 
         /* Stats Panel (v3 - As Column) */
         .stats-panel {
-            min-width: 320px;
-            width: 320px;
+            flex: 1;
+            min-width: 0;
             background: rgba(0, 0, 0, 0.2);
             border-radius: 12px;
-            padding: 25px;
+            padding: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             flex-direction: column;
             gap: 20px;
             overflow-y: auto;
             max-height: 100%;
-            flex-shrink: 0;
-            margin-right: 20px;
         }
 
         .main-layout {
@@ -582,6 +602,7 @@
             flex: 1;
             overflow: hidden;
             width: 100%;
+            height: 100%;
         }
 
         .stats-header {
@@ -659,7 +680,7 @@
 <div class="main-layout">
     <div class="board" id="board">
         <div id="columns-container" style="display: flex; gap: 20px;"></div>
-        
+
         <!-- Sprint Stats Panel (now as a regular column) -->
         <div class="stats-panel" id="statsPanel">
             <div class="stats-header" id="sprintLabel">Sprint Março 2026</div>
@@ -776,8 +797,10 @@
                 </div>
             </div>
             <div class="form-group" style="border-top: 1px solid #f1f5f9; padding-top: 15px; margin-top: 10px;">
-                <label class="checkbox-group" style="color: #10b981; font-weight: 800; display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                    <input type="checkbox" id="taskRealizada" style="width: 18px; height: 18px; cursor: pointer;"> CARTÃO CONCLUÍDO? ✅
+                <label class="checkbox-group"
+                       style="color: #10b981; font-weight: 800; display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                    <input type="checkbox" id="taskRealizada" style="width: 18px; height: 18px; cursor: pointer;">
+                    CARTÃO CONCLUÍDO? ✅
                 </label>
             </div>
         </div>
@@ -875,7 +898,9 @@
             try {
                 const res = await fetch('/api/work/tasks');
                 if (!res.ok) throw new Error("Erro ao carregar");
-                this.allTasks = await res.json();
+                let tasks = await res.json();
+                tasks.sort((a, b) => b.id - a.id);
+                this.allTasks = tasks;
                 this.renderBoard();
             } catch (err) {
                 console.error(err);
@@ -889,7 +914,7 @@
 
             const finishedTasks = this.allTasks.filter(t => t.bloco === 'CONCLUIDO');
             const meetingTasks = this.allTasks.filter(t => t.bloco === 'REUNIOES');
-            
+
             // Only count meetings that are DONE (realizada)
             const realizedMeetings = meetingTasks.filter(t => t.realizada);
             const meetingMinutes = realizedMeetings.reduce((acc, t) => acc + (parseFloat(t.duracao) || 0), 0);
@@ -902,7 +927,7 @@
             const realizedTechHours = this.allTasks
                 .filter(t => t.bloco !== 'REUNIOES' && t.realizada && (t.urgente || t.planejado))
                 .reduce((acc, t) => acc + (t.horas || 0), 0);
-            
+
             const specializedHours = realizedTechHours + meetingHoursVal;
 
             const workingHours = 176;
@@ -1083,7 +1108,7 @@
             const task = this.allTasks.find(t => t.id == id);
             if (!task) return;
             const newState = !task.realizada;
-            
+
             const csrf = document.querySelector('meta[name="_csrf"]').content;
             const header = document.querySelector('meta[name="_csrf_header"]').content;
 
